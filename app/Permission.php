@@ -16,6 +16,6 @@ class Permission extends Model
 
     public function group_permission()
     {
-        return $this->belongsTo('App\Group_permission');
+        return $this->belongsTo('App\Group_permission', 'gpms_id', 'gpms_id');
     }
 }

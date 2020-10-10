@@ -3,7 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Permissions;
+use App\Permission;
 
 class Group_permission extends Model
 {
@@ -16,6 +16,6 @@ class Group_permission extends Model
 
     public function permissions()
     {
-        return $this->hasMany('App\Permission');
+        return $this->hasMany('App\Permission', 'gpms_id', 'gpms_id');
     }
 }
