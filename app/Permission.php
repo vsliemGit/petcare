@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Group_permission;
 
 class Permission extends Model
 {
@@ -18,4 +17,5 @@ class Permission extends Model
     {
         return $this->belongsTo('App\Group_permission', 'gpms_id', 'gpms_id');
     }
+
 }
