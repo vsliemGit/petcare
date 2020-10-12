@@ -16,3 +16,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+//Backend
+Route::get('/admin/home', 'BackendController@showHome')->name('home.index');
