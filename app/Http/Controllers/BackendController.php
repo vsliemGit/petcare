@@ -8,6 +8,6 @@ class BackendController extends Controller
 {
     //Show home page backend
     public function showHome(){
-        return view('backend.playouts.index');
+        return view('backend.layouts.index');
     }
 }

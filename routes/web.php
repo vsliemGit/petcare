@@ -17,5 +17,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-//Backend
+//Error
+Route::get('/error', function () {
+    return view('Error.404');
+})->name('error.404');
+
+//BackendController
 Route::get('/admin/home', 'BackendController@showHome')->name('home.index');
+
+//ProductController
+Route::get('/admin/product', 'ProductController@index')->name('product.index');
