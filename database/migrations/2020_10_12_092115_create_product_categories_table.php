@@ -19,7 +19,7 @@ class CreateProductCategoriesTable extends Migration
             $table->string('pro_category_name', 100);
             $table->string('pro_category_slug', 100);
             $table->text('pro_category_desc')->nullable()->default('pro_category_desc');
-            $table->tinyInteger('pro_category_status')->default(0);
+            $table->tinyInteger('pro_category_status')->nullable()->default(0);
             $table->timestamp('pro_category_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('pro_category_updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
