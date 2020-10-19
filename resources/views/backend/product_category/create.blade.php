@@ -14,32 +14,41 @@ Admin - Add Product category
                     <header class="panel-heading">
                         Thêm mới loại sản phẩm
                     </header>
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <div class="panel-body">
                         <div class=" form">
                             <form class="cmxform form-horizontal " id="commentForm" action="{{Route('product_category.store')}}" method="post" enctype="multipart/form-data" novalidate="novalidate">
                                 @csrf
                                 <div class="form-group ">
-                                    <label for="name" class="control-label col-lg-3">Tên loại <span class="required" style="color:red">*</span></label>
+                                    <label for="pro_category_name" class="control-label col-lg-3">Tên loại <span class="required" style="color:red">*</span></label>
                                     <div class="col-lg-6">
-                                        <input class=" form-control" id="name" name="name" minlength="2" type="text" required="">
+                                        <input class=" form-control" id="pro_category_name" name="pro_category_name" minlength="2" type="text" required="">
                                     </div>
                                 </div>
                                 <div class="form-group ">
-                                    <label for="slug" class="control-label col-lg-3">Slug <span class="required" style="color:red">*</span></label>
+                                    <label for="pro_category_slug" class="control-label col-lg-3">Slug <span class="required" style="color:red">*</span></label>
                                     <div class="col-lg-6">
-                                        <input class=" form-control" id="slug" name="slug" minlength="2" type="text" required="">
+                                        <input class=" form-control" id="pro_category_slug" name="pro_category_slug" minlength="2" type="text" required="">
                                     </div>
                                 </div>
                                 <div class="form-group ">
-                                    <label for="desc" class="control-label col-lg-3">Mô tả</label>
+                                    <label for="pro_category_desc" class="control-label col-lg-3">Mô tả</label>
                                     <div class="col-lg-6">
-                                        <textarea class="form-control" style="resize: none" rows="8" id="desc" name="desc" required=""></textarea>
+                                        <textarea class="form-control" style="resize: none" rows="8" id="pro_category_desc" name="pro_category_desc" required=""></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group ">
-                                    <label class="col-sm-3 control-label col-lg-3" for="status">Trạng thái: </label>
+                                    <label class="col-sm-3 control-label col-lg-3" for="pro_category_status">Trạng thái: </label>
                                     <div class="col-lg-6">
-                                        <select class="form-control m-bot15" name="status">
+                                        <select class="form-control m-bot15" name="pro_category_status">
                                             <option value="" selected disabled hidden></option>
                                             <option value="1">Khả dụng</option>
                                             <option value="0">Khóa</option>
@@ -64,9 +73,9 @@ Admin - Add Product category
 
 <script>
     $(document).ready(function(){
-        $("#name").keyup(function(){
-            var valueName = changToSlug($("#name").val());
-            $("#slug").val(valueName);
+        $("#pro_category_name").keyup(function(){
+            var valueName = changToSlug($("#pro_category_name").val());
+            $("#pro_category_slug").val(valueName);
         })
     });
     </script>
