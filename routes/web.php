@@ -35,5 +35,6 @@ Route::get('/admin/product-category/add-product-category', 'ProductCategoryContr
 Route::post('/admin/product-category/store-product-category', 'ProductCategoryController@store')->name('product_category.store');
 Route::get('/admin/product-category/edit-product-category/{id}', 'ProductCategoryController@edit')->name('product_category.edit');
 Route::put('/admin/product-category/update-product-category/{id}', 'ProductCategoryController@update')->name('product_category.update');
-Route::get('admin/product-category/delete-product-category/{id}', 'ProductCategoryController@destroy')->name('product_category.destroy');
-Route::get('admin/product-category/change-tatus-product-category/{id}', 'ProductCategoryController@changeStatusProductCategory')->name('product_category.changeStatus');
+Route::get('/admin/product-category/delete-product-category/{id}', 'ProductCategoryController@destroy')->name('product_category.destroy');
+Route::get('/admin/product-category/change-status-product-category/{id}', 'ProductCategoryController@changeStatusProductCategory')->name('product_category.changeStatus');
+Route::get('/admin/product-category/filter-status-product-category/{value}','ProductCategoryController@filterStatus')->name('product_category.filter_status');
