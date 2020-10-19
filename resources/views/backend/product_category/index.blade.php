@@ -23,7 +23,7 @@ Admin - List Product categories
         <button class="btn btn-sm btn-default">Apply</button>              
       </div>
       <div class="col-sm-5">
-        <select id="select-filter-status"class="input-sm form-control w-sm inline v-middle">
+        <select id="select-filter-status" class="input-sm form-control w-sm inline v-middle">
           <option value="" selected disabled hidden>All status</option>
           <option value="1">Active</option>
           <option value="0">Noactive</option>
@@ -53,4 +53,72 @@ Admin - List Product categories
 </section>
  <!-- footer -->
 @include('backend.layouts.partials.footer')
+
+<script type="text/javascript">
+  //Pagination AJAX
+  $(window).on('hashchange', function() {
+        if (window.location.hash) {
+            var page = window.location.hash.replace('#', '');
+            if (page == Number.NaN || page <= 0) {
+                return false;
+            }else{
+                getData(page);
+            }
+        }
+    })
+    
+    $(document).ready(function()
+    {
+        $(document).on('click', '.pagination a',function(event)
+        {
+            event.preventDefault();
+  
+            $('li').removeClass('active');
+            $(this).parent('li').addClass('active');
+  
+            var myurl = $(this).attr('href');
+            var page=$(this).attr('href').split('page=')[1];
+  
+            getData(page);
+        });
+    });
+
+    function getData(page){
+        $.ajax(
+        {
+            url: '?page=' + page,
+            type: "GET",
+            datatype: "html"
+        }).done(function(data){
+            $("#tag_container").empty().html(data);
+            location.hash = page;
+        }).fail(function(jqXHR, ajaxOptions, thrownError){
+              alert('No response from server');
+        });
+    }
+
+    $("#btn-filter-status").click(function(){
+      var value = $("#select-filter-status").val(); 
+      var intValue = parseInt(value);
+      getDataFromStatus(intValue);
+    });
+
+    function getDataFromStatus(intValue){
+      var value = $("#select-filter-status").val(); 
+      var url = 'http://localhost/petcare/public/admin/product-category/filter-status-product-category/'+ value;
+      $.ajax({
+        url: url,
+        enctype: 'multipart/form-data',
+        type: 'GET',
+        datatype: "html"
+      }).done(function(data){
+        $("#tag_container").empty().html(data);
+        // location.hash = page;
+      }).fail(function(jqXHR, ajaxOptions, thrownError){
+        alert('No response from server');
+      });
+      // console.log("function getDataFromStatus is calling..");
+    }
+    // End Pagination using AJAX
+</script>
 @endsection   

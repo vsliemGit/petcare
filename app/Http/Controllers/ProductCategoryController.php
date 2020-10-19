@@ -15,10 +15,13 @@ class ProductCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         // $listProductCategories = Product_category::all();
         $listProductCategories = DB::table('product_categories')->orderBy('pro_category_created_at', 'desc')->paginate(5);
+        if ($request->ajax()) {
+            return view('backend.product_category.table-data')->with('listProductCategories', $listProductCategories);
+        }
         return view('backend.product_category.index')->with('listProductCategories', $listProductCategories);
     }
 
@@ -131,8 +134,15 @@ class ProductCategoryController extends Controller
         return redirect()->route('product_category.index'); 
     }
 
-    public function filterStatus($value){ 
-        $listProductCategories = ProductCategory::where('pro_category_status', '=' , $value)->paginate(5);
+    public function filterStatus(Request $request, $value){ 
+        $listProductCategories = ProductCategory::where('pro_category_status', '=' , $value )->paginate(5);
+        if($request->ajax()){
+            return view('backend.product_category.table-data')->with('listProductCategories', $listProductCategories);
+        }
         return view('backend.product_category.index')->with('listProductCategories', $listProductCategories);
+    }
+
+    public function search(){
+        
     }
 }
