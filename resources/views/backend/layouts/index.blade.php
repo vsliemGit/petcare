@@ -8,6 +8,7 @@
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 <!-- bootstrap-css -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <link rel="stylesheet" href="{{ asset('vendor/backend/css/bootstrap.min.css') }}" >
 <!-- //bootstrap-css -->
 <!-- Custom CSS -->
@@ -88,12 +89,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             str = str.toLowerCase();
             return str;
     	}
-
-      //Script load page Ajax:
        
 	</script>
 <!-- End-script -->
 
 
-</body>
+</body>  
 </html>

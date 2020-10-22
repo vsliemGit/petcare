@@ -1,12 +1,19 @@
 {{-- table-data --}}
+<div class="flash-message">
+  @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+    @if(Session::has('alert-' . $msg))
+    <p id="flash-message" class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a  href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
+    @endif
+  @endforeach
+</div>
 <div class="table-responsive" id="tag_container">
     <table class="table table-striped b-t b-light">
         <thead>
         <tr>
             <th style="width:20px;">
-            <label class="i-checks m-b-none">
-                <input type="checkbox"><i></i>
-            </label>
+              <label class="i-checks m-b-none">
+                  <input  id="check-all" type="checkbox"><i></i>
+              </label>
             </th>
             <th>ID</th>
             <th>Name</th>
@@ -22,25 +29,27 @@
         @foreach($listProductCategories as $productCatetory)
         <tr>
             <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
-            <td>{{ $productCatetory->pro_category_id }}</td>
-            <td><span class="text-ellipsis">{{ $productCatetory->pro_category_name }}</span></td>
-            <td><span class="text-ellipsis">{{ $productCatetory->pro_category_slug }}</span></td>
-            <td><span class="text-ellipsis">{{ $productCatetory->pro_category_desc }}</span></td>
-            <td><span class="text-ellipsis" >
-            <?php if($productCatetory->pro_category_status == 1){ ?>
-            <a href="{{Route('product_category.changeStatus', ['id'=> $productCatetory->pro_category_id])}}"><span class="fa fa-check text-success text-active"></span></a>
-                    <?php  }else{ ?>  
-                    <a href="{{Route('product_category.changeStatus', ['id'=> $productCatetory->pro_category_id])}}"><span class="fa fa-times text-danger text"></span></a>
-            <?php  } ?>
-            </span></td>
+            <td class="td-id">{{ $productCatetory->pro_category_id }}</td>
+            <td class="td-name"><span class="text-ellipsis">{{ $productCatetory->pro_category_name }}</span></td>
+            <td class="td-slug"><span class="text-ellipsis">{{ $productCatetory->pro_category_slug }}</span></td>
+            <td class="td-desc"><span class="text-ellipsis">{{ $productCatetory->pro_category_desc }}</span></td>
+            <td class="td-status">
+              <?php if($productCatetory->pro_category_status == 1){ ?>
+                <a data-id="1" href="{{Route('product_category.changeStatus', ['id'=> $productCatetory->pro_category_id])}}"><span class="fa fa-check text-success text-active"></span></a>
+                      <?php  }else{ ?>  
+                <a data-id="0" href="{{Route('product_category.changeStatus', ['id'=> $productCatetory->pro_category_id])}}"><span class="fa fa-times text-danger text"></span></a>
+              <?php  } ?>
+            </td>
             <td><span class="text-ellipsis">{{ $productCatetory->pro_category_created_at }}</span></td>
             <td><span class="text-ellipsis">{{ $productCatetory->pro_category_updated_at }}</span></td>
             <td>
-            <a href="{{ Route('product_category.edit', ['id'=> $productCatetory->pro_category_id]) }}" 
+            <a href="" onclick="" id="edit-item"
                 class="active styling-edit" ui-toggle-class="">
                 <i class="fa fa-pencil-square-o text-success text-active"></i></a>
-            <a onclick="return confirm('Bạn có chắc là muốn xóa danh mục này ko?')" 
-                href="{{Route('product_category.destroy', ['id'=> $productCatetory->pro_category_id])}}" 
+            <a onclick="deleteItemAjax({{$productCatetory->pro_category_id}})"
+                action="{{Route('product_category.destroy', ['id'=> $productCatetory->pro_category_id])}}"          
+                href="javascript:void(0)"
+                id="remove-step-form"
                 class="active styling-edit" ui-toggle-class="">
                 <i class="fa fa-trash-o" style="color: red;"></i>
             </a>
@@ -61,4 +70,15 @@
       </div>
     </footer>
 </div>
+
+<script>
+    //Set timeout close flash-message
+  $("#flash-message").delay(1000).slideUp(200, function() {
+    $(this).alert('close');
+  });
+    //check all
+  $("#check-all").click(function(){
+    $('input:checkbox').not(this).prop('checked', this.checked);
+  });
+</script>
  
