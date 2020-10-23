@@ -42,7 +42,9 @@ Admin - List Product categories
       </div>
     </div>
     <!--table-->
-    @include('backend.product_category.table-data')
+    <div class="table-responsive" id="tag_container">
+      @include('backend.product_category.table-data')
+    </div>
     {{-- modal --}}
     @include('backend.product_category.modal')
   </div>
@@ -59,6 +61,15 @@ Admin - List Product categories
             $("#slug_product_category").val(valueName);
         })
   });
+  //Set timeout close flash-message
+  $("#flash-message").delay(1000).slideUp(200, function() {
+    $(this).alert('close');
+  });
+    //check all
+  $("#check-all").click(function(){
+    $('input:checkbox').not(this).prop('checked', this.checked);
+  });
+
   //Pagination AJAX
   $(window).on('hashchange', function() {
         if (window.location.hash) {
@@ -78,7 +89,6 @@ Admin - List Product categories
             event.preventDefault();
             $('li').removeClass('active');
             $(this).parent('li').addClass('active');
-            var myurl = $(this).attr('href');
             var page = $(this).attr('href').split('page=')[1];
             getData(page);
         });
@@ -90,7 +100,6 @@ Admin - List Product categories
         {
             url: '?page=' + page,
             type: "GET",
-            datatype: "html"
         }).done(function(data){
             location.hash = page;
             $("#tag_container").empty().html(data);
@@ -117,7 +126,8 @@ Admin - List Product categories
     }
 
     //Delete Using AJAX
-    function deleteItemAjax(product_id){
+    function deleteItemAjax(product_id){  
+      let currentURL = window.location.href;
       swal({
         title: "Are you sure?",
         text: "Once deleted, you will not be able to recover this file!",
@@ -134,8 +144,9 @@ Admin - List Product categories
             datatype: "json"
           }).done(function(data){
             swal('Deleted!', 'Your file is deleted...', 'success');
-            location.hash = $('.pagination a').attr('href').split('page=')[1];
+            location.hash = $('.pagination a').attr('href').split('page=')[0];
             $("#tag_container").empty().html(data);
+            location = currentURL;
           }).fail(function(jqXHR, ajaxOptions, thrownError){
             swal("Error!", "No response from server...", "error");
           });
@@ -205,26 +216,27 @@ Admin - List Product categories
           success: function(data){
             _modal.modal('toggle');
             swal('Successfully!', 'Add '+name+' is success...', 'success');
+            location.hash = $('.pagination a').attr('href').split('page=')[0];
             $("#tag_container").empty().html(data);
           },
           error: function(data){
             swal("Error!", "Have an error when you try to add...", "error");
           }
-
         });
       }
     }
 
     //Edit item using AJAX
-    $("table").on('click', '#edit-item', function(){
+    $("body").on('click', '.edit-item', function(){
+        event.preventDefault();
         //Get value in feild
+        var currentURL = window.location.href;
         var id = $(this).parent().parent().find('.td-id').text();
         var name = $(this).parent().parent().find('.td-name').text();
         var slug = $(this).parent().parent().find('.td-slug').text();
         var desc = $(this).parent().parent().find('.td-desc span').text();
         var status = $(this).parent().parent().find('.td-status a').data('id');
         //Open modal
-        event.preventDefault();
         openModal('EDIT PRODUCT CATEGORY', 'Save changes');
         _modal.modal('show');
         //Set value for modal
@@ -250,16 +262,28 @@ Admin - List Product categories
                 pro_category_status : status
               },
               success: function(data){
-                _modal.modal('toggle');
+                _modal.modal('hide');
                 swal('Successfully!', 'Edit new '+name+' is success...', 'success');
                 $("#tag_container").empty().html(data);
+                location.hash = $('.pagination a').attr('href').split('page=')[0];
+                location = currentURL;
               },
-              error: function(){
+              error: function(d){
+                console.log(data);
+                _modal.modal('hide');
                 swal("Error!", "Have an error when you try to edit...", "error");
               }
             }     
             );
           });
         });
+    //Edit item using AJAX
+
+    //Edit item using AJAX
+    $("table").on('click', '#edit-item', function(){
+        console.log('aaaa');
+        
+        });
+    //Edit item using AJAX
 </script>
 @endsection   
