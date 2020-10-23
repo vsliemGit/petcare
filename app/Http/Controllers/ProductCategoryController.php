@@ -61,18 +61,6 @@ class ProductCategoryController extends Controller
         Session::flash('alert-info', 'Thêm mới "'. $newProdcutCategory->pro_category_name .'" thành công!!!');
         return redirect()->route('product_category.index');     
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -134,23 +122,30 @@ class ProductCategoryController extends Controller
         return view('backend.product_category.index')->with('listProductCategories', $listProductCategories);
     }
 
-    public function changeStatus($id){ 
-        $productCategory = ProductCategory::where("pro_category_id", $id)->first();
-        $status = $productCategory->pro_category_status;
+    public function changeStatus(Request $request){ 
+        $productCategory = ProductCategory::where("pro_category_id", $request->id)->first();
+        $status =  $request->value;
         if($status == 0){
-            $productCategory->update(['pro_category_status' => 1]);    
+            $productCategory->update(['pro_category_status' => 1]);
+            $today = Carbon::now();;
+            $productCategory->pro_category_updated_at =  $today->format('Y-m-d H:i:s');
+            $productCategory->save();
+            Session::flash('alert-info', 'Cập nhật trạng thái của "'. $productCategory->pro_category_name .'" thành active!');   
         }else if($status == 1){
-            $productCategory->update(['pro_category_status' => 0]);     
+            $productCategory->update(['pro_category_status' => 0]);  
+            $today = Carbon::now();;
+            $productCategory->pro_category_updated_at =  $today->format('Y-m-d H:i:s');
+            $productCategory->save();
+            Session::flash('alert-info', 'Cập nhật trạng thái của "'. $productCategory->pro_category_name .'" thành no active!');  
         }
-        $today = Carbon::now();;
-        $productCategory->pro_category_updated_at =  $today->format('Y-m-d H:i:s');
-        $productCategory->save();
-        Session::flash('alert-info', 'Cập nhật trạng thái của "'. $productCategory->pro_category_name .'" thành active!');
+        $listProductCategories = DB::table('product_categories')->orderBy('pro_category_created_at', 'desc')->paginate(5);
+        if($request->ajax()){
+            return view('backend.product_category.table-data')->with('listProductCategories', $listProductCategories);
+        }
         return redirect()->route('product_category.index'); 
     }
 
-    public function filterStatus(Request $request, $value){ 
-        
+    public function filterStatus(Request $request, $value){      
         $listProductCategories = ProductCategory::where('pro_category_status', '=' , $value )->paginate(5);
         if($request->ajax()){
             if($value == "all"){
@@ -159,9 +154,5 @@ class ProductCategoryController extends Controller
             return view('backend.product_category.table-data')->with('listProductCategories', $listProductCategories);
         }
         return view('backend.product_category.index')->with('listProductCategories', $listProductCategories);
-    }
-
-    public function search(){
-
     }
 }

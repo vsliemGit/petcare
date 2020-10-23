@@ -1,4 +1,5 @@
 {{-- table-data --}}
+{{-- flash-message --}}
 <div class="flash-message">
   @foreach (['danger', 'warning', 'success', 'info'] as $msg)
     @if(Session::has('alert-' . $msg))
@@ -25,18 +26,20 @@
     </tr>
     </thead>
     <tbody>
+    @php $i = 0;  @endphp
     @foreach($listProductCategories as $productCatetory)
+    @php $i++;  @endphp
     <tr>
         <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
         <td class="td-id">{{ $productCatetory->pro_category_id }}</td>
         <td class="td-name"><span class="text-ellipsis">{{ $productCatetory->pro_category_name }}</span></td>
         <td class="td-slug"><span class="text-ellipsis">{{ $productCatetory->pro_category_slug }}</span></td>
         <td class="td-desc"><span class="text-ellipsis">{{ $productCatetory->pro_category_desc }}</span></td>
-        <td class="td-status">
+        <td class="td-status change-item">
           <?php if($productCatetory->pro_category_status == 1){ ?>
-            <a data-id="1" href="{{Route('product_category.changeStatus', ['id'=> $productCatetory->pro_category_id])}}"><span class="fa fa-check text-success text-active"></span></a>
+            <a data-id="1" href="javascript:void(0)"><span data-id="1"class="fa fa-check text-success text-active"></span></a>
                   <?php  }else{ ?>  
-            <a data-id="0" href="{{Route('product_category.changeStatus', ['id'=> $productCatetory->pro_category_id])}}"><span class="fa fa-times text-danger text"></span></a>
+            <a data-id="0" href="javascript:void(0)"><span class="fa fa-times text-danger text"></span></a>
           <?php  } ?>
         </td>
         <td><span class="text-ellipsis">{{ $productCatetory->pro_category_created_at }}</span></td>
@@ -55,6 +58,12 @@
         </td>
     </tr>
     @endforeach
+    @php
+      while($i < 5){
+        echo "<tr><td><label class='i-checks m-b-none'><input type='checkbox' name='post[]''><i></i></label></td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td></tr>";
+        $i++;
+      }
+    @endphp
     </tbody>
 </table>
 {{-- footer --}}
@@ -68,4 +77,3 @@
     </div>
   </div>
 </footer>
- 

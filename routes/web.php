@@ -36,5 +36,5 @@ Route::post('/admin/product-category/store', 'ProductCategoryController@store')-
 Route::get('/admin/product-category/edit/{id}', 'ProductCategoryController@edit')->name('product_category.edit');
 Route::post('/admin/product-category/update', 'ProductCategoryController@update')->name('product_category.update');
 Route::delete('/admin/product-category/delete/{id}', 'ProductCategoryController@destroy')->name('product_category.destroy');
-Route::get('/admin/product-category/change-status/{id}', 'ProductCategoryController@changeStatus')->name('product_category.changeStatus');
+Route::post('/admin/product-category/change-status', 'ProductCategoryController@changeStatus')->name('product_category.changeStatus');
 Route::get('/admin/product-category/filter-status/{value}','ProductCategoryController@filterStatus')->name('product_category.filter_status');

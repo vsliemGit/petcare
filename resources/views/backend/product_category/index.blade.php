@@ -42,8 +42,11 @@ Admin - List Product categories
       </div>
     </div>
     <!--table-->
-    <div class="table-responsive" id="tag_container">
+    <div class="table-responsive"  id="tag_container">
+      {{-- flash-message --}}
+      {{-- content-table --}}
       @include('backend.product_category.table-data')
+      {{-- footer --}}
     </div>
     {{-- modal --}}
     @include('backend.product_category.modal')
@@ -61,11 +64,13 @@ Admin - List Product categories
             $("#slug_product_category").val(valueName);
         })
   });
+
   //Set timeout close flash-message
-  $("#flash-message").delay(1000).slideUp(200, function() {
+  $("#flash-message").delay(5000).slideUp(1000, function() {
     $(this).alert('close');
   });
-    //check all
+
+  //Check all checkbox
   $("#check-all").click(function(){
     $('input:checkbox').not(this).prop('checked', this.checked);
   });
@@ -101,13 +106,20 @@ Admin - List Product categories
             url: '?page=' + page,
             type: "GET",
         }).done(function(data){
+            $("#tag_container").html(data);
             location.hash = page;
-            $("#tag_container").empty().html(data);
         }).fail(function(jqXHR, ajaxOptions, thrownError){
             swal("Error!", "No response from server...", "error");
         });
     }
     // End Pagination using AJAX
+
+    //Setup CSRF to AJAX
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
     //Filter status of product category
     $("#btn-filter-status").click(function(){
@@ -117,13 +129,33 @@ Admin - List Product categories
 
     function getDataFromStatus(value){
       var url = 'http://localhost/petcare/public/admin/product-category/filter-status/'+ value;
-      $.ajax({url: url,type: 'GET',datatype: "html"})
+      $.ajax({ url: url,type: 'GET', datatype: "html"})
       .done(function(data){
         $("#tag_container").empty().html(data);
       }).fail(function(jqXHR, ajaxOptions, thrownError){
         swal("Error!", "No response from server...", "error");
       });
     }
+
+    //Changing status of item
+    $('body').on('click', '.change-item', function(){
+      event.preventDefault();
+      let currentURL = window.location.href;
+      $.ajax({
+        url : "{{route('product_category.changeStatus')}}",
+        method : 'POST',
+        data : {
+          id : $(this).parent().find('.td-id').text(),
+          value : $(this).children().data('id')
+        }
+      }).done(function(data){
+          location.hash = $('.pagination a').attr('href').split('page=')[0];
+          $("#tag_container").empty().html(data);
+          location = currentURL;
+      }).error(function(data){
+        console.log(data);
+      });
+    });
 
     //Delete Using AJAX
     function deleteItemAjax(product_id){  
@@ -188,13 +220,7 @@ Admin - List Product categories
       $('textarea').val(null);
       $('select').val(null);
     }
-  
-    //Updatae item using AJAX
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
+
 
     //Create item using AJAX
     function createItemUsingAjax(){
@@ -203,7 +229,6 @@ Admin - List Product categories
         var slug = $('#pro_category_slug').val();
         var desc = $('#pro_category_desc').val();
         var status = $('#pro_category_status').val();
-
         $.ajax({
           url: "{{route('product_category.store')}}",
           method : 'POST',
@@ -215,7 +240,7 @@ Admin - List Product categories
           },
           success: function(data){
             _modal.modal('toggle');
-            swal('Successfully!', 'Add '+name+' is success...', 'success');
+            swal('Successfully!', 'Add '+name+' is successfuly...', 'success');
             location.hash = $('.pagination a').attr('href').split('page=')[0];
             $("#tag_container").empty().html(data);
           },
@@ -263,7 +288,7 @@ Admin - List Product categories
               },
               success: function(data){
                 _modal.modal('hide');
-                swal('Successfully!', 'Edit new '+name+' is success...', 'success');
+                swal('Successfully!', 'Edit ""'+name+'" is successfuly...', 'success');
                 $("#tag_container").empty().html(data);
                 location.hash = $('.pagination a').attr('href').split('page=')[0];
                 location = currentURL;
@@ -274,16 +299,8 @@ Admin - List Product categories
                 swal("Error!", "Have an error when you try to edit...", "error");
               }
             }     
-            );
-          });
+          );
         });
-    //Edit item using AJAX
-
-    //Edit item using AJAX
-    $("table").on('click', '#edit-item', function(){
-        console.log('aaaa');
-        
-        });
-    //Edit item using AJAX
+      });
 </script>
 @endsection   
