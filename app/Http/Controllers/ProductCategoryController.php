@@ -104,8 +104,9 @@ class ProductCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request)
     {
+        $id = $request->id;
         if (is_array($id)){
             ProductCategory::destroy($id);
         }
@@ -145,7 +146,8 @@ class ProductCategoryController extends Controller
         return redirect()->route('product_category.index'); 
     }
 
-    public function filterStatus(Request $request, $value){      
+    public function filterStatus(Request $request){   
+        $value = $request->value;   
         $listProductCategories = ProductCategory::where('pro_category_status', '=' , $value )->paginate(5);
         if($request->ajax()){
             if($value == "all"){
