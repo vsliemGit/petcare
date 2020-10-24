@@ -4,8 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Session;
+<<<<<<< HEAD
 use DateTime;
 use DB;
+=======
+use DB;
+use Carbon\Carbon;
+>>>>>>> remotes/origin/develop_ajax
 use App\ProductCategory;
 
 class ProductCategoryController extends Controller
@@ -15,10 +20,16 @@ class ProductCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         // $listProductCategories = Product_category::all();
         $listProductCategories = DB::table('product_categories')->orderBy('pro_category_created_at', 'desc')->paginate(5);
+<<<<<<< HEAD
+=======
+        if ($request->ajax()) {
+            return view('backend.product_category.table-data')->with('listProductCategories', $listProductCategories);
+        }
+>>>>>>> remotes/origin/develop_ajax
         return view('backend.product_category.index')->with('listProductCategories', $listProductCategories);
     }
 
@@ -41,9 +52,14 @@ class ProductCategoryController extends Controller
     public function store(Request $request)
     {
         $validation = $request->validate([
+<<<<<<< HEAD
             'pro_category_name' => 'required|unique:product_categories|min:5|max:255',
         ]);
     
+=======
+        ]);
+         
+>>>>>>> remotes/origin/develop_ajax
         $newProdcutCategory = new ProductCategory;
         $newProdcutCategory->pro_category_name = $request->pro_category_name;
         $newProdcutCategory->pro_category_slug = $request->pro_category_slug;
@@ -51,21 +67,14 @@ class ProductCategoryController extends Controller
         $newProdcutCategory->pro_category_status = $request->pro_category_status;
 
         $newProdcutCategory->save();
+        
+        if($request->ajax()){
+            $listProductCategories = DB::table('product_categories')->orderBy('pro_category_created_at', 'desc')->paginate(5);
+            return view('backend.product_category.table-data')->with('listProductCategories', $listProductCategories);
+        }
         Session::flash('alert-info', 'Thêm mới "'. $newProdcutCategory->pro_category_name .'" thành công!!!');
         return redirect()->route('product_category.index');     
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -85,17 +94,20 @@ class ProductCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         $validation = $request->validate([]);
-        $productCategory = ProductCategory::where("pro_category_id", $id)->first();
-        $productCategory->pro_category_name = $request->name;
-        $productCategory->pro_category_slug = $request->slug;
-        $productCategory->pro_category_desc = $request->desc;
-        $productCategory->pro_category_status = $request->status;
-        $today = new DateTime();
-        $productCategory->pro_category_updated_at =  $today->format('Y-m-d H:i:s');
+        $productCategory = ProductCategory::where("pro_category_id", $request->pro_category_id)->first();
+        $productCategory->pro_category_name = $request->pro_category_name;
+        $productCategory->pro_category_slug = $request->pro_category_slug;
+        $productCategory->pro_category_desc = $request->pro_category_desc;
+        $productCategory->pro_category_status = $request->pro_category_status;
+        $productCategory->pro_category_updated_at = Carbon::now();
         $productCategory->save();
+        if($request->ajax()){
+            $listProductCategories = DB::table('product_categories')->orderBy('pro_category_created_at', 'desc')->paginate(5);
+            return view('backend.product_category.table-data')->with('listProductCategories', $listProductCategories);
+        }
         Session::flash('alert-info', 'Cập nhật "'.$productCategory->pro_category_name.'" thành công!!!');
         return redirect()->route('product_category.index'); 
     }
@@ -106,33 +118,62 @@ class ProductCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $productCategory = ProductCategory::where("pro_category_id", $id)->first();
-        $productCategory->delete();
-        Session::flash('alert-info', 'Xóa thành công!');
-        return redirect()->route('product_category.index'); 
+        $id = $request->id;
+        if (is_array($id)){
+            ProductCategory::destroy($id);
+        }
+        else
+        {
+            $productCategory = ProductCategory::where("pro_category_id", $id)->first();
+            $productCategory->delete();
+        }
+        
+        $listProductCategories = DB::table('product_categories')->orderBy('pro_category_created_at', 'desc')->paginate(5);
+        if($request->ajax()){
+            return view('backend.product_category.table-data')->with('listProductCategories', $listProductCategories);
+        }
+        return view('backend.product_category.index')->with('listProductCategories', $listProductCategories);
     }
 
-    public function changeStatusProductCategory($id){ 
-        $productCategory = ProductCategory::where("pro_category_id", $id)->first();
-        $status = $productCategory->pro_category_status;
+    public function changeStatus(Request $request){ 
+        $productCategory = ProductCategory::where("pro_category_id", $request->id)->first();
+        $status =  $request->value;
         if($status == 0){
             $productCategory->update(['pro_category_status' => 1]);
-            $today = new DateTime();
+            $today = Carbon::now();;
             $productCategory->pro_category_updated_at =  $today->format('Y-m-d H:i:s');
-            Session::flash('alert-info', 'Cập nhật trạng thái của "'. $productCategory->pro_category_name .'" thành active!');
+            $productCategory->save();
+            Session::flash('alert-info', 'Cập nhật trạng thái của "'. $productCategory->pro_category_name .'" thành active!');   
         }else if($status == 1){
-            $productCategory->update(['pro_category_status' => 0]);
-            $today = new DateTime();
+            $productCategory->update(['pro_category_status' => 0]);  
+            $today = Carbon::now();;
             $productCategory->pro_category_updated_at =  $today->format('Y-m-d H:i:s');
-            Session::flash('alert-info', 'Cập nhật trạng thái của "'. $productCategory->pro_category_name .'" thành unactive!');
+            $productCategory->save();
+            Session::flash('alert-info', 'Cập nhật trạng thái của "'. $productCategory->pro_category_name .'" thành no active!');  
+        }
+        $listProductCategories = DB::table('product_categories')->orderBy('pro_category_created_at', 'desc')->paginate(5);
+        if($request->ajax()){
+            return view('backend.product_category.table-data')->with('listProductCategories', $listProductCategories);
         }
         return redirect()->route('product_category.index'); 
     }
 
+<<<<<<< HEAD
     public function filterStatus($value){ 
         $listProductCategories = ProductCategory::where('pro_category_status', '=' , $value)->paginate(5);
+=======
+    public function filterStatus(Request $request){   
+        $value = $request->value;   
+        $listProductCategories = ProductCategory::where('pro_category_status', '=' , $value )->paginate(5);
+        if($request->ajax()){
+            if($value == "all"){
+                $listProductCategories = DB::table('product_categories')->orderBy('pro_category_created_at', 'desc')->paginate(5);
+            }
+            return view('backend.product_category.table-data')->with('listProductCategories', $listProductCategories);
+        }
+>>>>>>> remotes/origin/develop_ajax
         return view('backend.product_category.index')->with('listProductCategories', $listProductCategories);
     }
 }

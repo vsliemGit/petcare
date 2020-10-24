@@ -34,5 +34,8 @@
         </div>
         <!-- sidebar menu end-->
     </div>
+
+<script>
+</script>
 </aside>
 <!--sidebar end-->

@@ -3,10 +3,12 @@
 <title>@yield('title')</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <meta name="keywords" content="Visitors Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 <!-- bootstrap-css -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <link rel="stylesheet" href="{{ asset('vendor/backend/css/bootstrap.min.css') }}" >
 <!-- //bootstrap-css -->
 <!-- Custom CSS -->
@@ -17,15 +19,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- font-awesome icons -->
 <link rel="stylesheet" href="{{ asset('vendor/backend/css/font.css') }}" type="text/css"/>
 <link href="{{ asset('vendor/backend/css/font-awesome.css') }}" rel="stylesheet">
-{{-- <link rel="stylesheet" href="" type="text/css"/> --}}
-<link rel="stylesheet" href="{{ asset('vendor/backend/css/morris.css') }}" type="text/css"/>
-<!-- calendar -->
-<link rel="stylesheet" href="{{ asset('vendor/backend/css/monthly.css') }}">
-<!-- //calendar -->
 <!-- //font-awesome icons -->
 <script src="{{ asset('vendor/backend/js/jquery-2.0.3.min.js') }}"></script>
+<<<<<<< HEAD
 <script src="{{ asset('vendor/backend/js/raphael-min.js') }}"></script>
 <script src="{{ asset('vendor/backend/js/morris.js') }}"></script>
+=======
+>>>>>>> remotes/origin/develop_ajax
 </head>
 <body>
 <section id="container">
@@ -87,7 +87,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             str = str.toLowerCase();
             return str;
     	}
+<<<<<<< HEAD
 	</script>
 <!-- End-script -->
 </body>
+=======
+       
+	</script>
+<!-- End-script -->
+
+
+</body>  
+>>>>>>> remotes/origin/develop_ajax
 </html>
