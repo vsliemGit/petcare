@@ -7,6 +7,10 @@ use Session;
 use DB;
 use Carbon\Carbon;
 use App\ProductCategory;
+use PDF;
+use Excel;
+use App\Exports\ProductCategoriesExport;
+use App\Imports\ProductCategoriesImport;
 
 class ProductCategoryController extends Controller
 {
@@ -123,6 +127,7 @@ class ProductCategoryController extends Controller
         return view('backend.product_category.index')->with('listProductCategories', $listProductCategories);
     }
 
+    //Changing status of  item
     public function changeStatus(Request $request){ 
         $productCategory = ProductCategory::where("pro_category_id", $request->id)->first();
         $status =  $request->value;
@@ -146,6 +151,7 @@ class ProductCategoryController extends Controller
         return redirect()->route('product_category.index'); 
     }
 
+    //Filter status
     public function filterStatus(Request $request){   
         $value = $request->value;   
         $listProductCategories = ProductCategory::where('pro_category_status', '=' , $value )->paginate(5);
@@ -156,5 +162,25 @@ class ProductCategoryController extends Controller
             return view('backend.product_category.table-data')->with('listProductCategories', $listProductCategories);
         }
         return view('backend.product_category.index')->with('listProductCategories', $listProductCategories);
+    }
+
+
+    //Create file PDF
+    public function createPDF(){
+        $listProductCategories = DB::table('product_categories')->get();
+        $pdf = PDF::loadView('backend.product_category.pdf', compact('listProductCategories'));
+        return $pdf->download('product_categories.pdf');
+    }
+
+    //Export file Excel
+    public function exportExcel(){
+        // return Excel::download(new ProductCategoriesExport, 'product_categories.xlsx');
+        return Excel::download(new ProductCategoriesExport, 'product_categories.xlsx');
+    }
+
+    //Import file Excel
+    public function importExcel(){
+        Excel::import(new ProductCategoriesImport, request()->file('file'));         
+        return back();
     }
 }

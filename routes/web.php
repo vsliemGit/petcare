@@ -38,3 +38,6 @@ Route::post('/admin/product-category/update', 'ProductCategoryController@update'
 Route::delete('/admin/product-category/delete', 'ProductCategoryController@destroy')->name('product_category.destroy');
 Route::post('/admin/product-category/change-status', 'ProductCategoryController@changeStatus')->name('product_category.changeStatus');
 Route::get('/admin/product-category/filter-status','ProductCategoryController@filterStatus')->name('product_category.filter_status');
+Route::get('/admin/product-category/pdf', 'ProductCategoryController@createPDF')->name('product_category.pdf');
+Route::get('/admin/product-category/export-excel', 'ProductCategoryController@exportExcel')->name('product_category.export_excel');
+Route::post('/admin/product-category/import-excel', 'ProductCategoryController@importExcel')->name('product_category.import_excel');
