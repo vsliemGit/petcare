@@ -19,7 +19,7 @@ class CreateServiceCategoriesTable extends Migration
             $table->string('service_category_name', 100);
             $table->string('service_category_slug', 100);
             $table->string('service_category_oject', 100);
-            $table->text('service_category_desc')->nullable();
+            $table->text('service_category_desc')->nullable()->default('service_category_desc');
             $table->timestamp('service_category_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('service_category_updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });

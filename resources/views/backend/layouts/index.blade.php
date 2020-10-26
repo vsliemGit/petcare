@@ -21,11 +21,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <link href="{{ asset('vendor/backend/css/font-awesome.css') }}" rel="stylesheet">
 <!-- //font-awesome icons -->
 <script src="{{ asset('vendor/backend/js/jquery-2.0.3.min.js') }}"></script>
-<<<<<<< HEAD
-<script src="{{ asset('vendor/backend/js/raphael-min.js') }}"></script>
-<script src="{{ asset('vendor/backend/js/morris.js') }}"></script>
-=======
->>>>>>> remotes/origin/develop_ajax
 </head>
 <body>
 <section id="container">
@@ -87,16 +82,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             str = str.toLowerCase();
             return str;
     	}
-<<<<<<< HEAD
 	</script>
 <!-- End-script -->
 </body>
-=======
-       
-	</script>
-<!-- End-script -->
-
-
-</body>  
->>>>>>> remotes/origin/develop_ajax
 </html>

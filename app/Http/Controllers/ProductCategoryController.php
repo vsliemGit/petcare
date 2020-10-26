@@ -4,14 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Session;
-<<<<<<< HEAD
-use DateTime;
-use DB;
-=======
 use DB;
 use Carbon\Carbon;
->>>>>>> remotes/origin/develop_ajax
 use App\ProductCategory;
+use PDF;
+use Excel;
+use App\Exports\ProductCategoriesExport;
+use App\Imports\ProductCategoriesImport;
 
 class ProductCategoryController extends Controller
 {
@@ -24,12 +23,9 @@ class ProductCategoryController extends Controller
     {
         // $listProductCategories = Product_category::all();
         $listProductCategories = DB::table('product_categories')->orderBy('pro_category_created_at', 'desc')->paginate(5);
-<<<<<<< HEAD
-=======
         if ($request->ajax()) {
             return view('backend.product_category.table-data')->with('listProductCategories', $listProductCategories);
         }
->>>>>>> remotes/origin/develop_ajax
         return view('backend.product_category.index')->with('listProductCategories', $listProductCategories);
     }
 
@@ -52,14 +48,8 @@ class ProductCategoryController extends Controller
     public function store(Request $request)
     {
         $validation = $request->validate([
-<<<<<<< HEAD
-            'pro_category_name' => 'required|unique:product_categories|min:5|max:255',
-        ]);
-    
-=======
         ]);
          
->>>>>>> remotes/origin/develop_ajax
         $newProdcutCategory = new ProductCategory;
         $newProdcutCategory->pro_category_name = $request->pro_category_name;
         $newProdcutCategory->pro_category_slug = $request->pro_category_slug;
@@ -137,6 +127,7 @@ class ProductCategoryController extends Controller
         return view('backend.product_category.index')->with('listProductCategories', $listProductCategories);
     }
 
+    //Changing status of  item
     public function changeStatus(Request $request){ 
         $productCategory = ProductCategory::where("pro_category_id", $request->id)->first();
         $status =  $request->value;
@@ -160,12 +151,9 @@ class ProductCategoryController extends Controller
         return redirect()->route('product_category.index'); 
     }
 
-<<<<<<< HEAD
-    public function filterStatus($value){ 
-        $listProductCategories = ProductCategory::where('pro_category_status', '=' , $value)->paginate(5);
-=======
-    public function filterStatus(Request $request){   
-        $value = $request->value;   
+    //Filter status
+    public function filterStatus(Request $request){    
+        $value = $request->value;
         $listProductCategories = ProductCategory::where('pro_category_status', '=' , $value )->paginate(5);
         if($request->ajax()){
             if($value == "all"){
@@ -173,7 +161,26 @@ class ProductCategoryController extends Controller
             }
             return view('backend.product_category.table-data')->with('listProductCategories', $listProductCategories);
         }
->>>>>>> remotes/origin/develop_ajax
         return view('backend.product_category.index')->with('listProductCategories', $listProductCategories);
+    }
+
+
+    //Create file PDF
+    public function createPDF(){
+        $listProductCategories = DB::table('product_categories')->get();
+        $pdf = PDF::loadView('backend.product_category.pdf', compact('listProductCategories'));
+        return $pdf->download('product_categories.pdf');
+    }
+
+    //Export file Excel
+    public function exportExcel(){
+        // return Excel::download(new ProductCategoriesExport, 'product_categories.xlsx');
+        return Excel::download(new ProductCategoriesExport, 'product_categories.xlsx');
+    }
+
+    //Import file Excel
+    public function importExcel(){
+        Excel::import(new ProductCategoriesImport, request()->file('file'));         
+        return back();
     }
 }

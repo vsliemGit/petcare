@@ -14,33 +14,19 @@ Admin - List Product categories
       </div>
       <div class="row w3-res-tb">
       <div class="col-sm-4 m-b-xs">
-<<<<<<< HEAD
-        <select class="input-sm form-control w-sm inline v-middle">
-          <option value="0">Export PDF</option>
-          <option value="1">Export Excel</option>
-          <option value="2">Delete items</option>
-          <option value="3">No check</option>
-        </select>
-        <button class="btn btn-sm btn-default">Apply</button>              
-      </div>
-      <div class="col-sm-5">
-        <select id="select-filter-status"class="input-sm form-control w-sm inline v-middle">
-          <option value="" selected disabled hidden>All status</option>
-=======
         <select id="action-tool" class="input-sm form-control w-sm inline v-middle">
           <option value="" selected hidden>Choose tools</option>
-          <option value="0">Export PDF</option>
+          <option value="0">Add item</option>
           <option value="1">Export Excel</option>
-          <option value="2">Add item</option>
-          <option value="3">Delete items</option>
-          <option value="4">No check</option>
+          <option value="2">Import Excel</option>
+          <option value="3">Create PDF</option>
+          <option value="4">Delete items</option>
         </select>
         <button id="btn-action-tool" class="btn btn-sm btn-default">Apply</button>              
       </div>
       <div class="col-sm-5">
         <select id="select-filter-status" class="input-sm form-control w-sm inline v-middle">
           <option value="all" selected>All status</option>
->>>>>>> remotes/origin/develop_ajax
           <option value="1">Active</option>
           <option value="0">Noactive</option>
         </select>
@@ -55,18 +41,6 @@ Admin - List Product categories
         </div>
       </div>
     </div>
-<<<<<<< HEAD
-    
-    <div class="flash-message">
-      @foreach (['danger', 'warning', 'success', 'info'] as $msg)
-        @if(Session::has('alert-' . $msg))
-        <p class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
-        @endif
-      @endforeach
-    </div>
-    <!--table-->
-    @include('backend.product_category.table-data')
-=======
     <!--table-->
     <div class="table-responsive"  id="tag_container">
       {{-- flash-message --}}
@@ -76,13 +50,11 @@ Admin - List Product categories
     </div>
     {{-- modal --}}
     @include('backend.product_category.modal')
->>>>>>> remotes/origin/develop_ajax
+    @include('backend.product_category.modal_import_excel')
   </div>
 </section>
  <!-- footer -->
 @include('backend.layouts.partials.footer')
-<<<<<<< HEAD
-=======
 
 <script type="text/javascript">
   var _modal = $('#modal');
@@ -95,7 +67,7 @@ Admin - List Product categories
   });
 
   //Set timeout close flash-message
-  $("#flash-message").delay(5000).slideUp(1000, function() {
+  $("#flash-message").delay(2000).slideUp(1000, function() {
     $(this).alert('close');
   });
 
@@ -152,14 +124,12 @@ Admin - List Product categories
 
     //Filter status of product category
     $("#btn-filter-status").click(function(){
-      var value = $("#select-filter-status").val(); 
-      getDataFromStatus(value);
+      getDataFromStatus($("#select-filter-status").val());
     });
 
     function getDataFromStatus(value){
-      var url = "{{route('product_category.filter_status')}}";
       $.ajax(
-        { url: url,
+        { url: "{{route('product_category.filter_status')}}",
           type: 'GET',
           data: {
             value : value
@@ -175,7 +145,7 @@ Admin - List Product categories
     //Changing status of item
     $('body').on('click', '.change-item', function(){
       event.preventDefault();
-      let currentURL = window.location.href;
+      let pageNumber = $('.pagination').find('.active').children().text();
       $.ajax({
         url : "{{route('product_category.changeStatus')}}",
         method : 'POST',
@@ -184,17 +154,16 @@ Admin - List Product categories
           value : $(this).children().data('id')
         }
       }).done(function(data){
-          location.hash = $('.pagination a').attr('href').split('page=')[0];
           $("#tag_container").empty().html(data);
-          location = currentURL;
+          getData(pageNumber);
       }).error(function(data){
         console.log(data);
       });
     });
 
     //Delete Using AJAX
-    function deleteItemAjax(id){  
-      let currentURL = window.location.href;
+    function deleteItemAjax(product_id){  
+      let currentPageNumner =  $('.pagination').find('.active').children().text();
       swal({
         title: "Are you sure?",
         text: "Once deleted, you will not be able to recover this file!",
@@ -208,20 +177,18 @@ Admin - List Product categories
           $.ajax({
             url: url,
             type: 'DELETE',
-            data: {
-              id : id
-            }
+            data: {id: product_id}
           }).done(function(data){
             swal('Deleted!', 'Your file is deleted...', 'success');
-            location.hash = $('.pagination a').attr('href').split('page=')[0];
             $("#tag_container").empty().html(data);
-            location = currentURL;
-          }).fail(function(jqXHR, ajaxOptions, thrownError){
+            getData(currentPageNumner);
+          }).error(function(data){
+            console.log(data);
             swal("Error!", "No response from server...", "error");
           });
-            } else {
-              swal("Cancel!", "Your file isn't deleted...", "info");
-            }
+        } else {
+          swal("Cancel!", "Your file isn't deleted...", "info");
+        }
       });
     }
     
@@ -229,18 +196,39 @@ Admin - List Product categories
     $("#btn-action-tool").click(function(){
       var n = $("#action-tool").val();
       switch(n) {
-         case "2": 
+         case "0": 
           resetModal();
           openModal("ADD NEW PRODUCT CATEGOGY", "Add");
           $("#action").val("Add");
           break;
-        case 0:
-          //execute code block 2
+        case "3":
+          createPDF();
+          break;
+        case "1":
+          exportExcel();
+          break;
+        case "2":
+          openModalImportExcel();
           break;
         default:
         // code to be executed if n is different from case 1 and 2
       }   
     });
+
+    //Create file PDF from table
+    function createPDF(){
+      window.open("{{route('product_category.pdf')}}", "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes");
+    }
+
+    //Export file Excel from talbes
+    function exportExcel(){
+      window.open("{{route('product_category.export_excel')}}", "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes");
+    }
+
+    //Open modal to upload file import Excel
+    function openModalImportExcel(){
+      $('#uploadModal').modal("show");
+    }
 
     //Open modal(set title and text for action button)
     function openModal(title, textButton){
@@ -276,12 +264,13 @@ Admin - List Product categories
             pro_category_status : status
           },
           success: function(data){
-            _modal.modal('toggle');
+            _modal.modal('hide');
             swal('Successfully!', 'Add '+name+' is successfuly...', 'success');
-            location.hash = $('.pagination a').attr('href').split('page=')[0];
             $("#tag_container").empty().html(data);
+            getData("1");
           },
           error: function(data){
+            _modal.modal('hide');
             swal("Error!", "Have an error when you try to add...", "error");
           }
         });
@@ -292,7 +281,7 @@ Admin - List Product categories
     $("body").on('click', '.edit-item', function(){
         event.preventDefault();
         //Get value in feild
-        var currentURL = window.location.href;
+        let currentPageNumner =  $('.pagination').find('.active').children().text();
         var id = $(this).parent().parent().find('.td-id').text();
         var name = $(this).parent().parent().find('.td-name').text();
         var slug = $(this).parent().parent().find('.td-slug').text();
@@ -314,30 +303,29 @@ Admin - List Product categories
           desc = $('#pro_category_desc').val();
           status = $('#pro_category_status').val();
           $.ajax({
-            url: "{{ route('product_category.update') }}",
-            type: 'POST',
-            data:{
-              pro_category_id : id,
-              pro_category_name : name,
-              pro_category_slug : slug,
-              pro_category_desc : desc,
-              pro_category_status : status
-            }
-          })
-          .done(function(data){
-              _modal.modal('hide');
-              swal('Successfully!', 'Edit ""'+name+'" is successfuly...', 'success');
-              $("#tag_container").empty().html(data);
-              location.hash = $('.pagination a').attr('href').split('page=')[0];
-              location = currentURL;
-          })
-          .error(function(data){
-              console.log(data);
-              _modal.modal('hide');
-              swal("Error!", "Have an error when you try to edit...", "error");
-          });
+              url: "{{ route('product_category.update') }}",
+              type: 'POST',
+              data:{
+                pro_category_id : id,
+                pro_category_name : name,
+                pro_category_slug : slug,
+                pro_category_desc : desc,
+                pro_category_status : status
+              },
+              success: function(data){
+                _modal.modal('hide');
+                swal('Successfully!', 'Edit ""'+name+'" is successfuly...', 'success');
+                $("#tag_container").empty().html(data);
+                getData(currentPageNumner)
+              },
+              error: function(data){
+                console.log(data);
+                _modal.modal('hide');
+                swal("Error!", "Have an error when you try to edit...", "error");
+              }
+            }     
+          );
         });
       });
 </script>
->>>>>>> remotes/origin/develop_ajax
 @endsection   
