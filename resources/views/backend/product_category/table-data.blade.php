@@ -48,8 +48,7 @@
         <a href="javascript:void(0)"
             class="active styling-edit edit-item" ui-toggle-class="">
             <i class="fa fa-pencil-square-o text-success text-active"></i></a>
-        <a onclick="deleteItemAjax({{$productCatetory->pro_category_id}})"
-            action="{{Route('product_category.destroy', ['id'=> $productCatetory->pro_category_id])}}"          
+        <a onclick="deleteItemAjax({{$productCatetory->pro_category_id}})"        
             href="javascript:void(0)"
             id="remove-step-form"
             class="active styling-edit" ui-toggle-class="">
