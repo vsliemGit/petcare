@@ -323,8 +323,7 @@ Admin - List Product categories
                 _modal.modal('hide');
                 swal('Successfully!', 'Edit ""'+name+'" is successfuly...', 'success');
                 $("#tag_container").empty().html(data);
-                location.hash = $('.pagination a').attr('href').split('page=')[0];
-                location = currentURL;
+                getData(currentPageNumner);
               },
               error: function(d){
                 console.log(data);
