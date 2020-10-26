@@ -17,7 +17,7 @@ class CreateProducersTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('producer_id');
             $table->string('producer_name', 100);
-            $table->text('producer_desc')->nullable();
+            $table->text('producer_desc')->nullable()->default('producer_desc');
             $table->tinyInteger('producer_status')->default(0);
             $table->timestamp('producer_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('pro_category_updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));

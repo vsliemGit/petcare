@@ -128,6 +128,7 @@ Admin - List Product categories
     });
 
     function getDataFromStatus(value){
+<<<<<<< .mine
       $.ajax(
         { url: "{{route('product_category.filter_status')}}",
           type: 'GET',
@@ -135,6 +136,15 @@ Admin - List Product categories
             value : value
           }
         })
+=======
+      var url = 'http://localhost/petcare/public/admin/product-category/filter-status/'+ value;
+      $.ajax({ url: url,type: 'GET', datatype: "html"})
+
+
+
+
+
+>>>>>>> .theirs
       .done(function(data){
         $("#tag_container").empty().html(data);
       }).fail(function(jqXHR, ajaxOptions, thrownError){
@@ -162,7 +172,7 @@ Admin - List Product categories
     });
 
     //Delete Using AJAX
-    function deleteItemAjax(id){  
+    function deleteItemAjax(product_id){  
       let currentPageNumner =  $('.pagination').find('.active').children().text();
       swal({
         title: "Are you sure?",
@@ -173,13 +183,11 @@ Admin - List Product categories
       }).then((willDelete) => {
         if (willDelete) {
           var page = window.location.hash.replace('#', '');
-          var url = "{{route('product_category.destroy')}}";
+          var url = "http://localhost/petcare/public/admin/product-category/delete/" + product_id;
           $.ajax({
             url: url,
             type: 'DELETE',
-            data: {
-              id : id
-            }
+            datatype: "json"
           }).done(function(data){
             swal('Deleted!', 'Your file is deleted...', 'success');
             $("#tag_container").empty().html(data);
@@ -312,6 +320,7 @@ Admin - List Product categories
           desc = $('#pro_category_desc').val();
           status = $('#pro_category_status').val();
           $.ajax({
+<<<<<<< .mine
             url: "{{ route('product_category.update') }}",
             type: 'POST',
             data:{
@@ -333,6 +342,33 @@ Admin - List Product categories
               _modal.modal('hide');
               swal("Error!", "Have an error when you try to edit...", "error");
           });
+
+
+=======
+              url: "{{ route('product_category.update') }}",
+              type: 'POST',
+              data:{
+                pro_category_id : id,
+                pro_category_name : name,
+                pro_category_slug : slug,
+                pro_category_desc : desc,
+                pro_category_status : status
+              },
+              success: function(data){
+                _modal.modal('hide');
+                swal('Successfully!', 'Edit ""'+name+'" is successfuly...', 'success');
+                $("#tag_container").empty().html(data);
+                location.hash = $('.pagination a').attr('href').split('page=')[0];
+                location = currentURL;
+              },
+              error: function(d){
+                console.log(data);
+                _modal.modal('hide');
+                swal("Error!", "Have an error when you try to edit...", "error");
+              }
+            }     
+          );
+>>>>>>> .theirs
         });
       });
 </script>
