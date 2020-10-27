@@ -264,6 +264,7 @@ Admin - List Product categories
             pro_category_status : status
           },
           success: function(data){
+            $("#action").val("");
             _modal.modal('hide');
             swal('Successfully!', 'Add '+name+' is successfuly...', 'success');
             $("#tag_container").empty().html(data);
@@ -296,7 +297,8 @@ Admin - List Product categories
         $('textarea[name="pro_category_desc"').val(desc);
         $('select[name="pro_category_status"]').val(status);
         //Edit item whem click btn-action
-        $('#btn-action').on('click', function(){
+        if($("#action").val() != "Add"){
+          $('#btn-action').on('click', function(){
           event.preventDefault();
           name = $('#pro_category_name').val();
           slug = $('#pro_category_slug').val();
@@ -325,7 +327,8 @@ Admin - List Product categories
               }
             }     
           );
-        });
+          });
+        }
       });
 </script>
 @endsection   
