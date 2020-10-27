@@ -30,7 +30,7 @@
     @foreach($listProductCategories as $productCatetory)
     @php $i++;  @endphp
     <tr>
-        <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
+        <td><label class="i-checks m-b-none"><input type="checkbox" class="sub_chk" data-id="{{ $productCatetory->pro_category_id }}"><i></i></label></td>
         <td class="td-id">{{ $productCatetory->pro_category_id }}</td>
         <td class="td-name"><span class="text-ellipsis">{{ $productCatetory->pro_category_name }}</span></td>
         <td class="td-slug"><span class="text-ellipsis">{{ $productCatetory->pro_category_slug }}</span></td>
@@ -74,5 +74,26 @@
     <div class="col-sm-7 text-right text-center-xs">                
       {{ $listProductCategories->links()}}
     </div>
-  </div>
-</footer>
+  </div></footer>
+
+<script>
+  //Check all checkbox
+  $(document).ready(function() {
+    $('#check-all').on('click', function(e) {
+         if($(this).is(':checked',true))  
+         {
+            $(".sub_chk").prop('checked', true);  
+         } else {  
+            $(".sub_chk").prop('checked',false);  
+         }  
+    });
+
+    $('.sub_chk').on('click',function(){
+      if($('.sub_chk:checked').length == $('.sub_chk').length){
+        $('#check-all').prop('checked',true);
+      }else{
+        $('#check-all').prop('checked',false);
+      }
+    });
+  });
+</script>
