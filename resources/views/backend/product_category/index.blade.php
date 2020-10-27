@@ -71,10 +71,6 @@ Admin - List Product categories
     $(this).alert('close');
   });
 
-  //Check all checkbox
-  $("#check-all").click(function(){
-    $('input:checkbox').not(this).prop('checked', this.checked);
-  });
 
   //Pagination AJAX
   $(window).on('hashchange', function() {
@@ -191,6 +187,36 @@ Admin - List Product categories
         }
       });
     }
+
+    //Delete multi items
+    function deleteMultiItem(){
+        var allIdDelete = [];
+        //Get all id of items is checked
+        $(".sub_chk:checked").each(function(){
+          allIdDelete.push($(this).data('id'));
+        });
+        if(allIdDelete.length <= 0){
+          alert("Please select rows to delete!");
+        }else{
+          var check = confirm("Are you sure you want to delete this row?");
+          if(check == true){
+            $.ajax({
+              url : "{{route('product_category.destroy')}}",
+              type: "DELETE",
+              data : {
+                id : allIdDelete
+              },
+              headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            }).done(function(data){
+              $("#tag_container").empty().html(data);
+              getData("1");
+            }).error(function(data){
+              alert("Error!", "Have an error when you try to delete...", "error");
+              console.log(data);
+            });
+          }
+        }
+    }
     
     //Action tool
     $("#btn-action-tool").click(function(){
@@ -209,6 +235,9 @@ Admin - List Product categories
           break;
         case "2":
           openModalImportExcel();
+          break;
+        case "4":
+          deleteMultiItem();
           break;
         default:
         // code to be executed if n is different from case 1 and 2
