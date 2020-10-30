@@ -18,7 +18,7 @@ class CreateProductDetailContentsTable extends Migration
             $table->unsignedInteger('product_id');
             $table->unsignedInteger('product_detail_id');
             $table->string('product_detail_content_value', 200);
-            $table->text('product_detail_content_desc')->default('product_detail_content_desc');
+            $table->text('product_detail_content_desc')->nullable();
             $table->primary(['product_id', 'product_detail_id']);
             
 

@@ -19,7 +19,7 @@ class CreateServicesTable extends Migration
            $table->string('service_name', 100);
            $table->string('service_slug', 100);
            $table->float('service_price')->nullable()->default(123.45);
-           $table->text('service_desc')->nullable()->default('service_desc');
+           $table->text('service_desc')->nullable();
            $table->timestamp('service_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('service_updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
