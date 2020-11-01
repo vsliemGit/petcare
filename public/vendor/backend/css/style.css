@@ -202,7 +202,7 @@ ul.sidebar-menu li a.active i {
     transition:all .3s ease-in-out;
 }
 .footer {
-    background: #d19a98;
+    background: #749fe8;
     padding: 20px;
 }
 .footer p {
@@ -219,7 +219,7 @@ ul.sidebar-menu li a.active i {
     left:0;
     right:0;
     z-index:1002;
-    background:rgb(240, 188, 180);
+    background: #749fe8;
     -webkit-transition:all .3s ease-in-out;
     -moz-transition:all .3s ease-in-out;
     -o-transition:all .3s ease-in-out;
@@ -239,7 +239,7 @@ ul.sidebar-menu li a.active i {
     width:100%;
 }
 .brand {
-    background:#8b5c7e;
+    background:#4c3ea4;
     float:left;
     width:240px;
     height:80px;
@@ -275,7 +275,7 @@ ul.top-menu {
 ul.top-menu > li > a {
     color: #fff;
     font-size: 16px;
-    background: #8b5c7e;
+    background: #4c3ea4;
     padding: 4px 8px;
     margin-right: 15px;
     border-radius: 50%;
@@ -283,13 +283,13 @@ ul.top-menu > li > a {
     padding-right: 8px !important;
 }
 ul.top-menu>li>a:hover,ul.top-menu>li>a:focus {
-    background:#fa9fa4;
+    background:#b39ffa;
     text-decoration:none;
     color:#fff !important;
     padding-right:8px !important;
 }
 .nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
-     background:#fa9fa4 !important;
+     background:#b39ffa !important;
     color:#fff !important;
 }
 .notify-row .badge {
@@ -506,8 +506,8 @@ ul.top-menu>li>a:hover,ul.top-menu>li>a:focus {
     padding: 0px;
     background: none;
     margin-right: 0;
-    border: 1px solid #8b5c7e;
-    background: #8b5c7e;
+    border: 1px solid #4c3ea4;
+    background: #4c3ea4;
 }
 .top-nav ul.top-menu>li.language>a {
     margin-top:-2px;
@@ -528,8 +528,8 @@ ul.top-menu>li>a:hover,ul.top-menu>li>a:focus {
     margin-left:10px;
 }
 .top-nav ul.top-menu>li>a:hover,.top-nav ul.top-menu>li>a:focus {
-    border:1px solid #fa9fa4;
-    background:#fa9fa4 !important;
+    border:1px solid #b39ffa;
+    background:#b39ffa !important;
     border-radius:100px;
     -webkit-border-radius:100px;
 }
@@ -572,9 +572,9 @@ ul.top-menu>li>a:hover,ul.top-menu>li>a:focus {
     -ms-transition: all .3s ease;
     -o-transition: all .3s ease;
     transition: all .3s ease;
-    border: 1px solid #8b5c7e;
+    border: 1px solid #4c3ea4;
     box-shadow: none;
-    background: #8b5c7e url(../images/search-icon.png) no-repeat 10px 8px;
+    background: #4c3ea4 url(../images/search-icon.png) no-repeat 10px 8px;
     padding: 0 5px 0 30px;
     color: #fff;
     border-radius: 100px;
@@ -583,7 +583,7 @@ ul.top-menu>li>a:hover,ul.top-menu>li>a:focus {
 }
 .search:focus {
     width:180px;
-    border:1px solid #8b5c7e;
+    border:1px solid #4c3ea4;
     box-shadow:none;
     -webkit-transition:all .3s ease;
     -moz-transition:all .3s ease;
@@ -601,7 +601,7 @@ ul.top-menu>li>a:hover,ul.top-menu>li>a:focus {
     float:left;
     margin-top:23px;
     margin-left:-15px;
-    background:#8b5c7e;
+    background:#4c3ea4;
     border-radius:50%;
     -webkit-border-radius:50%;
     width:32px;
@@ -617,7 +617,7 @@ ul.top-menu>li>a:hover,ul.top-menu>li>a:focus {
     color:#fff;
 }
 .sidebar-toggle-box:hover {
-    background:#fa9fa4;
+    background:#b39ffa;
 }
 .hide-left-bar {
     margin-left:-240px !important;
@@ -716,28 +716,28 @@ ul.top-menu>li>a:hover,ul.top-menu>li>a:focus {
   -o-transition: 0.5s all;
 }
 .market-update-block.clr-block-1:hover {
-    background: #8b5c7e;
+    background: #4c3ea4;
    transition: 0.5s all;
   -webkit-transition: 0.5s all;
   -moz-transition: 0.5s all;
   -o-transition: 0.5s all;
 }
 .market-update-block.clr-block-2:hover {
-    background: #8b5c7e;
+    background: #4c3ea4;
    transition: 0.5s all;
   -webkit-transition: 0.5s all;
   -moz-transition: 0.5s all;
   -o-transition: 0.5s all;
 }
 .market-update-block.clr-block-3:hover {
-    background:#8b5c7e;
+    background:#4c3ea4;
     transition: 0.5s all;
   -webkit-transition: 0.5s all;
   -moz-transition: 0.5s all;
   -o-transition: 0.5s all;
 }
 .market-update-block.clr-block-4:hover {
-    background:#8b5c7e;
+    background:#4c3ea4;
     transition: 0.5s all;
   -webkit-transition: 0.5s all;
   -moz-transition: 0.5s all;
@@ -985,7 +985,7 @@ div#graph1,div#graph4,div#graph5,div#graph6,div#graph7,div#graph8,div#graph9 {
     margin-left: 3px;
 }
 .stats-table thead tr th {
-    color: #8b5c7e;
+    color: #4c3ea4;
 }
 .stats-table td {
     font-size: 0.9em;
@@ -1731,7 +1731,7 @@ select.input-sm {
     color:#7f858a;
 }
 #drop a{
-    background-color:#8b5c7e;
+    background-color:#4c3ea4;
     padding:12px 26px;
     color:#fff;
     font-size:14px;
@@ -1803,7 +1803,7 @@ select.input-sm {
     background-position: 0 -12px;
 }
 #upload ul li.error p{
-    color: #8b5c7e;
+    color: #4c3ea4;
 }
 #tzine-download{
     opacity:0.9;
@@ -1862,13 +1862,13 @@ select.input-sm {
 }
 .mail-nav>li>a:hover,.mail-nav>li>a:focus {
     background:#fafafa;
-    color:#8b5c7e;
-    border-right:3px solid #8b5c7e;
+    color:#4c3ea4;
+    border-right:3px solid #4c3ea4;
 }
 .mail-nav>li.active>a,.mail-nav>li.active>a:hover,.mail-nav>li.active>a:focus {
     background:#fafafa;
-    color:#8b5c7e;
-    border-right:3px solid #8b5c7e;
+    color:#4c3ea4;
+    border-right:3px solid #4c3ea4;
 }
 .mail-nav>li+li {
     margin-left:0;
@@ -2250,13 +2250,13 @@ ul.inbox-pagination li {
 .agile-info h3 {
     font-size: 2.5em;
     text-transform: uppercase;
-    color: #8b5c7e;
+    color: #4c3ea4;
     font-weight: 500;
     letter-spacing: 12px;
 }
 .agile-info h2 {
     font-size: 12em;
-    color:#8b5c7e;
+    color:#4c3ea4;
     line-height: 1;
     font-weight: 300;
     letter-spacing: 20px;
@@ -2291,7 +2291,7 @@ ul.inbox-pagination li {
     -ms-transition: 0.5s all;
 }
 .agile-info a:hover {
-    background: #8b5c7e;
+    background: #4c3ea4;
     transition: 0.5s all;
     -webkit-transition: 0.5s all;
     -o-transition: 0.5s all;
@@ -2355,7 +2355,7 @@ ul.inbox-pagination li {
 }
 /*-- gallery --*/
 .w3layouts-main h2 {
-	color: #8b5c7e;
+	color: #4c3ea4;
     font-size: 29px;
     letter-spacing: 2px;
     text-transform: uppercase;
@@ -2431,7 +2431,7 @@ input.ggg{
     -ms-transition: 0.5s all;
 }
 .w3layouts-main input[type="submit"]:hover {
-	background:#8b5c7e;
+	background:#4c3ea4;
 	transition:0.5s all;
 	-webkit-transition:0.5s all;
 	-o-transition:0.5s all;
