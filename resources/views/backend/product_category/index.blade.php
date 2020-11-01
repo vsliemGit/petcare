@@ -278,11 +278,12 @@ Admin - List Product categories
 
     //Create item using AJAX
     function createItemUsingAjax(){
-      if($("#action").val() == "Add"){
+      if($("#action").val() === "Add"){
         var name = $('#pro_category_name').val();
         var slug = $('#pro_category_slug').val();
         var desc = $('#pro_category_desc').val();
         var status = $('#pro_category_status').val();
+        console.log("thêm");
         $.ajax({
           url: "{{route('product_category.store')}}",
           method : 'POST',
@@ -293,11 +294,11 @@ Admin - List Product categories
             pro_category_status : status
           },
           success: function(data){
-            $("#action").val("");
             _modal.modal('hide');
             swal('Successfully!', 'Add '+name+' is successfuly...', 'success');
             $("#tag_container").empty().html(data);
             getData("1");
+            $("#action").val("");
           },
           error: function(data){
             _modal.modal('hide');
@@ -309,7 +310,7 @@ Admin - List Product categories
 
     //Edit item using AJAX
     $("body").on('click', '.edit-item', function(){
-        event.preventDefault();
+      event.preventDefault();
         //Get value in feild
         let currentPageNumner =  $('.pagination').find('.active').children().text();
         var id = $(this).parent().parent().find('.td-id').text();
@@ -326,38 +327,38 @@ Admin - List Product categories
         $('textarea[name="pro_category_desc"').val(desc);
         $('select[name="pro_category_status"]').val(status);
         //Edit item whem click btn-action
-        if($("#action").val() != "Add"){
-          $('#btn-action').on('click', function(){
+        $('#btn-action').on('click', function(){
           event.preventDefault();
-          name = $('#pro_category_name').val();
-          slug = $('#pro_category_slug').val();
-          desc = $('#pro_category_desc').val();
-          status = $('#pro_category_status').val();
-          $.ajax({
-              url: "{{ route('product_category.update') }}",
-              type: 'POST',
-              data:{
-                pro_category_id : id,
-                pro_category_name : name,
-                pro_category_slug : slug,
-                pro_category_desc : desc,
-                pro_category_status : status
-              },
-              success: function(data){
-                _modal.modal('hide');
-                swal('Successfully!', 'Edit ""'+name+'" is successfuly...', 'success');
-                $("#tag_container").empty().html(data);
-                getData(currentPageNumner)
-              },
-              error: function(data){
-                console.log(data);
-                _modal.modal('hide');
-                swal("Error!", "Have an error when you try to edit...", "error");
-              }
-            }     
-          );
-          });
-        }
-      });
+          if($("#action").val() !== "Add"){
+            name = $('#pro_category_name').val();
+            slug = $('#pro_category_slug').val();
+            desc = $('#pro_category_desc').val();
+            status = $('#pro_category_status').val();
+            $.ajax({
+                url: "{{ route('product_category.update') }}",
+                type: 'POST',
+                data:{
+                  pro_category_id : id,
+                  pro_category_name : name,
+                  pro_category_slug : slug,
+                  pro_category_desc : desc,
+                  pro_category_status : status
+                },
+                success: function(data){
+                  _modal.modal('hide');
+                  swal('Successfully!', 'Edit ""'+name+'" is successfuly...', 'success');
+                  $("#tag_container").empty().html(data);
+                  getData(currentPageNumner);
+                },
+                error: function(data){
+                  console.log(data);
+                  _modal.modal('hide');
+                  swal("Error!", "Have an error when you try to edit...", "error");
+                }
+              }     
+            );
+          }
+        });
+    });
 </script>
 @endsection   
