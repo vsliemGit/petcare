@@ -23,7 +23,7 @@ class CreateProductsTable extends Migration
             $table->float('product_basis_price')->nullable()->default(123.45);
             $table->float('product_price')->nullable()->default(123.45);
             $table->text('product_desc')->nullable();
-            $table->tinyInteger('product_status');
+            $table->tinyInteger('product_status')->default(0);
             $table->timestamp('product_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('product_updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->unsignedInteger('pro_category_id');

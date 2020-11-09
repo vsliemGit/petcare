@@ -9,143 +9,189 @@ Admin - List Products
 {{-- Thay thế nội dung vào Placeholder `main-content` của view `backend.layouts.index` --}}
 @section('main-content')
 <section class="wrapper">
-    <div class="table-agile-info">
-<div class="panel panel-default">
-<div class="panel-heading">
-  Responsive Table
-</div>
-<div class="row w3-res-tb">
-  <div class="col-sm-5 m-b-xs">
-    <select class="input-sm form-control w-sm inline v-middle">
-      <option value="0">Bulk action</option>
-      <option value="1">Delete selected</option>
-      <option value="2">Bulk edit</option>
-      <option value="3">Export</option>
-    </select>
-    <button class="btn btn-sm btn-default">Apply</button>                
-  </div>
-  <div class="col-sm-4">
-  </div>
-  <div class="col-sm-3">
-    <div class="input-group">
-      <input type="text" class="input-sm form-control" placeholder="Search">
-      <span class="input-group-btn">
-        <button class="btn btn-sm btn-default" type="button">Go!</button>
-      </span>
+  <div class="table-agile-info">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+          List Product
+      </div>
+      <div class="row w3-res-tb">
+      <div class="col-sm-4 m-b-xs">
+        <select id="action-tool" class="input-sm form-control w-sm inline v-middle">
+          <option value="" selected hidden>Choose tools</option>
+          <option value="0">Add item</option>
+          <option value="1">Export Excel</option>
+          <option value="2">Import Excel</option>
+          <option value="3">Create PDF</option>
+          <option value="4">Delete items</option>
+        </select>
+        <button id="btn-action-tool" class="btn btn-sm btn-default">Apply</button>              
+      </div>
+      <div class="col-sm-5">
+        <select id="select-filter-status" class="input-sm form-control w-sm inline v-middle">
+          <option value="all" selected>All status</option>
+          <option value="1">Active</option>
+          <option value="0">Noactive</option>
+        </select>
+        <button id="btn-filter-status" class="btn btn-sm btn-default">Apply</button>
+      </div>
+      <div class="col-sm-3">
+        <div class="input-group">
+          <input type="text" class="input-sm form-control" placeholder="Search">
+          <span class="input-group-btn">
+            <button class="btn btn-sm btn-default" type="button">Go!</button>
+          </span>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-<div class="table-responsive">
-  <table class="table table-striped b-t b-light">
-    <thead>
-      <tr>
-        <th style="width:20px;">
-          <label class="i-checks m-b-none">
-            <input type="checkbox"><i></i>
-          </label>
-        </th>
-        <th>Project</th>
-        <th>Task</th>
-        <th>Date</th>
-        <th style="width:30px;"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
-        <td>Idrawfast prototype design prototype design prototype design prototype design prototype design</td>
-        <td><span class="text-ellipsis">{item.PrHelpText1}</span></td>
-        <td><span class="text-ellipsis">Idrawfast prototype design prototype design prototype design prototype design prototype design Idrawfast prototype design prototype design prototype design prototype design prototype design Idrawfast prototype design prototype design prototype design prototype design prototype design</span></td>
-        <td>
-          <a href="" class="active" ui-toggle-class=""><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
-        </td>
-      </tr>
-      <tr>
-        <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
-        <td>Formasa</td>
-        <td>8c</td>
-        <td>Jul 22, 2013</td>
-        <td>
-          <a href="" ui-toggle-class=""><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
-        </td>
-      </tr>
-      <tr>
-        <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
-        <td>Avatar system</td>
-        <td>15c</td>
-        <td>Jul 15, 2013</td>
-        <td>
-          <a href="" class="active" ui-toggle-class=""><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
-        </td>
-      </tr>
-      <tr>
-        <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
-        <td>Throwdown</td>
-        <td>4c</td>
-        <td>Jul 11, 2013</td>
-        <td>
-          <a href="" class="active" ui-toggle-class=""><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
-        </td>
-      </tr>
-      <tr>
-        <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
-        <td>Idrawfast</td>
-        <td>4c</td>
-        <td>Jul 7, 2013</td>
-        <td>
-          <a href="" class="active" ui-toggle-class=""><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
-        </td>
-      </tr>
-      <tr>
-        <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
-        <td>Formasa</td>
-        <td>8c</td>
-        <td>Jul 3, 2013</td>
-        <td>
-          <a href="" class="active" ui-toggle-class=""><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
-        </td>
-      </tr>
-      <tr>
-        <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
-        <td>Avatar system</td>
-        <td>15c</td>
-        <td>Jul 2, 2013</td>
-        <td>
-          <a href="" class="active" ui-toggle-class=""><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
-        </td>
-      </tr>
-      <tr>
-        <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
-        <td>Videodown</td>
-        <td>4c</td>
-        <td>Jul 1, 2013</td>
-        <td>
-          <a href="" class="active" ui-toggle-class=""><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<footer class="panel-footer">
-  <div class="row">
-    
-    <div class="col-sm-5 text-center">
-      <small class="text-muted inline m-t-sm m-b-sm">showing 20-30 of 50 items</small>
+    <!--table-->
+    <div class="table-responsive"  id="tag_container">
+      {{-- flash-message --}}
+      {{-- content-table --}}
+      @include('backend.product.table-data')
+      {{-- footer --}}
     </div>
-    <div class="col-sm-7 text-right text-center-xs">                
-      <ul class="pagination pagination-sm m-t-none m-b-none">
-        <li><a href=""><i class="fa fa-chevron-left"></i></a></li>
-        <li><a href="">1</a></li>
-        <li><a href="">2</a></li>
-        <li><a href="">3</a></li>
-        <li><a href="">4</a></li>
-        <li><a href=""><i class="fa fa-chevron-right"></i></a></li>
-      </ul>
-    </div>
+    {{-- modal --}}
+    {{-- @include('backend.product.modal')
+    @include('backend.product.modal_import_excel') --}}
   </div>
-</footer>
-</div>
-</div>
+</section>
  <!-- footer -->
 @include('backend.layouts.partials.footer')
+
+<script>
+    //Pagination AJAX
+    $(window).on('hashchange', function() {
+        if (window.location.hash) {
+            var page = window.location.hash.replace('#', '');
+            if (page == Number.NaN || page <= 0) {
+                return false;
+            }else{
+                getData(page);
+            }
+        }
+    })
+    
+    $(document).ready(function()
+    {
+        $(document).on('click', '.pagination a',function(event)
+        {
+            event.preventDefault();
+            $('li').removeClass('active');
+            $(this).parent('li').addClass('active');
+            var page = $(this).attr('href').split('page=')[1];
+            getData(page);
+        });
+    });
+
+    //Reload table html
+    function getData(page){
+        $.ajax(
+        {
+            url: '?page=' + page,
+            type: "GET",
+        }).done(function(data){
+            $("#tag_container").html(data);
+            location.hash = page;
+        }).fail(function(jqXHR, ajaxOptions, thrownError){
+            swal("Error!", "No response from server...", "error");
+        });
+    }
+    // End Pagination using AJAX
+
+    //Action tool
+    $("#btn-action-tool").click(function(){
+      var n = $("#action-tool").val();
+      switch(n) {
+         case "0": 
+          resetModal();
+          openModal("ADD NEW PRODUCT", "Add");
+          $("#action").val("Add");
+          break;
+        case "3":
+          createPDF();
+          break;
+        case "1":
+          exportExcel();
+          break;
+        case "2":
+          openModalImportExcel();
+          break;
+        case "4":
+          deleteMultiItem();
+          break;
+        default:
+        // code to be executed if n is different from case 1 and 2
+      }   
+    });
+
+    //Setup CSRF to AJAX
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    //Delete Using AJAX
+    function deleteItemAjax(product_id){  
+      let currentPageNumner =  $('.pagination').find('.active').children().text();
+      swal({
+        title: "Are you sure?",
+        text: "Once deleted, you will not be able to recover this file!",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+      }).then((willDelete) => {
+        if (willDelete) {
+          var page = window.location.hash.replace('#', '');
+          var url = "{{route('product.destroy')}}";
+          $.ajax({
+            url: url,
+            type: 'DELETE',
+            data: {id: product_id}
+          }).done(function(data){
+            swal('Deleted!', 'Your file is deleted...', 'success');
+            $("#tag_container").empty().html(data);
+            // getData(currentPageNumner);
+          }).error(function(data){
+            console.log(data);
+            swal("Error!", "No response from server...", "error");
+          });
+        } else {
+          swal("Cancel!", "Your file isn't deleted...", "info");
+        }
+      });
+    }
+
+    //Delete multi items
+    function deleteMultiItem(){
+        let allIdDelete = [];
+        //Get all id of items is checked
+        $(".sub_chk:checked").each(function(){
+          allIdDelete.push($(this).data('id'));
+        });
+        if(allIdDelete.length <= 0){
+          alert("Please select rows to delete!");
+        }else{
+          let check = confirm("Are you sure you want to delete this row?");
+          if(check == true){
+            $.ajax({
+              url : "{{route('product.destroy')}}",
+              type: "DELETE",
+              data : {
+                id : allIdDelete
+              }
+            }).done(function(data){
+              $("#tag_container").empty().html(data);
+              getData("1");
+            }).error(function(data){
+              alert("Error!", "Have an error when you try to delete...", "error");
+              console.log(data);
+            });
+          }
+        }
+    }
+    
+
+
+</script>
 @endsection

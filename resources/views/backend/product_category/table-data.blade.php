@@ -77,7 +77,12 @@
   </div></footer>
 
 <script>
-  //Check all checkbox
+
+//Set timeout close flash-message
+    $("#flash-message").delay(2000).slideUp(1000, function() {
+    $(this).alert('close');
+});
+//Check all checkbox
   $(document).ready(function() {
     $('#check-all').on('click', function(e) {
          if($(this).is(':checked',true))  

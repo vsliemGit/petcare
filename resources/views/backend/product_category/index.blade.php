@@ -66,11 +66,11 @@ Admin - List Product categories
         })
   });
 
-  //Set timeout close flash-message
-  $("#flash-message").delay(2000).slideUp(1000, function() {
-    $(this).alert('close');
+  // codes works on all bootstrap modal windows in application
+  $('#modal').on('hidden.bs.modal', function(e)
+  { 
+      $(this).removeData();
   });
-
 
   //Pagination AJAX
   $(window).on('hashchange', function() {
@@ -308,16 +308,70 @@ Admin - List Product categories
       }
     }
 
-    //Edit item using AJAX
-    $("body").on('click', '.edit-item', function(){
-      event.preventDefault();
+    // //Edit item using AJAX
+    // $("body").on('click', '.edit-item', function(){
+    //     event.preventDefault();
+    //     //Get value in feild
+    //     let currentPageNumner =  $('.pagination').find('.active').children().text();
+    //     // let id = $(this).parent().parent().find('.td-id').text();
+    //     let name = $(this).parent().parent().find('.td-name').text();
+    //     let slug = $(this).parent().parent().find('.td-slug').text();
+    //     let desc = $(this).parent().parent().find('.td-desc span').text();
+    //     let status = $(this).parent().parent().find('.td-status a').data('id');
+    //     //Open modal
+    //     openModal('EDIT PRODUCT CATEGORY', 'Save changes');
+    //     _modal.modal('show');
+    //     //Set value for modal
+    //     $('input[name="pro_category_name"]').val(name);
+    //     $('input[name="pro_category_slug"]').val(slug);
+    //     $('textarea[name="pro_category_desc"').val(desc);
+    //     $('select[name="pro_category_status"]').val(status);
+    //     //Edit item whem click btn-action
+    //     $('#btn-action').on('click', function(){
+    //       event.preventDefault();          
+    //       if($("#action").val() !== "Add"){
+    //         name = $('#pro_category_name').val();
+    //         slug = $('#pro_category_slug').val();
+    //         desc = $('#pro_category_desc').val();
+    //         status = $('#pro_category_status').val();
+    //         $.ajax({
+    //             url: "{{ route('product_category.update') }}",
+    //             type: 'POST',
+    //             data:{
+    //               pro_category_id : id,
+    //               pro_category_name : name,
+    //               pro_category_slug : slug,
+    //               pro_category_desc : desc,
+    //               pro_category_status : status
+    //             },
+    //             success: function(data){
+    //               console.log(data);
+    //               _modal.modal('hide');
+    //               swal('Successfully!', 'Edit ""'+name+'" is successfuly...', 'success');
+    //               $("#tag_container").empty().html(data);
+    //               getData(currentPageNumner);
+    //             },
+    //             error: function(data){
+    //               console.log(data);
+    //               _modal.modal('hide');
+    //               swal("Error!", "Have an error when you try to edit...", "error");
+    //             }
+    //           }     
+    //         );
+    //       }
+    //     });
+    // });
+
+        //Edit item using AJAX
+        $("body").on('click', '.edit-item', function(){
+        event.preventDefault();
         //Get value in feild
         let currentPageNumner =  $('.pagination').find('.active').children().text();
-        var id = $(this).parent().parent().find('.td-id').text();
-        var name = $(this).parent().parent().find('.td-name').text();
-        var slug = $(this).parent().parent().find('.td-slug').text();
-        var desc = $(this).parent().parent().find('.td-desc span').text();
-        var status = $(this).parent().parent().find('.td-status a').data('id');
+        let id = $(this).parent().parent().find('.td-id').text();
+        let name = $(this).parent().parent().find('.td-name').text();
+        let slug = $(this).parent().parent().find('.td-slug').text();
+        let desc = $(this).parent().parent().find('.td-desc span').text();
+        let status = $(this).parent().parent().find('.td-status a').data('id');
         //Open modal
         openModal('EDIT PRODUCT CATEGORY', 'Save changes');
         _modal.modal('show');
@@ -328,37 +382,42 @@ Admin - List Product categories
         $('select[name="pro_category_status"]').val(status);
         //Edit item whem click btn-action
         $('#btn-action').on('click', function(){
-          event.preventDefault();
+          event.preventDefault();          
           if($("#action").val() !== "Add"){
             name = $('#pro_category_name').val();
             slug = $('#pro_category_slug').val();
             desc = $('#pro_category_desc').val();
             status = $('#pro_category_status').val();
-            $.ajax({
-                url: "{{ route('product_category.update') }}",
-                type: 'POST',
-                data:{
-                  pro_category_id : id,
-                  pro_category_name : name,
-                  pro_category_slug : slug,
-                  pro_category_desc : desc,
-                  pro_category_status : status
-                },
-                success: function(data){
-                  _modal.modal('hide');
-                  swal('Successfully!', 'Edit ""'+name+'" is successfuly...', 'success');
-                  $("#tag_container").empty().html(data);
-                  getData(currentPageNumner);
-                },
-                error: function(data){
-                  console.log(data);
-                  _modal.modal('hide');
-                  swal("Error!", "Have an error when you try to edit...", "error");
-                }
-              }     
-            );
+            editItemUsingAjax({id, name, slug, desc, status });
           }
         });
     });
+
+    function editItemUsingAjax(data){
+      $.ajax({
+          url: "{{ route('product_category.update') }}",
+          type: 'POST',
+          data: {
+            pro_category_id : data.id,
+            pro_category_name : data.name,
+            pro_category_slug : data.slug,
+            pro_category_desc : data.desc,
+            pro_category_status : data.status
+          },
+          success: function(data){
+            console.log(data);
+            _modal.modal('hide');
+            swal('Successfully!', 'Edit ""'+name+'" is successfuly...', 'success');
+            $("#tag_container").empty().html(data);
+            getData(currentPageNumner);
+          },
+          error: function(data){
+            console.log(data);
+            _modal.modal('hide');
+            swal("Error!", "Have an error when you try to edit...", "error");
+          }
+        }     
+      );
+    }
 </script>
 @endsection   

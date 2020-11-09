@@ -27,7 +27,7 @@
                     </a>
                     <ul class="sub">
 						<li></i><a href="{{Route('product.index')}}">List Products</a></li>
-                        <li><a href="">Add Products</a></li>
+                        <li><a href="{{Route('product.create')}}">Add Products</a></li>
                     </ul>
                 </li>
             </ul>            

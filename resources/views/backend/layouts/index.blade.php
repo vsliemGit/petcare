@@ -19,15 +19,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- font-awesome icons -->
 <link rel="stylesheet" href="{{ asset('vendor/backend/css/font.css') }}" type="text/css"/>
 <link href="{{ asset('vendor/backend/css/font-awesome.css') }}" rel="stylesheet">
+<link href="{{ asset('vendor/backend/css/custom-style.css') }}" rel="stylesheet">
 <!-- //font-awesome icons -->
 <script src="{{ asset('vendor/backend/js/jquery-2.0.3.min.js') }}"></script>
+<!-- Các custom style dành riêng cho từng view -->
+@yield('custom-css')
+
 </head>
 <body>
 <section id="container">
 <!--Header-->
 @include('backend.layouts.partials.header')
 <!--sidebar-->
-@include('backend.layouts.partials.sidebar')
+@include('backend.layouts.partials.sidebar') 
 <!--main content start-->
 <section id="main-content">
 	@yield('main-content')
