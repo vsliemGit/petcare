@@ -21,7 +21,6 @@ class ProductCategoryController extends Controller
      */
     public function index(Request $request)
     {
-        // $listProductCategories = Product_category::all();
         $listProductCategories = DB::table('product_categories')->orderBy('pro_category_created_at', 'desc')->paginate(5);
         if ($request->ajax()) {
             return view('backend.product_category.table-data')->with('listProductCategories', $listProductCategories);

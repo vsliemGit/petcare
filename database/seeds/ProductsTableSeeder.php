@@ -22,7 +22,8 @@ class ProductsTableSeeder extends Seeder
                 'product_basis_price' => $faker->numberBetween(10000, 99000),
                 'product_price' => $faker->numberBetween(10000, 99000),
                 'product_desc' => "Miêu tả sản phẩm $i",
-                'pro_category_id' => $faker->numberBetween(1, 10)
+                'pro_category_id' => $faker->numberBetween(1, 10),
+                'brand_id' => $faker->numberBetween(1, 10)
             ]);
         }
         DB::table('products')->insert($listProducts);

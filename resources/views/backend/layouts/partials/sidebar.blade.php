@@ -22,6 +22,16 @@
                 </li>
                 <li class="sub-menu">
                     <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Brands</span>
+                    </a>
+                    <ul class="sub">
+						<li></i><a href="{{Route('brand.index')}}">List Brands</a></li>
+                        <li><a href="{{Route('brand.create')}}">Add New Brand</a></li>
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
                         <i class="fa fa-bars"></i>
                         <span>Products</span>
                     </a>

@@ -27,8 +27,11 @@ class CreateProductsTable extends Migration
             $table->timestamp('product_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('product_updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->unsignedInteger('pro_category_id');
+            $table->unsignedInteger('brand_id');
 
             $table->foreign('pro_category_id')->references('pro_category_id')->on('product_categories')
+                ->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('brand_id')->references('brand_id')->on('brands')
                 ->onDelete('cascade')->onUpdate('cascade');
         });
     }
