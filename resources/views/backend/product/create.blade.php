@@ -39,9 +39,20 @@ Admin - Add New Product
                                     <label for="pro_category_id" class="control-label col-lg-3">Tên loại <span class="required" style="color:red">*</span></label>
                                     <div class="col-lg-6">
                                         <select name="pro_category_id" class="form-control m-bot15">
-                                            <option value="" selected hidden>Choose Product Caterogy</option>
+                                            <option value="" selected hidden>Choose Product Caterogy for Product</option>
                                             @foreach ($listProductCategories as $productCatetory)
                                                 <option value="{{ $productCatetory->pro_category_id }}">{{ $productCatetory->pro_category_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
+                                    <label for="brand_id" class="control-label col-lg-3">Tên Thương hiệu <span class="required" style="color:red">*</span></label>
+                                    <div class="col-lg-6">
+                                        <select name="brand_id" class="form-control m-bot15">
+                                            <option value="" selected hidden>Choose Brand for Product</option>
+                                            @foreach ($listBrands as $brand)
+                                                <option value="{{ $brand->brand_id }}">{{ $brand->brand_name }}</option>
                                             @endforeach
                                         </select>
                                     </div>

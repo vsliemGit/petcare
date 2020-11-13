@@ -16,6 +16,6 @@ class Brand extends Model
     const UPDATED_AT = 'brand_updated_at';
 
     public function products(){
-        return $this->hasMany(App\Product, 'brand_id', 'brand_id');
+        return $this->hasMany('App\Product', 'brand_id', 'brand_id');
     }
 }

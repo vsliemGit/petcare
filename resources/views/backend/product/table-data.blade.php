@@ -18,14 +18,11 @@
         <th>ID</th>
         <th>Image</th>
         <th>Name</th>
-        <th>Slug</th>
-        <th>Basic Price</th>
         <th>Price</th>
-        <th>Desc</th>
         <th>Status</th>
         <th>Quantity</th>
-        <th>Created at</th>
-        <th>Updated at</th>
+        <th>Category</th>
+        <th>Brand</th>
         <th style="width:30px;"></th>
       </tr>
       </thead>
@@ -38,10 +35,7 @@
           <td class="td-id">{{ $product->product_id }}</td>
           <td><img src="{{ asset('storage/images/' . $product->product_image) }}" class="img-list" /></td>
           <td class="td-name"><span class="text-ellipsis">{{ $product->product_name }}</span></td>
-          <td class="td-slug"><span class="text-ellipsis">{{ $product->product_slug }}</span></td>
-          <td class="td-name"><span class="text-ellipsis">{{ $product->product_basis_price }}</span></td>
-          <td class="td-name"><span class="text-ellipsis">{{ $product->product_price }}</span></td>
-          <td class="td-desc"><span class="text-ellipsis">{{ $product->product_desc }}</span></td>
+          <td class="td-name"><span class="text-ellipsis">{{ number_format($product->product_price) }}</span></td>
           <td class="td-status change-item">
             <?php if($product->product_status == 1){ ?>
               <a data-id="1" href="javascript:void(0)"><span data-id="1"class="fa fa-check text-success text-active"></span></a>
@@ -49,9 +43,9 @@
               <a data-id="0" href="javascript:void(0)"><span class="fa fa-times text-danger text"></span></a>
             <?php  } ?>
           </td>
-          <td><span class="text-ellipsis">{{ $product->product_quantity }}</span></td>
-          <td><span class="text-ellipsis">{{ $product->product_created_at }}</span></td>
-          <td><span class="text-ellipsis">{{ $product->product_updated_at }}</span></td>
+          <td><span class="text-ellipsis">{{ number_format($product->product_quantity) }}</span></td>
+          <td><span class="text-ellipsis">{{ $product->category->pro_category_name }}</span></td>
+          <td><span class="text-ellipsis">{{ $product->brand->brand_name }}</span></td>
           <td>
           <a href="javascript:void(0)"
               class="active styling-edit edit-item" ui-toggle-class="">

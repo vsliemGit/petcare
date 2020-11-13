@@ -19,5 +19,4 @@ class FrontendController extends Controller
             ->with('listBrands', $listBrands)
             ->with('listProductCategories', $listProductCategories);
     }
-
 }

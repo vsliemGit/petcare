@@ -13,8 +13,12 @@ class Product extends Model
     const CREATED_AT = 'product_created_at';
     const UPDATED_AT = 'product_updated_at';
 
-    public function product_category(){
+    public function category(){
         return $this->belongsTo('App\ProductCategory', 'pro_category_id', 'pro_category_id');
+    }
+
+    public function brand(){
+        return $this->belongsTo('App\Brand', 'brand_id', 'brand_id');
     }
 
     public function images(){

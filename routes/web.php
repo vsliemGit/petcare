@@ -59,4 +59,3 @@ Route::post('/admin/brand/import-excel', 'Backend\BrandController@importExcel')-
 /*----------------- Frontend -------------*/
 Route::get('/', 'FrontendController@index')->name('frontend.home');
 Route::get('/home', 'FrontendController@index')->name('frontend.home');
-Route::get('/index', 'FrontendController@index')->name('frontend.home');

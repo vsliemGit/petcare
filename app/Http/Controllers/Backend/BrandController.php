@@ -121,7 +121,7 @@ class BrandController extends Controller
             $brand->delete();
         }
         
-        $listBrands = DB::table('brand')->orderBy('brand_created_at', 'desc')->paginate(5);
+        $listBrands = DB::table('brands')->orderBy('brand_created_at', 'desc')->paginate(5);
         if($request->ajax()){
             return view('backend.brand.table-data')->with('listBrands', $listBrands);
         }

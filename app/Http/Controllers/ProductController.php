@@ -7,6 +7,8 @@ use DB;
 use Session;
 use Storage;
 use App\Product;
+use App\ProductCategory;
+use App\Brand;
 use App\Image;
 
 class ProductController extends Controller
@@ -14,7 +16,7 @@ class ProductController extends Controller
     //Show index page
     public function index(Request $request){
 
-        $listProducts = DB::table('products')->orderBy('product_created_at', 'desc')->paginate(5);
+        $listProducts = Product::paginate(5);
         if ($request->ajax()) {
             return view('backend.product.table-data')->with('listProducts', $listProducts);
         }
@@ -24,8 +26,9 @@ class ProductController extends Controller
     //Show page add new Product
     public function create()
     {
-        $listProductCategories = DB::table('product_categories')->get();
-        return view('backend.product.create', ['listProductCategories' => $listProductCategories]);
+        $listBrands = Brand::all();
+        $listProductCategories = ProductCategory::all();
+        return view('backend.product.create', ['listProductCategories' => $listProductCategories, 'listBrands' => $listBrands]);
     }
 
     //Store new Pruduct
