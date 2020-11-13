@@ -6,7 +6,7 @@
     <meta name="description" content="">
 	<meta name="author" content="">
     <base href="{{ asset('') }}">
-    <title>@yield('title')</title>
+    <title>Error | E-Shopper</title>
     <link href="vendor/frontend/css/bootstrap.min.css" rel="stylesheet">
     <link href="vendor/frontend/css/font-awesome.min.css" rel="stylesheet">
     <link href="vendor/frontend/css/prettyPhoto.css" rel="stylesheet">
@@ -23,15 +23,17 @@
 </head><!--/head-->
 
 <body>
-    <!--Header-->
-    @include('frontend.layouts.partials.header')
-
-	<!-- Content -->
-    @yield('main-content')
-     
-    <!--Footer-->
-    @include('frontend.layouts.partials.footer')
-	
+	<div class="container text-center">
+		<div class="logo-404">
+			<a href="index.html"><img src="vendor/frontend/images/home/logo.png" alt="" /></a>
+		</div>
+		<div class="content-404">
+			<img src="vendor/frontend/images/404/404.png" class="img-responsive" alt="" />
+			<h1><b>OPPS!</b> We Couldn’t Find this Page</h1>
+			<p>Uh... So it looks like you brock something. The page you are looking for has up and Vanished.</p>
+			<h2><a href="{{ route('frontend.home') }}">Bring me back Home</a></h2>
+		</div>
+	</div> 
     <script src="vendor/frontend/js/jquery.js"></script>
 	<script src="vendor/frontend/js/bootstrap.min.js"></script>
 	<script src="vendor/frontend/js/jquery.scrollUp.min.js"></script>

@@ -12,7 +12,7 @@
                 </li> 
                 <li class="sub-menu">
                     <a href="javascript:;">
-                        <i class="fa fa-book"></i>
+                        <i class="fa fa-list-ul"></i>
                         <span>Product Categories</span>
                     </a>
                     <ul class="sub">
@@ -32,7 +32,7 @@
                 </li>
                 <li class="sub-menu">
                     <a href="javascript:;">
-                        <i class="fa fa-bars"></i>
+                        <i class="fa fa-table"></i>
                         <span>Products</span>
                     </a>
                     <ul class="sub">

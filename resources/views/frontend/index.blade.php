@@ -1,14 +1,17 @@
 {{-- View này sẽ kế thừa giao diện từ `frontend.layouts.master` --}}
 @extends('frontend.layouts.master')
 
-<!--Header-->
-@include('frontend.layouts.partials.header')
+{{-- Thay thế nội dung vào Placeholder `title` của view `frontend.layouts.index` --}}
+@section('title')
+Home | PETCARE
+@endsection
 
-<!--Slider-->
-@include('frontend.widgets.slider')
 
 {{-- Content of index --}}
 @section('main-content')
+<!--Slider-->
+@include('frontend.widgets.slider')
+
 <section>
     <div class="container">
         <div class="row">
@@ -73,8 +76,7 @@
                                                 <div class="productinfo text-center">
                                                     <img src="{{ asset('storage/images/' . $product->product_image) }}" alt="{{ $product->product_image }}" />
                                                     <h2>${{ number_format($product->product_price) }}</h2>
-                                                    <h6>{{ $product->product_name }}</h6>
-                                                    <p>{{ $product->brand->brand_name }}</p>
+                                                    <a href="{{ route('frontend.product_detail', ['id' => $product->product_id ]) }}"><p style="color: blue">{{ $product->product_name }}</p></a>
                                                     <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                                                 </div>
                                             </div>
@@ -188,8 +190,5 @@
         </div>
     </div>
 </section>
-
-<!--Footer-->
-@include('frontend.layouts.partials.footer')
 @endsection
 

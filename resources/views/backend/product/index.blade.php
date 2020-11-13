@@ -190,8 +190,5 @@ Admin - List Products
           }
         }
     }
-    
-
-
 </script>
 @endsection

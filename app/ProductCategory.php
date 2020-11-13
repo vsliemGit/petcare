@@ -16,6 +16,6 @@ class ProductCategory extends Model
     const UPDATED_AT = 'pro_category_updated_at';
 
     public function products(){
-        return $this->hasMany(App\Product, 'pro_category_id', 'pro_category_id');
+        return $this->hasMany('App\Product', 'pro_category_id', 'pro_category_id');
     }
 }

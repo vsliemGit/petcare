@@ -12,12 +12,12 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-//Error
-Route::get('/error', function () {
-    return view('Error.404');
-})->name('error.404');
 
 /*-----------------Backend -------------*/
+//Error
+Route::get('admin/error', function () {
+    return view('Error.404');
+})->name('backend.error.404');
 
 //BackendController
 Route::get('/admin', 'BackendController@showHome')->name('home.index');
@@ -57,5 +57,10 @@ Route::post('/admin/brand/import-excel', 'Backend\BrandController@importExcel')-
 
 
 /*----------------- Frontend -------------*/
+Route::get('/error', function () {
+    return view('frontend.errors.404');
+})->name('frontend.error.404');
 Route::get('/', 'FrontendController@index')->name('frontend.home');
 Route::get('/home', 'FrontendController@index')->name('frontend.home');
+Route::get('/products', 'FrontendController@products')->name('frontend.products');
+Route::get('/product-detail/{id}', 'FrontendController@productDetail')->name('frontend.product_detail');

@@ -22,7 +22,7 @@ class ProductsTableSeeder extends Seeder
                 'product_basis_price' => $faker->numberBetween(10000, 99000),
                 'product_price' => $faker->numberBetween(10000, 99000),
                 'product_quantity' => $faker->numberBetween(1000, 10000),
-                'product_desc' => "Miêu tả sản phẩm $i",
+                'product_desc' => "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
                 'pro_category_id' => $faker->numberBetween(1, 10),
                 'brand_id' => $faker->numberBetween(1, 10)
             ]);

@@ -5,8 +5,8 @@
                 <div class="col-sm-6">
                     <div class="contactinfo">
                         <ul class="nav nav-pills">
-                            <li><a href="#"><i class="fa fa-phone"></i> +2 95 01 88 821</a></li>
-                            <li><a href="#"><i class="fa fa-envelope"></i> info@domain.com</a></li>
+                            <li><a href="#"><i class="fa fa-phone"></i> +84 33 95 22 221</a></li>
+                            <li><a href="#"><i class="fa fa-envelope"></i> petcare.com</a></li>
                         </ul>
                     </div>
                 </div>
@@ -39,7 +39,7 @@
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Canada</a></li>
+                                <li><a href="#">VI</a></li>
                                 <li><a href="#">UK</a></li>
                             </ul>
                         </div>
@@ -50,7 +50,7 @@
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Canadian Dollar</a></li>
+                                <li><a href="#">VND</a></li>
                                 <li><a href="#">Pound</a></li>
                             </ul>
                         </div>
@@ -88,7 +88,7 @@
                             <li><a href="{{ route('frontend.home') }}" class="active">Home</a></li>
                             <li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
                                 <ul role="menu" class="sub-menu">
-                                    <li><a href="shop.html">Products</a></li>
+                                    <li><a href="{{ route('frontend.products') }}">Products</a></li>
                                     <li><a href="product-details.html">Product Details</a></li> 
                                     <li><a href="checkout.html">Checkout</a></li> 
                                     <li><a href="cart.html">Cart</a></li> 
