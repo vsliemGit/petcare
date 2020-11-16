@@ -35,40 +35,50 @@ Admin - Add New Product
                         <div class=" form">
                         <form class="cmxform form-horizontal " id="commentForm" action="{{route('product.store')}}" method="post" enctype="multipart/form-data">
                                 @csrf
-                                <div class="form-group ">
-                                    <label for="pro_category_id" class="control-label col-lg-3">Tên loại <span class="required" style="color:red">*</span></label>
-                                    <div class="col-lg-6">
-                                        <select name="pro_category_id" class="form-control m-bot15">
-                                            <option value="" selected hidden>Choose Product Caterogy for Product</option>
-                                            @foreach ($listProductCategories as $productCatetory)
-                                                <option value="{{ $productCatetory->pro_category_id }}">{{ $productCatetory->pro_category_name }}</option>
-                                            @endforeach
-                                        </select>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label for="pro_category_id" class="control-label col-lg-3">Tên loại <span class="required" style="color:red">*</span></label>
+                                        <div class="col-lg-9">
+                                            <select name="pro_category_id" class="form-control m-bot15">
+                                                <option value="" selected hidden>Choose Product Caterogy</option>
+                                                @foreach ($listProductCategories as $productCatetory)
+                                                    <option value="{{ $productCatetory->pro_category_id }}">{{ $productCatetory->pro_category_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="brand_id" class="control-label col-lg-5">Tên Thương hiệu <span class="required" style="color:red">*</span></label>
+                                        <div class="col-lg-7">
+                                            <select name="brand_id" class="form-control m-bot15">
+                                                <option value="" selected hidden>Choose Brand</option>
+                                                @foreach ($listBrands as $brand)
+                                                    <option value="{{ $brand->brand_id }}">{{ $brand->brand_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group ">
-                                    <label for="brand_id" class="control-label col-lg-3">Tên Thương hiệu <span class="required" style="color:red">*</span></label>
-                                    <div class="col-lg-6">
-                                        <select name="brand_id" class="form-control m-bot15">
-                                            <option value="" selected hidden>Choose Brand for Product</option>
-                                            @foreach ($listBrands as $brand)
-                                                <option value="{{ $brand->brand_id }}">{{ $brand->brand_name }}</option>
-                                            @endforeach
-                                        </select>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label for="product_name" class="control-label col-lg-4">Tên sản phẩm <span class="required" style="color:red">*</span></label>
+                                        <div class="col-lg-8">
+                                            <input class=" form-control" id="product_name" name="product_name" minlength="2" type="text" required="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="product_slug" class="control-label col-lg-4">Slug <span class="required" style="color:red">*</span></label>
+                                        <div class="col-lg-8">
+                                            <input class=" form-control" id="product_slug" name="product_slug" minlength="2" type="text" required="">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group ">
-                                    <label for="product_name" class="control-label col-lg-3">Tên sản phẩm <span class="required" style="color:red">*</span></label>
-                                    <div class="col-lg-6">
-                                        <input class=" form-control" id="product_name" name="product_name" minlength="2" type="text" required="">
+                                <div class="col-md-12 form-group">
+                                    <label for="product_desc" class="control-label col-md-1">Mô tả</label>
+                                    <div class="col-md-10">
+                                        <textarea class="form-control" style="resize: none" rows="8" id="product_desc" name="product_desc" required=""></textarea>
                                     </div>
-                                </div>
-                                <div class="form-group ">
-                                    <label for="product_slug" class="control-label col-lg-3">Slug <span class="required" style="color:red">*</span></label>
-                                    <div class="col-lg-6">
-                                        <input class=" form-control" id="product_slug" name="product_slug" minlength="2" type="text" required="">
-                                    </div>
-                                </div>
+                                </div>    
                                 <div class="form-group ">
                                     <label for="product_desc" class="control-label col-lg-3">Mô tả</label>
                                     <div class="col-lg-6">

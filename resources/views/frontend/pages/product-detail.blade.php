@@ -56,12 +56,16 @@
                             <img src="vendor/frontend/images/product-details/rating.png" alt="" />
                             <span>
                                 <span>${{ number_format($product->product_quantity) }}</span>
-                                <label>Quantity:</label>
-                                <input type="text" value="1" />
-                                <button type="button" class="btn btn-fefault cart">
-                                    <i class="fa fa-shopping-cart"></i>
-                                    Add to cart
-                                </button>
+                                <form action="{{ route('add-to-cart') }}" method="post">
+                                    @csrf
+                                    <label>Quantity:</label>
+                                    <input type="number" name="quantity" value="1" />
+                                    <input type="hidden" name="product_id" value="{{ $product->product_id }}">
+                                    <button type="submit" class="btn btn-fefault cart">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        Add to cart
+                                    </button>
+                                </form>
                             </span>
                             <p><b>Availability:</b> In Stock</p>
                             <p><b>Condition:</b> New</p>

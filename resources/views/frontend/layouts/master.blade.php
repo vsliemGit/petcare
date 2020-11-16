@@ -20,6 +20,28 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="vendor/frontend/images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="vendor/frontend/images/ico/apple-touch-icon-57-precomposed.png">
     <link href="vendor/frontend/css/custom-style.css" rel="stylesheet">
+    <style>
+        .badge {
+            padding-left: 9px;
+            padding-right: 9px;
+            -webkit-border-radius: 9px;
+            -moz-border-radius: 9px;
+            border-radius: 9px;
+        }
+
+        .label-warning[href],
+        .badge-warning[href] {
+        background-color: #c67605;
+        }
+        #lblCartCount {
+            font-size: 10px;
+            background: #ff0000;
+            color: #fff;
+            padding: 0 3px;
+            vertical-align: top;
+            margin-left: -5px; 
+        }
+    </style>
 </head><!--/head-->
 
 <body>
@@ -38,5 +60,8 @@
 	<script src="vendor/frontend/js/price-range.js"></script>
     <script src="vendor/frontend/js/jquery.prettyPhoto.js"></script>
     <script src="vendor/frontend/js/main.js"></script>
+
+    <!-- Các custom script dành riêng cho từng view -->
+	@yield('custom-scripts')
 </body>
 </html>

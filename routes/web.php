@@ -64,3 +64,7 @@ Route::get('/', 'FrontendController@index')->name('frontend.home');
 Route::get('/home', 'FrontendController@index')->name('frontend.home');
 Route::get('/products', 'FrontendController@products')->name('frontend.products');
 Route::get('/product-detail/{id}', 'FrontendController@productDetail')->name('frontend.product_detail');
+    /** Cart */
+Route::get('/shopping-cart', 'FrontendController@shoppingCart')->name('frontend.shopping_cart');
+Route::post('/add-to-cart', 'FrontendController@addToCart')->name('add-to-cart');
+Route::get('/delete-to-cart', 'FrontendController@deleteToCart')->name('delele-to-cart');

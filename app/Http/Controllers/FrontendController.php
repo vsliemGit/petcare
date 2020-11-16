@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use Cart;
 use App\Brand;
 use App\Product;
+
 
 class FrontendController extends Controller
 {
@@ -46,5 +48,32 @@ class FrontendController extends Controller
             ->with('listProductCategories', $listProductCategories)
             ->with('product', $product)
             ->with('listProductsRelatedToThisItem', $listProductsRelatedToThisItem);
+    }
+
+    public function shoppingCart(){
+        return view('frontend.pages.shopping-cart');
+    }
+
+    public function addToCart(Request $request){
+        $id = $request->product_id;
+        $product = Product::find($id);
+        $data['id'] = $product->product_id;
+        $data['name'] = $product->product_name;
+        $data['qty'] = $request->quantity;
+        $data['price'] = $product->product_price;
+        $data['weight'] = $product->product_quantity;
+        $data['options']['image'] = $product->product_image;
+        Cart::add($data);
+        return $this->shoppingCart();
+    }
+
+    public function deleteToCart(Request $request){
+        if($request->ajax()){
+            Cart::update($request->rowId, 0);
+            return response()->json([
+                'success' => 'Delete Item successfuly!'
+            ]);
+        }
+        return $this->shoppingCart();
     }
 }

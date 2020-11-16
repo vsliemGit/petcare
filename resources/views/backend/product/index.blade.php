@@ -103,9 +103,7 @@ Admin - List Products
       var n = $("#action-tool").val();
       switch(n) {
          case "0": 
-          resetModal();
-          openModal("ADD NEW PRODUCT", "Add");
-          $("#action").val("Add");
+          window.open("{{route('product.create')}}", "_self",  "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes", true);
           break;
         case "3":
           createPDF();
