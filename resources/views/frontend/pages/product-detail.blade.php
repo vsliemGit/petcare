@@ -131,30 +131,38 @@
                     <h2 class="title text-center">Products related to this item</h2>
                     <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner">
-                            @foreach($listProductsRelatedToThisItem as $productRelated)                               
-                                <div class="item active">                          
-                                    <div class="col-sm-4">
-                                        <div class="product-image-wrapper">
-                                            <div class="single-products">
-                                                <div class="productinfo text-center">
-                                                    <img src="vendor/frontend/images/home/recommend1.jpg" alt="" />
-                                                    <h2>$56</h2>
-                                                    <p>Easy Polo Black Edition</p>
-                                                    <button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
-                                                </div>
+                            @php
+                                $itemToShow = 3;
+                                $totalItem = ceil(count($listProductsRelatedToThisItem)/$itemToShow);
+                            @endphp                               
+                            <div class="item active">
+                            @foreach($listProductsRelatedToThisItem as $productRelated)                          
+                                <div class="col-sm-4">
+                                    <div class="product-image-wrapper">
+                                        <div class="single-products">
+                                            <div class="productinfo text-center">
+                                                <img src="{{ asset('storage/images/' . $productRelated->product_image) }}" alt="" />
+                                                <h2>${{ number_format($productRelated->product_price) }}</h2>
+                                                <p>{{ $productRelated->product_name }}</p>
+                                                <button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
                                             </div>
                                         </div>
                                     </div>
-                                </div>     
-                            @endforeach	
+                                </div>
+                                @if (($loop->index + 1) % $itemToShow == 0)
+                            </div>
+                            <div class="item">
+                                @endif
+                            @endforeach
+                            </div>  
                         </div>
                          <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
                             <i class="fa fa-angle-left"></i>
                           </a>
                           <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
                             <i class="fa fa-angle-right"></i>
-                          </a>			
-                    </div>
+                          </a>
+                    </div>		
                 </div><!--/recommended_items-->               
             </div>
         </div>
