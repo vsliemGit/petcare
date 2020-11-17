@@ -55,25 +55,36 @@ class FrontendController extends Controller
     }
 
     public function addToCart(Request $request){
-        $id = $request->product_id;
+        $id = $request->id;
         $product = Product::find($id);
         $data['id'] = $product->product_id;
         $data['name'] = $product->product_name;
-        $data['qty'] = $request->quantity;
+        $data['qty'] = 1;
         $data['price'] = $product->product_price;
         $data['weight'] = $product->product_quantity;
         $data['options']['image'] = $product->product_image;
         Cart::add($data);
-        return $this->shoppingCart();
+        $itemInCart = Cart::count();
+        return response()->json([
+            'success' => 'Add Item to Cart successfuly!',
+            'itemInCart' => $itemInCart
+        ]);
     }
 
     public function deleteToCart(Request $request){
         if($request->ajax()){
             Cart::update($request->rowId, 0);
+            $itemInCart = Cart::count();
             return response()->json([
-                'success' => 'Delete Item successfuly!'
+                'success' => 'Delete Item successfuly!',
+                'itemInCart' => $itemInCart
             ]);
         }
         return $this->shoppingCart();
+    }
+
+    public function loadProductsByBrand($brand){
+        $listBrands;
+        return $listBrands;
     }
 }

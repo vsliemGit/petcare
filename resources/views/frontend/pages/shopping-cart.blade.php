@@ -146,7 +146,7 @@
         let rowId = $(this).data('id');
         let itemId = $(this).data('product-id');
         $.get("{{ route('delele-to-cart') }}", {rowId: rowId}, function(data){
-            console.log(data);
+            realoadCountCart(data.itemInCart);
         }).done(function() {
             document.getElementById('product_'+ itemId).remove();
         })

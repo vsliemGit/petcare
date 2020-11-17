@@ -46,6 +46,7 @@
                     </div>  
                 @endforeach                
             </div><!--features_items-->
+            
             <div class="features_items"><!--features_items-->
                 <h2 class="title text-center">LIST PRODUCTS</h2>
                 @foreach($listProducts as $key => $product)
@@ -55,8 +56,11 @@
                                 <div class="productinfo text-center">
                                     <img src="{{ asset('storage/images/' . $product->product_image) }}" alt="" />
                                     <h2>${{ number_format($product->product_price, 2)}} </h2>
-                                    <a href="{{ route('frontend.product_detail', ['id' => $product->product_id ]) }}"><p style="color: blue">{{ $product->product_name }}</p></a>
-                                    <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                    <a href="{{ route('frontend.product_detail', ['id' => $product->product_id ]) }}"><h4 style="color: blue">{{ $product->product_name }}</h4></a>
+                                    <button type="button" class="btn btn-fefault add-to-cart" data-id="{{$product->product_id}}">
+                                        <i class="fa fa-shopping-cart"></i>
+                                        Add to cart
+                                    </button>
                                 </div>
                             </div>
                             <div class="choose">
@@ -74,4 +78,31 @@
             </div><!--features_items-->
         </div>
     </div>
+@endsection
+
+@section('custom-scripts')
+    <script>
+        //Setup CSRF to AJAX
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('.add-to-cart').click(function(){
+            $.ajax(
+            {
+                url: "{{ route('add-to-cart') }}",
+                type: "POST",
+                data: {
+                    id : $(this).data('id')
+                }
+            }).done(function(data){
+                realoadCountCart(data.itemInCart);
+                swal('Success!', 'Add item to cart successfully!.', 'success');
+            }).fail(function(jqXHR, ajaxOptions, thrownError){
+                swal("Error!", "No response from server...", "error");
+            });
+        });
+    </script>
 @endsection

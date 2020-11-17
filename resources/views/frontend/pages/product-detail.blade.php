@@ -60,16 +60,12 @@
                             <img src="vendor/frontend/images/product-details/rating.png" alt="" />
                             <span>
                                 <span>${{ number_format($product->product_quantity) }}</span>
-                                <form action="{{ route('add-to-cart') }}" method="post">
-                                    @csrf
                                     <label>Quantity:</label>
                                     <input type="number" name="quantity" value="1" />
-                                    <input type="hidden" name="product_id" value="{{ $product->product_id }}">
-                                    <button type="submit" class="btn btn-fefault cart">
+                                    <button type="button" class="btn btn-fefault cart" id="add-to-cart" data-id="{{$product->product_id}}">
                                         <i class="fa fa-shopping-cart"></i>
                                         Add to cart
                                     </button>
-                                </form>
                             </span>
                             <p><b>Availability:</b> In Stock</p>
                             <p><b>Condition:</b> New</p>
@@ -147,8 +143,8 @@
                                             <div class="productinfo text-center">
                                                 <img src="{{ asset('storage/images/' . $productRelated->product_image) }}" alt="" />
                                                 <h2>${{ number_format($productRelated->product_price) }}</h2>
-                                                <p>{{ $productRelated->product_name }}</p>
-                                                <button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
+                                                <p style="color: blue;">{{ $productRelated->product_name }}</p>
+                                                <p><b>Brand:</b> {{ $product->brand->brand_name }}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -171,5 +167,33 @@
             </div>
         </div>
     </div>
+@section('custom-scripts')
+<script>
+        //Setup CSRF to AJAX
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $('#add-to-cart').click(function(){
+            $.ajax(
+            {
+                url: "{{ route('add-to-cart') }}",
+                type: "POST",
+                data: {
+                    id : $(this).data('id')
+                }
+            }).done(function(data){
+                realoadCountCart(data.itemInCart);
+                swal('Success!', 'Add item to cart successfully!.', 'success');
+            }).fail(function(jqXHR, ajaxOptions, thrownError){
+                swal("Error!", "No response from server...", "error");
+            });
+        });
+</script>
 @endsection
+@endsection
+
+
 

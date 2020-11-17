@@ -7,6 +7,7 @@
 	<meta name="author" content="">
     <base href="{{ asset('') }}">
     <title>@yield('title')</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="vendor/frontend/css/bootstrap.min.css" rel="stylesheet">
     <link href="vendor/frontend/css/font-awesome.min.css" rel="stylesheet">
     <link href="vendor/frontend/css/prettyPhoto.css" rel="stylesheet">
@@ -20,6 +21,7 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="vendor/frontend/images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="vendor/frontend/images/ico/apple-touch-icon-57-precomposed.png">
     <link href="vendor/frontend/css/custom-style.css" rel="stylesheet">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <!-- Các custom script dành riêng cho từng view -->
 	@yield('custom-css')
     <style>
@@ -64,6 +66,11 @@
     <script src="vendor/frontend/js/main.js"></script>
 
     <!-- Các custom script dành riêng cho từng view -->
-	@yield('custom-scripts')
+    @yield('custom-scripts')
+    <script>
+        function realoadCountCart($value){
+            $('#lblCartCount').text($value) ;
+        }
+    </script>
 </body>
 </html>
