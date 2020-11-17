@@ -46,7 +46,8 @@ class ProductController extends Controller
         $newProduct->product_basis_price = $request->product_basis_price;
         $newProduct->product_price = $request->product_price;
         $newProduct->product_status = $request->product_status;
-        $newProduct->pro_category_id = $request->pro_category_id;       
+        $newProduct->pro_category_id = $request->pro_category_id;
+        $newProduct->brand_id = $request->brand_id;      
         if($request->hasFile('product_image'))
         {
             $file = $request->product_image;

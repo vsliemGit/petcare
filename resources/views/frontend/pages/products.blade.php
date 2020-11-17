@@ -58,13 +58,6 @@
                                     <a href="{{ route('frontend.product_detail', ['id' => $product->product_id ]) }}"><p style="color: blue">{{ $product->product_name }}</p></a>
                                     <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                                 </div>
-                                {{-- <div class="product-overlay">
-                                    <div class="overlay-content">
-                                        <h2>${{ $product->product_price }}</h2>
-                                        <p>Easy Polo Black Edition</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                                    </div>
-                                </div> --}}
                             </div>
                             <div class="choose">
                                 <ul class="nav nav-pills nav-justified">

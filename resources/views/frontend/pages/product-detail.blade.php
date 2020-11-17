@@ -1,6 +1,15 @@
 {{-- View này sẽ kế thừa giao diện từ `frontend.layouts.master` --}}
 @extends('frontend.layouts.master')
 
+@section('custom-css')
+<style>
+    .img-similar {
+        width: 84px;
+        height: 84px;
+    }
+</style>
+@endsection
+
 {{-- Content of index --}}
 @section('main-content')
 <section>
@@ -18,27 +27,22 @@
                             <h3>ZOOM</h3>
                         </div>
                         <div id="similar-product" class="carousel slide" data-ride="carousel">
-                             
+                            @php
+                                $imageToShow = 3;
+                                $totalItem = ceil(count($listProductsRelatedToThisItem)/$imageToShow);
+                            @endphp
                               <!-- Wrapper for slides -->
                                 <div class="carousel-inner">
                                     <div class="item active">
-                                      <a href=""><img src="vendor/frontend/images/product-details/similar1.jpg" alt=""></a>
-                                      <a href=""><img src="vendor/frontend/images/product-details/similar2.jpg" alt=""></a>
-                                      <a href=""><img src="vendor/frontend/images/product-details/similar3.jpg" alt=""></a>
+                                    @foreach ($product->images as $image)
+                                        <a href=""><img class="img-similar" src="{{ asset('storage/images/' . $image->getName() ) }}" alt=""></a>
+                                    @if (($loop->index + 1) % $imageToShow == 0)
                                     </div>
-                                    <div class="item">
-                                      <a href=""><img src="vendor/frontend/images/product-details/similar1.jpg" alt=""></a>
-                                      <a href=""><img src="vendor/frontend/images/product-details/similar2.jpg" alt=""></a>
-                                      <a href=""><img src="vendor/frontend/images/product-details/similar3.jpg" alt=""></a>
+                                        <div class="item">
+                                    @endif
+                                    @endforeach
                                     </div>
-                                    <div class="item">
-                                      <a href=""><img src="vendor/frontend/images/product-details/similar1.jpg" alt=""></a>
-                                      <a href=""><img src="vendor/frontend/images/product-details/similar2.jpg" alt=""></a>
-                                      <a href=""><img src="vendor/frontend/images/product-details/similar3.jpg" alt=""></a>
-                                    </div>
-                                    
                                 </div>
-
                               <!-- Controls -->
                               <a class="left item-control" href="#similar-product" data-slide="prev">
                                 <i class="fa fa-angle-left"></i>

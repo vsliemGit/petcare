@@ -33,13 +33,13 @@ Home | PETCARE
                                         <p>{{ $product->product_name }}</p>
                                         <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                                     </div>
-                                    {{-- <div class="product-overlay">
+                                    <div class="product-overlay">
                                         <div class="overlay-content">
                                             <h2>${{ $product->product_price }}</h2>
-                                            <p>Easy Polo Black Edition</p>
+                                            <p>{{ $product->product_name }}</p>
                                             <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                                         </div>
-                                    </div> --}}
+                                    </div>
                                     <img src="vendor/frontend/images/home/new.png" class="new" alt="" />
                                 </div>
                                 <div class="choose">

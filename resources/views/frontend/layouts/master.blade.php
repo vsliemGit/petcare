@@ -20,6 +20,8 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="vendor/frontend/images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="vendor/frontend/images/ico/apple-touch-icon-57-precomposed.png">
     <link href="vendor/frontend/css/custom-style.css" rel="stylesheet">
+    <!-- Các custom script dành riêng cho từng view -->
+	@yield('custom-css')
     <style>
         .badge {
             padding-left: 9px;
