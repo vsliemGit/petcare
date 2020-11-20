@@ -23,6 +23,9 @@ Route::get('admin/error', function () {
 Route::get('/admin', 'BackendController@showHome')->name('home.index');
 Route::get('/admin/home', 'BackendController@showHome')->name('home.index');
 
+//UserController
+Route::get('/admin/user', 'UserController@index')->name('user.index');
+
 //ProductController
 Route::get('/admin/product', 'ProductController@index')->name('product.index');
 Route::get('/admin/product/add', 'ProductController@create')->name('product.create');
@@ -62,10 +65,7 @@ Route::post('/admin/brand/import-excel', 'Backend\BrandController@importExcel')-
 Route::get('/error', function () {
     return view('frontend.errors.404');
 })->name('frontend.error.404');
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
-// Route::get('/', 'FrontendController@index')->name('frontend.home');
+Route::get('/', 'FrontendController@index')->name('frontend.home');
 Route::get('/home', 'FrontendController@index')->name('frontend.home');
 Route::get('/products', 'FrontendController@products')->name('frontend.products');
 Route::get('/product-detail/{id}', 'FrontendController@productDetail')->name('frontend.product_detail');

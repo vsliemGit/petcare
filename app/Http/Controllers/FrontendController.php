@@ -13,7 +13,7 @@ class FrontendController extends Controller
 {
     public function index(){
         $topThreeNewProducts = DB::table('products')
-            ->orderBy('product_created_at')->take(7)->get();
+            ->orderBy('product_created_at')->take(10)->get();
         $listBrands = Brand::all();
         $listProductCategories = DB::table('product_categories')
             ->orderBy('pro_category_created_at', 'desc')->get();
@@ -27,7 +27,7 @@ class FrontendController extends Controller
         $listProducts = Product::paginate(8);
         $listBrands = Brand::all();
         $topThreeNewProducts = DB::table('products')
-            ->orderBy('product_created_at')->take(7)->get();
+            ->orderBy('product_created_at')->take(10)->get();
         $listProductCategories = DB::table('product_categories')
             ->orderBy('pro_category_created_at', 'desc')->get();
         return view('frontend.pages.products')
@@ -55,19 +55,18 @@ class FrontendController extends Controller
     }
 
     public function addToCart(Request $request){
-        $id = $request->id;
-        $product = Product::find($id);
+        (!isset($request->quantity)) ? $quantity = 1 : $quantity = $request->quantity;
+        $product = Product::find($request->product_id);
         $data['id'] = $product->product_id;
         $data['name'] = $product->product_name;
-        $data['qty'] = 1;
+        $data['qty'] = $quantity;
         $data['price'] = $product->product_price;
         $data['weight'] = $product->product_quantity;
         $data['options']['image'] = $product->product_image;
         Cart::add($data);
-        $itemInCart = Cart::count();
         return response()->json([
             'success' => 'Add Item to Cart successfuly!',
-            'itemInCart' => $itemInCart
+            'itemInCart' => Cart::count()
         ]);
     }
 

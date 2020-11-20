@@ -58,15 +58,18 @@
                             <h2>{{ $product->product_name }}</h2>
                             <p>Web ID: {{ $product->product_id }}</p>
                             <img src="vendor/frontend/images/product-details/rating.png" alt="" />
-                            <span>
-                                <span>${{ number_format($product->product_quantity) }}</span>
-                                    <label>Quantity:</label>
-                                    <input type="number" name="quantity" value="1" />
-                                    <button type="button" class="btn btn-fefault cart" id="add-to-cart" data-id="{{$product->product_id}}">
-                                        <i class="fa fa-shopping-cart"></i>
-                                        Add to cart
-                                    </button>
-                            </span>
+                            <form action="{{ route('add-to-cart') }}" method="post" id="add-cart-form">
+                                <span>
+                                    <span>${{ number_format($product->product_quantity) }}</span>
+                                        <label>Quantity:</label>
+                                        <input type="hidden" id="product_id" name="product_id" value="{{$product->product_id}}">
+                                        <input type="number" name="quantity" value="1" />
+                                        <button type="submit" class="btn btn-fefault cart" id="add-to-cart" data-id="{{$product->product_id}}">
+                                            <i class="fa fa-shopping-cart"></i>
+                                            Add to cart
+                                        </button>
+                                </span>
+                            </form>
                             <p><b>Availability:</b> In Stock</p>
                             <p><b>Condition:</b> New</p>
                             <p><b>Brand:</b> {{ $product->brand->brand_name }}</p>
@@ -167,6 +170,8 @@
             </div>
         </div>
     </div>
+@endsection
+
 @section('custom-scripts')
 <script>
         //Setup CSRF to AJAX
@@ -176,24 +181,25 @@
             }
         });
 
-        $('#add-to-cart').click(function(){
+        $("#add-cart-form").submit(function(e){
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+            var form = $(this);
+            var url = form.attr('action');
+            console.log(form.serialize());
             $.ajax(
             {
-                url: "{{ route('add-to-cart') }}",
+                url: url,
                 type: "POST",
-                data: {
-                    id : $(this).data('id')
-                }
+                data: form.serialize(),
             }).done(function(data){
                 realoadCountCart(data.itemInCart);
                 swal('Success!', 'Add item to cart successfully!.', 'success');
             }).fail(function(jqXHR, ajaxOptions, thrownError){
                 swal("Error!", "No response from server...", "error");
             });
+
         });
+        
 </script>
 @endsection
-@endsection
-
-
 

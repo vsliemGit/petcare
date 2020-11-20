@@ -29,18 +29,18 @@
                 <div class="owl-carousel owl-theme">
                     @foreach($topThreeNewProducts as $key => $product)
                         <div class="product-image-wrapper">
-                            <div class="single-">
+                            <div class="single-products">
                                 <div class="productinfo text-center">
-                                    <img src="{{ asset('storage/images/' . $product->product_image) }}" alt="" />
+                                    <img src="{{ asset('storage/images/' . $product->product_image) }}"  style="width: 200px;" alt="" />
                                     <h2>${{ number_format($product->product_price, 2)}} </h2>
                                     <p>{{ $product->product_name }}</p>
-                                    <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                    <a href="#" class="btn btn-default"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                                 </div>
                                 <div class="product-overlay">
                                     <div class="overlay-content">
                                         <h2>${{ number_format($product->product_price, 0)}}</h2>
                                         <p>{{ $product->product_name }}</p>
-                                        <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                        <a href="#" data-id="{{ $product->product_id }}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                                     </div>
                                 </div>
                                 <img src="vendor/frontend/images/home/new.png" class="new" style="width: 50px;" alt="" />
@@ -120,13 +120,14 @@
             }
         });
 
-        $('.add-to-cart').click(function(){
+        $('.add-to-cart').click(function(event){
+            event.preventDefault();
             $.ajax(
             {
                 url: "{{ route('add-to-cart') }}",
                 type: "POST",
                 data: {
-                    id : $(this).data('id')
+                    product_id : $(this).data('id')
                 }
             }).done(function(data){
                 realoadCountCart(data.itemInCart);
