@@ -13,7 +13,7 @@ class FrontendController extends Controller
 {
     public function index(){
         $topThreeNewProducts = DB::table('products')
-            ->orderBy('product_created_at')->take(3)->get();
+            ->orderBy('product_created_at')->take(7)->get();
         $listBrands = Brand::all();
         $listProductCategories = DB::table('product_categories')
             ->orderBy('pro_category_created_at', 'desc')->get();
@@ -24,10 +24,10 @@ class FrontendController extends Controller
     }
 
     public function products(){
-        $listProducts = Product::paginate(6);
+        $listProducts = Product::paginate(8);
         $listBrands = Brand::all();
         $topThreeNewProducts = DB::table('products')
-            ->orderBy('product_created_at')->take(3)->get();
+            ->orderBy('product_created_at')->take(7)->get();
         $listProductCategories = DB::table('product_categories')
             ->orderBy('pro_category_created_at', 'desc')->get();
         return view('frontend.pages.products')

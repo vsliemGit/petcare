@@ -76,6 +76,19 @@ class ProductController extends Controller
         return redirect()->route('product.index');
     }
 
+    //Show page edit product
+    public function edit($id){
+        $product = Product::find($id);
+        $listBrands = Brand::all();
+        $listProductCategories = ProductCategory::all();
+        return view('backend.product.edit', ['product' => $product, 'listProductCategories' => $listProductCategories, 'listBrands' => $listBrands]);
+    }
+
+    //Update product
+    public function update(Request $request){
+
+    }
+
     //Delete item
     public function destroy(Request $request){
         if(is_array($request->id)){

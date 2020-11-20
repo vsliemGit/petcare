@@ -47,7 +47,7 @@
           <td><span class="text-ellipsis">{{ $product->category->pro_category_name }}</span></td>
           <td><span class="text-ellipsis">{{ $product->brand->brand_name }}</span></td>
           <td>
-          <a href="javascript:void(0)"
+          <a href="{{ route('product.edit', ['id' => $product->product_id])}} "
               class="active styling-edit edit-item" ui-toggle-class="">
               <i class="fa fa-pencil-square-o text-success text-active"></i></a>
           <a onclick="deleteItemAjax({{$product->product_id}})"        

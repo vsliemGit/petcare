@@ -27,6 +27,8 @@ Route::get('/admin/home', 'BackendController@showHome')->name('home.index');
 Route::get('/admin/product', 'ProductController@index')->name('product.index');
 Route::get('/admin/product/add', 'ProductController@create')->name('product.create');
 Route::post('/admin/pruduct/store', 'ProductController@store')->name('product.store');
+Route::get('/admin/pruduct/edit/{id}', 'ProductController@edit')->name('product.edit'); 
+Route::post('/admin/pruduct/update', 'ProductController@update')->name('product.update');
 Route::delete('/admin/product/delete', 'ProductController@destroy')->name('product.destroy');
 
 //ProductCategoryController

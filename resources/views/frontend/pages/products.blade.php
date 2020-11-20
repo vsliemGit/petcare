@@ -1,6 +1,15 @@
 {{-- View này sẽ kế thừa giao diện từ `frontend.layouts.master` --}}
 @extends('frontend.layouts.master')
 
+@section('custom-css')
+<style>
+    .img-similar {
+        width: 84px;
+        height: 84px;
+    }
+</style>
+@endsection
+
 {{-- Content of products --}}
 @section('main-content')
 <section id="advertisement">
@@ -17,10 +26,10 @@
             </div>
             <div class="features_items"><!--features_items-->
                 <h2 class="title text-center">NEW PRODUCTS</h2>
-                @foreach($topThreeNewProducts as $key => $product)
-                    <div class="col-sm-4">
+                <div class="owl-carousel owl-theme">
+                    @foreach($topThreeNewProducts as $key => $product)
                         <div class="product-image-wrapper">
-                            <div class="single-products">
+                            <div class="single-">
                                 <div class="productinfo text-center">
                                     <img src="{{ asset('storage/images/' . $product->product_image) }}" alt="" />
                                     <h2>${{ number_format($product->product_price, 2)}} </h2>
@@ -34,7 +43,7 @@
                                         <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                                     </div>
                                 </div>
-                                <img src="vendor/frontend/images/home/new.png" class="new" alt="" />
+                                <img src="vendor/frontend/images/home/new.png" class="new" style="width: 50px;" alt="" />
                             </div>
                             <div class="choose">
                                 <ul class="nav nav-pills nav-justified">
@@ -42,15 +51,15 @@
                                     <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
                                 </ul>
                             </div>
-                        </div>
-                    </div>  
-                @endforeach                
+                        </div>  
+                    @endforeach
+                </div>                
             </div><!--features_items-->
             
             <div class="features_items"><!--features_items-->
                 <h2 class="title text-center">LIST PRODUCTS</h2>
                 @foreach($listProducts as $key => $product)
-                    <div class="col-sm-4">
+                    <div class="col-sm-6 col-lg-3">
                         <div class="product-image-wrapper cart-product">
                             <div class="single-products">
                                 <div class="productinfo text-center">
@@ -72,7 +81,7 @@
                         </div>
                     </div>  
                 @endforeach  
-                <ul class="pagination">
+                <ul class="pagination col-sm-12 col-lg-12">
                     {{ $listProducts->links() }}
                 </ul>              
             </div><!--features_items-->
@@ -82,6 +91,28 @@
 
 @section('custom-scripts')
     <script>
+        //carousel
+        $(document).ready(function(){
+            $(".owl-carousel").owlCarousel({
+                items:3,
+                responsiveClass:true,
+                responsive:{
+                    0:{
+                        items:1,
+                        nav:true
+                    },
+                    600:{
+                        items: 2,
+                        nav:false
+                    },
+                    1000:{
+                        items: 3,
+                        nav:true,
+                        loop:false
+                    }
+                }
+            });
+        });
         //Setup CSRF to AJAX
         $.ajaxSetup({
             headers: {
