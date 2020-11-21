@@ -78,3 +78,4 @@ Route::get('/product-detail/{id}', 'FrontendController@productDetail')->name('fr
 Route::get('/shopping-cart', 'FrontendController@shoppingCart')->name('frontend.shopping_cart');
 Route::post('/add-to-cart', 'FrontendController@addToCart')->name('add-to-cart');
 Route::get('/delete-to-cart', 'FrontendController@deleteToCart')->name('delele-to-cart');
+Route::post('/update-to-cart', 'FrontendController@updateToCart')->name('update-to-cart');

@@ -42,6 +42,9 @@
                         <td class="cart_price">
                             <p>$ {{ number_format($product->price) .' '. 'VNĐ' }}</p>
                         </td>
+                        <form action="{{ route('update-to-cart') }}" method="post" class="form-update">
+                            @csrf
+                        <input type="hidden" name="rowId" value="{{ $product->rowId }}">
                         <td class="cart_quantity">
                             <div class="cart_quantity_button">
                                 <a class="cart_quantity_up" href=""> + </a>
@@ -51,10 +54,12 @@
                         </td>
                         <td class="cart_total">
                             <p class="cart_total_price">$ {{ number_format($product->priceTotal).' VNĐ' }}</p>
-                        </td>
-                        <td class="cart_delete">
-                            <a class="cart_quantity_delete" data-product-id="{{ $product->id }}" data-id="{{ $product->rowId }}" href="javascript:void(0)"><i class="fa fa-times"></i></a>
-                        </td> 
+                        </td>                      
+                            <td class="cart_delete">
+                                <a class="cart_quantity_delete" data-product-id="{{ $product->id }}" data-id="{{ $product->rowId }}" href="javascript:void(0)"><i class="fa fa-times"></i></a>
+                                <button type="submit" class="cart_quantity_update" data-product-id="{{ $product->id }}" data-id="{{ $product->rowId }}" href="javascript:void(0)"><i class="fa fa-refresh"></i></button>
+                            </td>
+                        </form>
                     </tr>
                     @endforeach
                 </tbody>
@@ -154,5 +159,30 @@
             alert( "error" );
         });
     });
+    //Setup CSRF to AJAX
+    $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+    });
+
+    $('.form-update').submit(function(e){
+        e.preventDefault();
+        var form = $(this);
+        let url = form.attr('action');
+        $.ajax(
+            {
+                url: url,
+                type: "POST",
+                data: form.serialize(),
+            }).done(function(data){
+                console.log(data);
+                realoadCountCart(data.itemInCart);
+                swal('Success!', 'Update item to cart successfully!.', 'success');
+            }).fail(function(jqXHR, ajaxOptions, thrownError){
+                swal("Error!", "No response from server...", "error");
+        });
+    });
+
 </script>
 @endsection
