@@ -1676,7 +1676,7 @@ h2.title {
   outline:none;
 }
 
-.cart_delete a:hover {
+.cart_delete a:hover, button:hover {
   background:#FE980F;
 }
 
@@ -1798,7 +1798,7 @@ h2.title {
 }
 
 .check_out {
-  margin-left: 20px
+  margin-left: 40px;
 }
 
 

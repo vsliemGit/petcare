@@ -36,7 +36,7 @@
                             <a href=""><img style="width: 100px; hight: 150px;" src="{{ asset('storage/images/'. $product->options->image ) }}" alt=""></a>
                         </td>
                         <td class="cart_description">
-                            <h4><a href="{{ route('frontend.product_detail', ['id' => $product->id]) }}">Colorblock Scuba</a></h4>
+                            <h4><a href="{{ route('frontend.product_detail', ['id' => $product->id]) }}">{{ $product->name }}</a></h4>
                             <p>Web ID: {{ $product->id }}</p>
                         </td>
                         <td class="cart_price">
@@ -136,8 +136,8 @@
                         <li>Shipping Cost <span>Free</span></li>
                         <li>Total <span>$61</span></li>
                     </ul>
-                        <a class="btn btn-default update" href="">Update</a>
-                        <a class="btn btn-default check_out" href="">Check Out</a>
+                        {{-- <a class="btn btn-default update" href="">Update</a> --}}
+                        <a class="btn btn-default check_out" href="{{ route('login-checkout') }}">Check Out</a>
                 </div>
             </div>
         </div>
