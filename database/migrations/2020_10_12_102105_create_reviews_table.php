@@ -20,12 +20,12 @@ class CreateReviewsTable extends Migration
            $table->timestamp('review_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
            $table->timestamp('review_updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
            $table->unsignedInteger('product_id');
-           $table->unsignedInteger('customer_id');
+        //    $table->unsignedInteger('id');
            
            $table->foreign('product_id')->references('product_id')
                 ->on('products')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('customer_id')->references('customer_id')
-                ->on('customers')->onDelete('cascade')->onUpdate('cascade');
+            // $table->foreign('id')->references('id')
+            //     ->on('customers')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

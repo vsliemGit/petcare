@@ -22,12 +22,12 @@ class CreateOrdersTable extends Migration
             $table->timestamp('order_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('order_updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->unsignedInteger('transfer_id');
-            $table->unsignedInteger('customer_id');
+            // $table->unsignedInteger('customer_id');
 
             $table->foreign('transfer_id')->references('transfer_id')
                 ->on('transfers')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('customer_id')->references('customer_id')
-                ->on('customers')->onDelete('cascade')->onUpdate('cascade');
+            // $table->foreign('customer_id')->references('customer_id')
+            //     ->on('customers')->onDelete('cascade')->onUpdate('cascade');
 
         });
     }

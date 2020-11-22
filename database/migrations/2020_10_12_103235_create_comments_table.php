@@ -21,12 +21,12 @@ class CreateCommentsTable extends Migration
             $table->timestamp('cmt_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('cmt_updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->unsignedInteger('product_id');
-            $table->unsignedInteger('customer_id');
+            // $table->unsignedInteger('customer_id');
             
             $table->foreign('product_id')->references('product_id')
                 ->on('products')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('customer_id')->references('customer_id')
-                ->on('customers')->onDelete('cascade')->onUpdate('cascade');
+            // $table->foreign('customer_id')->references('customer_id')
+            //     ->on('customers')->onDelete('cascade')->onUpdate('cascade');
 
         });
     }

@@ -65,12 +65,12 @@
                             <li><a href="{{ route('frontend.shopping_cart') }}"><i class="fa fa-shopping-cart"></i><span class='badge badge-warning' id='lblCartCount'> {{ Cart::count() }} </span> Cart</a></li>
                             
                             <!-- Authentication Links -->
-                            @guest
+                            @if(!Auth::guard('customer')->check())
                                 <li><a href="{{ route('login-checkout') }}"><i class="fa fa-lock"></i> Login</a></li>
                             @else
                                 <li class="dropdown">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                        <i class="fa fa-user"></i>{{ Auth::user()->name }}
+                                        <i class="fa fa-user"></i>{{Auth::guard('customer')->user()->name}}
                                     </a>
 
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -83,7 +83,7 @@
                                         </form>
                                     </div>
                                 </li>
-                            @endguest
+                            @endif
                             
                         </ul>
                     </div>

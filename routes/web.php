@@ -82,8 +82,15 @@ Route::get('/delete-to-cart', 'FrontendController@deleteToCart')->name('delele-t
 Route::post('/update-to-cart', 'FrontendController@updateToCart')->name('update-to-cart');
 //Checkout
 Route::get('/login-checkout', 'FrontendController@loginCheckout')->name('login-checkout');
-Route::get('/checkout', 'FrontendController@checkout')->name('checkout');
+Route::get('/checkout', 'FrontendController@checkout')->name('checkout')->middleware('customer');
 
 //Auth
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
+
+//CustomerLogin
+Route::get('/customer/login', 'Auth\CustomerLoginController@showLoginForm')->name('customer.login');
+Route::post('/customer/login', 'Auth\CustomerLoginController@login')->name('customer.login.post');
+// Route::post('/customer/logout', 'Auth\CustomerLoginController@logout')->name('customer.logout');
+Route::post('/customer/register', 'Auth\CustomerRegisterController@register')->name('customer.register');
+

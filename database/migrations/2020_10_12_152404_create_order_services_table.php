@@ -21,10 +21,10 @@ class CreateOrderServicesTable extends Migration
             $table->timestamp('order_service_date_begin')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('order_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('order_updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->unsignedInteger('customer_id');
+            // $table->unsignedInteger('customer_id');
             
-            $table->foreign('customer_id')->references('customer_id')
-                ->on('customers')->onDelete('cascade')->onUpdate('cascade');
+            // $table->foreign('customer_id')->references('customer_id')
+            //     ->on('customers')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

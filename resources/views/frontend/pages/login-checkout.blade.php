@@ -9,15 +9,15 @@
             <div class="col-sm-4 col-sm-offset-1">
                 <div class="login-form"><!--login form-->
                     <h2>Login to your account</h2>
-                    <form method="POST" action="{{ route('login') }}">
+                    <form method="POST" action="{{ route('customer.login.post') }}">
                         @csrf
-                        <input id="email" type="email" placeholder="Email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                        <input type="email" placeholder="Email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                             @error('email')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                        <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                        <input type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
                             @error('password')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -37,7 +37,7 @@
             <div class="col-sm-4">
                 <div class="signup-form"><!--sign up form-->
                     <h2>New User Signup!</h2>
-                    <form action="{{ route('register') }}" method="POST">
+                    <form action="{{ route('customer.register') }}" method="POST">
                         @csrf
                         <input id="username" type="text" placeholder="Username"  class="form-control @error('username') is-invalid @enderror" name="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
 
@@ -53,16 +53,16 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror
-                        <input id="email" type="email" placeholder="Email Address" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                        <input id="email" type="email" placeholder="Email Address" class="form-control @error('email_signup') is-invalid @enderror" name="email_signup" value="{{ old('email_signup') }}" required autocomplete="email_signup">
 
-                            @error('email')
+                            @error('email_signup')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
                             @enderror                 
-                        <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+                        <input id="password_signup" type="password" placeholder="Password" class="form-control @error('password_signup') is-invalid @enderror" name="password_signup" required autocomplete="new-password">
 
-                            @error('password')
+                            @error('password_signup')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
