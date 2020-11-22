@@ -12,6 +12,4 @@ class Role extends Model
 
     const CREATED_AT = 'role_created_at';
     const UPDATED_AT = 'role_updated_at';
-
-
 }
