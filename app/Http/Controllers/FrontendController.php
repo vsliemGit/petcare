@@ -9,6 +9,7 @@ use App\Brand;
 use App\Product;
 
 
+
 class FrontendController extends Controller
 {
     public function index(){
@@ -105,9 +106,5 @@ class FrontendController extends Controller
 
     public function checkout(){
         return view('frontend.pages.checkout');
-    }
-
-    public function addCustomer(Request $request){
-        
     }
 }

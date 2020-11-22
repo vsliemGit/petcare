@@ -83,4 +83,7 @@ Route::post('/update-to-cart', 'FrontendController@updateToCart')->name('update-
 //Checkout
 Route::get('/login-checkout', 'FrontendController@loginCheckout')->name('login-checkout');
 Route::get('/checkout', 'FrontendController@checkout')->name('checkout');
-Route::post('/add-customer', 'FrontendController@addCustomer')->name('add-customer');
+
+//Auth
+Auth::routes();
+Route::get('/home', 'HomeController@index')->name('home');

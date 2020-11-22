@@ -63,7 +63,28 @@
                             <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
                             <li><a href="{{ route('checkout') }}"><i class="fa fa-crosshairs"></i> Checkout</a></li>
                             <li><a href="{{ route('frontend.shopping_cart') }}"><i class="fa fa-shopping-cart"></i><span class='badge badge-warning' id='lblCartCount'> {{ Cart::count() }} </span> Cart</a></li>
-                            <li><a href="{{ route('login-checkout') }}"><i class="fa fa-lock"></i> Login</a></li>
+                            
+                            <!-- Authentication Links -->
+                            @guest
+                                <li><a href="{{ route('login-checkout') }}"><i class="fa fa-lock"></i> Login</a></li>
+                            @else
+                                <li class="dropdown">
+                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                        <i class="fa fa-user"></i>{{ Auth::user()->name }}
+                                    </a>
+
+                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="{{ route('logout') }}"
+                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            {{ __('Logout') }}
+                                        </a>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                            @csrf
+                                        </form>
+                                    </div>
+                                </li>
+                            @endguest
+                            
                         </ul>
                     </div>
                 </div>
