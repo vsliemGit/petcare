@@ -62,7 +62,7 @@
                             <li><a href="#"><i class="fa fa-user"></i> Account</a></li>
                             <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
                             <li><a href="{{ route('checkout') }}"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-                            <li><a href="{{ route('frontend.shopping_cart') }}"><i class="fa fa-shopping-cart"></i><span class='badge badge-warning' id='lblCartCount'> {{ Cart::count() }} </span> Cart</a></li>
+                            <li><a href="{{ route('shopping_cart') }}"><i class="fa fa-shopping-cart"></i><span class='badge badge-warning' id='lblCartCount'> {{ Cart::count() }} </span> Cart</a></li>
                             
                             <!-- Authentication Links -->
                             @if(!Auth::guard('customer')->check())
@@ -111,7 +111,7 @@
                                 <ul role="menu" class="sub-menu">
                                     <li><a href="{{ route('frontend.products') }}">Products</a></li>
                                     <li><a href="checkout.html">Checkout</a></li> 
-                                    <li><a href="{{ route('frontend.shopping_cart') }}">Cart</a></li> 
+                                    <li><a href="{{ route('shopping_cart') }}">Cart</a></li> 
                                     <li><a href="{{ route('login-checkout') }}">Login</a></li> 
                                 </ul>
                             </li> 

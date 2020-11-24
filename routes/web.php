@@ -75,12 +75,12 @@ Route::get('/error', function () { return view('frontend.errors.404');})->name('
 Route::get('/', 'FrontendController@index')->name('frontend.home');
 Route::get('/home', 'FrontendController@index')->name('frontend.home');
 Route::get('/products', 'FrontendController@products')->name('frontend.products');
-//Cart
 Route::get('/product-detail/{id}', 'FrontendController@productDetail')->name('frontend.product_detail');
-Route::get('/shopping-cart', 'FrontendController@shoppingCart')->name('frontend.shopping_cart');
-Route::post('/add-to-cart', 'FrontendController@addToCart')->name('add-to-cart');
-Route::get('/delete-to-cart', 'FrontendController@deleteToCart')->name('delele-to-cart');
-Route::post('/update-to-cart', 'FrontendController@updateToCart')->name('update-to-cart');
+//Cart
+Route::get('/shopping-cart', 'Frontend\CartController@shoppingCart')->name('shopping_cart');
+Route::post('/add-to-cart', 'Frontend\CartController@addToCart')->name('add-to-cart');
+Route::get('/delete-to-cart', 'Frontend\CartController@deleteToCart')->name('delele-to-cart');
+Route::post('/update-to-cart', 'Frontend\CartController@updateToCart')->name('update-to-cart');
 //Checkout
 Route::get('/login-checkout', 'FrontendController@loginCheckout')->name('login-checkout');
 Route::get('/checkout', 'FrontendController@checkout')->name('checkout')->middleware('customer');
