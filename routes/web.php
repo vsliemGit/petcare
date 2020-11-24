@@ -19,9 +19,10 @@ Route::prefix('admin')->group(function () {
     Route::get('/error', function () {
         return view('Error.404');
     })->name('backend.error.404');
-
+    Route::get('/login', 'BackendController@login')->name('backend.login');
+    Route::get('/register', 'BackendController@register')->name('backend.register');
     //BackendController
-    Route::get('/', 'BackendController@showHome')->name('home.index');
+    Route::get('/', 'BackendController@showHome')->name('home.index')->middleware('auth');
     Route::get('/home', 'BackendController@showHome')->name('home.index');
 
     //UserController

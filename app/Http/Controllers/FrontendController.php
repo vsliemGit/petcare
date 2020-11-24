@@ -73,23 +73,25 @@ class FrontendController extends Controller
 
     public function deleteToCart(Request $request){
         if($request->ajax()){
-            Cart::update($request->rowId, 0);
-            $itemInCart = Cart::count();
+            Cart::remove($request->rowId);
             return response()->json([
                 'success' => 'Delete Item successfuly!',
-                'itemInCart' => $itemInCart
+                'itemInCart' => Cart::count(),
+                'subtotal' => Cart::subtotal()
             ]);
         }
         return $this->shoppingCart();
     }
 
     public function updateToCart(Request $request){
+        
         if($request->ajax()){
             Cart::update($request->rowId, $request->quantity);
-            $itemInCart = Cart::count();
             return response()->json([
                 'success' => 'Delete Item successfuly!',
-                'itemInCart' => $itemInCart
+                'itemInCart' => Cart::count(),
+                'subtotal' => Cart::subtotal(),
+                'pSubtotal' => number_format(Cart::get($request->rowId)->priceTotal)
             ]);
         }
         return $this->shoppingCart();

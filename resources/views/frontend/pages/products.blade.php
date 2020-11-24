@@ -47,8 +47,8 @@
                             </div>
                             <div class="choose">
                                 <ul class="nav nav-pills nav-justified">
-                                    <li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-                                    <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
+                                    <li><a href="#"><i class="fa fa-star"></i>Add to wishlist</a></li>
+                                    <li><a href="#"><i class="fa fa-eye"></i>Quick view</a></li>
                                 </ul>
                             </div>
                         </div>  
@@ -74,8 +74,8 @@
                             </div>
                             <div class="choose">
                                 <ul class="nav nav-pills nav-justified">
-                                    <li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-                                    <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
+                                    <li><a href="#"><i class="fa fa-plus-square"></i>Wishlist</a></li>
+                                    <li><a href="#"><i class="fa fa-eye"></i>Detail</a></li>
                                 </ul>
                             </div>
                         </div>

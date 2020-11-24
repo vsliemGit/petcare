@@ -195,18 +195,25 @@
                 <input type="text" class="form-control search" placeholder=" Search">
             </li>
             <!-- user login dropdown start-->
-            <li class="dropdown">
-                <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                    <img alt="" src=" {{ asset('vendor/backend/images/2.png') }}">
-                    <span class="username">John Doe</span>
-                    <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu extended logout">
-                    <li><a href="#"><i class=" fa fa-suitcase"></i>Profile</a></li>
-                    <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
-                    <li><a href="login.html"><i class="fa fa-key"></i> Log Out</a></li>
-                </ul>
-            </li>
+            @if(!Auth::guard()->check())
+                <li><a href="{{ route('login-checkout') }}"><i class="fa fa-lock"></i> Login</a></li>
+            @else
+                <li class="dropdown">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                        <img alt="" src=" {{ asset('vendor/backend/images/2.png') }}">
+                        <span class="username">{{ Auth::user()->name }}</span>
+                        <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu extended logout">
+                        <li><a href="#"><i class=" fa fa-suitcase"></i>Profile</a></li>
+                        <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
+                        <form id="logout-form" action="{{ route('logout') }}" meonclick="event.preventDefault(); document.getElementById('logout-form').submit();" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                        <li onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><a href="login.html"><i class="fa fa-key"></i> Log Out</a></li>
+                    </ul>
+                </li>
+            @endif
             <!-- user login dropdown end -->
            
         </ul>

@@ -10,4 +10,15 @@ class BackendController extends Controller
     public function showHome(){
         return view('backend.layouts.index');
     }
+
+    //Show register form
+    public function login(){
+        return view('backend.pages.login');
+    }
+
+    //Show login form
+    public function register(){
+        return view('backend.pages.register');
+    }
+
 }

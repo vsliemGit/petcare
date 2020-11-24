@@ -11,9 +11,9 @@
               <li class="active">Shopping Cart</li>
             </ol>
         </div>
-        <div class="table-responsive cart_info">
+        <div class="table-responsive cart_info" id="tablene">
            @php
-               $cart_content = Cart::content();
+            $cart_content = Cart::content();
             //    echo "<pre>";
             //   print_r($cart_content);
             //   echo "</pre>";
@@ -53,11 +53,11 @@
                             </div>
                         </td>
                         <td class="cart_total">
-                            <p class="cart_total_price">$ {{ number_format($product->priceTotal).' VNĐ' }}</p>
+                        <p class="cart_total_price" id="{{ $product->id }}">$ {{ number_format($product->priceTotal).' VNĐ' }}</p>
                         </td>                      
                             <td class="cart_delete">
                                 <a class="cart_quantity_delete" data-product-id="{{ $product->id }}" data-id="{{ $product->rowId }}" href="javascript:void(0)"><i class="fa fa-times"></i></a>
-                                <button type="submit" class="cart_quantity_update" data-product-id="{{ $product->id }}" data-id="{{ $product->rowId }}" href="javascript:void(0)"><i class="fa fa-refresh"></i></button>
+                                <button type="submit" class="cart_quantity_update" data-id="{{ $product->id  }}" href="javascript:void(0)"><i class="fa fa-refresh"></i></button>
                             </td>
                         </form>
                     </tr>
@@ -131,7 +131,7 @@
             <div class="col-sm-6">
                 <div class="total_area">
                     <ul>
-                        <li>Cart Sub Total <span>$ {{ Cart::subtotal() .' '. 'VNĐ' }}</span></li>
+                        <li>Cart Sub Total <span id="subtotal">${{ Cart::subtotal() .' '. 'VNĐ' }}</span></li>
                         <li>Eco Tax <span>$2</span></li>
                         <li>Shipping Cost <span>Free</span></li>
                         <li>Total <span>$61</span></li>
@@ -152,6 +152,7 @@
         let itemId = $(this).data('product-id');
         $.get("{{ route('delele-to-cart') }}", {rowId: rowId}, function(data){
             realoadCountCart(data.itemInCart);
+            $('#subtotal').text("$"+data.subtotal+" VNĐ");
         }).done(function() {
             document.getElementById('product_'+ itemId).remove();
         })
@@ -168,16 +169,21 @@
 
     $('.form-update').submit(function(e){
         e.preventDefault();
+        
         var form = $(this);
+        // let button = form.parent().find('.cart_quantity_update').data('id');
+        let pSubtotal = form.parent().find('.cart_total_price');
         let url = form.attr('action');
+        let rowId = $(this).data('id');
         $.ajax(
             {
                 url: url,
                 type: "POST",
                 data: form.serialize(),
             }).done(function(data){
-                console.log(data);
                 realoadCountCart(data.itemInCart);
+                $('#subtotal').text("$"+data.subtotal+" VNĐ");
+                pSubtotal.text("$"+data.pSubtotal+" VNĐ");
                 swal('Success!', 'Update item to cart successfully!.', 'success');
             }).fail(function(jqXHR, ajaxOptions, thrownError){
                 swal("Error!", "No response from server...", "error");
