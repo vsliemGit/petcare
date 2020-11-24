@@ -47,9 +47,9 @@
                         <input type="hidden" name="rowId" value="{{ $product->rowId }}">
                         <td class="cart_quantity">
                             <div class="cart_quantity_button">
-                                <a class="cart_quantity_up" href=""> + </a>
+                                <a class="cart_quantity_up" href="javascript:void(0)"> + </a>
                                 <input class="cart_quantity_input" type="text" name="quantity" value="{{ $product->qty }}" autocomplete="off" size="2">
-                                <a class="cart_quantity_down" href=""> - </a>
+                                <a class="cart_quantity_down" href="javascript:void(0)"> - </a>
                             </div>
                         </td>
                         <td class="cart_total">
@@ -147,9 +147,24 @@
 
 @section('custom-scripts')
 <script>
+
+    $(".cart_quantity_up").on("click", function() {
+        let oldValue = $(this).parent().find(".cart_quantity_input").val();
+        let newVal = parseFloat(oldValue) + 1;
+        $(this).parent().find(".cart_quantity_input").val(parseFloat(oldValue) + 1)
+    });
+
+    $(".cart_quantity_down").on("click", function() {
+        let oldValue = $(this).parent().find(".cart_quantity_input").val();
+        if (parseFloat(oldValue) > 1) {
+            let newVal = parseFloat(oldValue) - 1;
+            $(this).parent().find(".cart_quantity_input").val(newVal)
+        }
+    });
+
     $('.cart_quantity_delete').click(function(){
-        let rowId = $(this).data('id');
-        let itemId = $(this).data('product-id');
+        var rowId = $(this).data('id');
+        var itemId = $(this).data('product-id');
         $.get("{{ route('delele-to-cart') }}", {rowId: rowId}, function(data){
             realoadCountCart(data.itemInCart);
             $('#subtotal').text("$"+data.subtotal+" VNĐ");
@@ -168,8 +183,7 @@
     });
 
     $('.form-update').submit(function(e){
-        e.preventDefault();
-        
+        e.preventDefault();       
         var form = $(this);
         // let button = form.parent().find('.cart_quantity_update').data('id');
         let pSubtotal = form.parent().find('.cart_total_price');
