@@ -37,36 +37,54 @@
 
         <div class="shopper-informations">
             <div class="row">
-                <div class="col-sm-3">
-                    <div class="shopper-info">
-                        <p>Shopper Information</p>
-                        <form>
-                            <input type="text" placeholder="Display Name">
-                            <input type="text" placeholder="User Name">
-                            <input type="password" placeholder="Password">
-                            <input type="password" placeholder="Confirm password">
-                        </form>
-                        <a class="btn btn-primary" href="">Get Quotes</a>
-                        <a class="btn btn-primary" href="">Continue</a>
+                @if(Auth::guard('customer')->check())
+                    <div class="col-sm-3">
+                        <div class="shopper-info">
+                            <p>Shopper Information</p>
+                            <form>
+                                <label for="name">Name: </label>
+                                <input type="text" name="name" placeholder="Display Name" value="{{Auth::guard('customer')->user()->name}}">
+                                <label for="username">Username: </label>
+                                <input type="text" name="username" placeholder="User Name" value="{{Auth::guard('customer')->user()->username}}">
+                                <label for="email">Email: </label>
+                                <input type="text" name="email" placeholder="User Name" value="{{Auth::guard('customer')->user()->email}}">
+                                <label for="phone">Phone number: </label>
+                                <input type="text" name="phone" placeholder="User Name" value="{{Auth::guard('customer')->user()->phone}}">
+                                <label>Sex: </label>
+                                <span>
+                                    <input type="radio" id="huey" name="drone" value="huey"
+                                            checked>
+                                    <label for="huey">Male</label>
+                                </span>
+                                <span>
+                                    <input type="radio" id="dewey" name="drone" value="dewey">
+                                    <label for="dewey">Femaile</label>
+                                </span>
+                                <input type="password" placeholder="Password">
+                                <input type="password" placeholder="Confirm password">  
+                            </form>
+                            <a class="btn btn-primary" href="">Get Quotes</a>
+                            <a class="btn btn-primary" href="">Update account</a>
+                        </div>
                     </div>
-                </div>
+                @endif
                 <div class="col-sm-5 clearfix">
                     <div class="bill-to">
                         <p>Bill To</p>
                         <div class="form-one">
                             <form>
-                                <input type="text" placeholder="Company Name">
-                                <input type="text" placeholder="Email*">
                                 <input type="text" placeholder="Title">
+                                <input type="text" placeholder="Email*">                             
                                 <input type="text" placeholder="First Name *">
                                 <input type="text" placeholder="Middle Name">
                                 <input type="text" placeholder="Last Name *">
+                                <input type="text" placeholder="Phone number *">
                                 <input type="text" placeholder="Address 1 *">
                                 <input type="text" placeholder="Address 2">
                             </form>
                         </div>
                         <div class="form-two">
-                            <form>
+                            {{-- <form>
                                 <input type="text" placeholder="Zip / Postal Code *">
                                 <select>
                                     <option>-- Country --</option>
@@ -94,7 +112,7 @@
                                 <input type="text" placeholder="Phone *">
                                 <input type="text" placeholder="Mobile Phone">
                                 <input type="text" placeholder="Fax">
-                            </form>
+                            </form> --}}
                         </div>
                     </div>
                 </div>

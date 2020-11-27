@@ -12,12 +12,17 @@
             </ol>
         </div>
         <div class="table-responsive cart_info" id="tablene">
-           @php
+           {{-- @php
             $cart_content = Cart::content();
             //    echo "<pre>";
             //   print_r($cart_content);
             //   echo "</pre>";
-           @endphp 
+           @endphp --}}
+           
+            @php
+                $cart_content = Cart::content();
+            @endphp           
+                
             <table class="table table-condensed">
                 <thead>
                     <tr class="cart_menu">
@@ -137,7 +142,8 @@
                         <li>Total <span>$61</span></li>
                     </ul>
                         {{-- <a class="btn btn-default update" href="">Update</a> --}}
-                        <a class="btn btn-default check_out" href="{{ route('login-checkout') }}">Check Out</a>
+                        <a class="btn btn-default check_out" href="{{ route('checkout') }}">Check Out</a>
+                        <a class="btn btn-default update" id="store-cart" href="">Store cart</a>
                 </div>
             </div>
         </div>
@@ -201,6 +207,20 @@
                 swal('Success!', 'Update item to cart successfully!.', 'success');
             }).fail(function(jqXHR, ajaxOptions, thrownError){
                 swal("Error!", "No response from server...", "error");
+        });
+    });
+
+    //Store cart
+    $('#store-cart').click(function(e){
+        e.preventDefault();       
+        $.ajax(
+        {
+            url: "{{ route('store-to-cart') }}",
+            type: "GET"
+        }).done(function(data){
+            alert(data.message);
+        }).fail(function(data){
+            alert(data.message);
         });
     });
 

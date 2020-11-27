@@ -80,7 +80,9 @@ Route::get('/product-detail/{id}', 'FrontendController@productDetail')->name('fr
 Route::get('/shopping-cart', 'Frontend\CartController@shoppingCart')->name('shopping_cart');
 Route::post('/add-to-cart', 'Frontend\CartController@addToCart')->name('add-to-cart');
 Route::get('/delete-to-cart', 'Frontend\CartController@deleteToCart')->name('delele-to-cart');
+Route::get('/store-to-cart', 'Frontend\CartController@storeCart')->name('store-to-cart');
 Route::post('/update-to-cart', 'Frontend\CartController@updateToCart')->name('update-to-cart');
+
 //Checkout
 Route::get('/login-checkout', 'FrontendController@loginCheckout')->name('login-checkout');
 Route::get('/checkout', 'FrontendController@checkout')->name('checkout')->middleware('customer');
@@ -92,6 +94,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 //CustomerLogin
 Route::get('/customer/login', 'Auth\CustomerLoginController@showLoginForm')->name('customer.login');
 Route::post('/customer/login', 'Auth\CustomerLoginController@login')->name('customer.login.post');
-// Route::post('/customer/logout', 'Auth\CustomerLoginController@logout')->name('customer.logout');
+Route::post('/customer/logout', 'Auth\CustomerLoginController@logout')->name('customer.logout');
 Route::post('/customer/register', 'Auth\CustomerRegisterController@register')->name('customer.register');
 

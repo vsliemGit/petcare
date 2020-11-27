@@ -6,25 +6,17 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use Cart;
+use Auth;
 use App\Brand;
 use App\Product;
 
 class CartController extends Controller
 {
-    public function productDetail($id){
-        $product = Product::find($id);
-        $listBrands = Brand::all();
-        $listProductCategories = DB::table('product_categories')
-            ->orderBy('pro_category_created_at', 'desc')->get();
-        $listProductsRelatedToThisItem = Product::find($id)->category->products;
-        return view('frontend.pages.product-detail')
-            ->with('listBrands', $listBrands)
-            ->with('listProductCategories', $listProductCategories)
-            ->with('product', $product)
-            ->with('listProductsRelatedToThisItem', $listProductsRelatedToThisItem);
-    }
 
     public function shoppingCart(){
+        if(Auth::guard('customer')->check()){
+            Cart::restore(Auth::guard('customer')->user()->id);
+        }
         return view('frontend.pages.shopping-cart');
     }
 
@@ -37,11 +29,29 @@ class CartController extends Controller
         $data['price'] = $product->product_price;
         $data['weight'] = $product->product_quantity;
         $data['options']['image'] = $product->product_image;
-        Cart::add($data);
+        Cart::add($data);     
         return response()->json([
             'success' => 'Add Item to Cart successfuly!',
-            'itemInCart' => Cart::count()
+            'itemInCart' =>  Cart::count()
         ]);
+    }
+
+
+    public function storeCart(Request $request){
+        if($request->ajax()){
+            if(Auth::guard('customer')->check()){
+                Cart::store(Auth::guard('customer')->user()->id);
+                $message = "Store successfully!";
+            }else{
+                $message = 'You must login!';
+            } 
+            return response()->json([
+                'message' => $message
+            ]);   
+        }
+        return response()->json([
+            'message' => 'error'
+        ]);    
     }
 
     public function deleteToCart(Request $request){

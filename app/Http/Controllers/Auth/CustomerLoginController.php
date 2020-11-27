@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Auth;
+use Session;
+use Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Providers\RouteServiceProvider;
@@ -33,6 +35,11 @@ class CustomerLoginController extends Controller
         return 'email';
     }
 
+    public function guard()
+    {
+        return Auth::guard('customer');
+    }
+
     public function login(Request $request) //Go web.php then you will find this route
     {
         
@@ -52,9 +59,14 @@ class CustomerLoginController extends Controller
         return redirect()->back()->withInput($request->only('email','remember'));       
     }
 
-    public function guard()
+    public function logout()
     {
-        return Auth::guard('customer');
+        if(Auth::guard('customer')->check()){
+            Cart::store(Auth::guard('customer')->user()->id);
+        }
+        Session::flush();
+        Auth::logout();
+        return back();
     }
 
 }

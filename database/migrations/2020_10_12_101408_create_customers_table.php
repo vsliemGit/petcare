@@ -21,8 +21,8 @@ class CreateCustomersTable extends Migration
             $table->string('email', 100)->nullable();
             $table->rememberToken();
             $table->timestamp('email_verified_at')->nullable();
-            // $table->string('phone', 11);
-            // $table->tinyInteger('sex');
+            $table->string('phone', 11);
+            $table->tinyInteger('sex')->default(0);
             // $table->tinyInteger('status');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));

@@ -46,6 +46,7 @@ class CustomerRegisterController extends Controller
         $customer = Customer::create([
             'username' => $request->username,
             'name' => $request->name,
+            'phone' => $request->phone,
             'email' => $request->email_signup,
             'password' => Hash::make($request->password_signup)
         ]);

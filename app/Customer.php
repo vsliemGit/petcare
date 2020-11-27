@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class Customer extends Authenticatable
+use Gloudemans\Shoppingcart\Contracts\InstanceIdentifier;
+
+class Customer extends Authenticatable implements InstanceIdentifier
 {
     use Notifiable;
     const CREATED_AT = 'created_at';
@@ -16,7 +18,7 @@ class Customer extends Authenticatable
 
     protected $guarded = ['id'];
     protected $fillable = [
-      'username', 'name', 'email', 'password'
+      'username', 'name', 'email', 'password', 'phone'
     ];
 
     protected $hidden = [
@@ -28,5 +30,25 @@ class Customer extends Authenticatable
     public function getAuthPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * Get the unique identifier to load the Cart from
+     *
+     * @return int|string
+     */
+    public function getInstanceIdentifier($options = null)
+    {
+        return $this->email;
+    }
+
+    /**
+     * Get the unique identifier to load the Cart from
+     *
+     * @return int|string
+     */
+    public function getInstanceGlobalDiscount($options = null)
+    {
+        return $this->discountRate ?: 0;
     }
 }
