@@ -27,6 +27,10 @@ class Customer extends Authenticatable implements InstanceIdentifier
 
     protected $dateFomat = 'Y-m-d H:i:s';
 
+    public function comments(){
+      return $this->hasMany('App\Comment::class', 'cmt_id', 'cmt_id');
+    }
+
     public function getAuthPassword()
     {
         return $this->password;

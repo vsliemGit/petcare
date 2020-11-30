@@ -7,6 +7,31 @@
         width: 84px;
         height: 84px;
     }
+
+    .comment {
+        border: 2px solid #dedede;
+        background-color: #f1f1f1;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px 0;
+    }
+
+    .comment img {
+        float: left;
+        max-width: 60px;
+        width: 100%;
+        margin-right: 20px;
+        border-radius: 50%;
+    }
+    .comment::after {
+        content: "";
+        clear: both;
+        display: table;
+    }
+    .time-right {
+        float: right;
+        color: #aaa;
+    }
 </style>
 @endsection
 
@@ -60,7 +85,7 @@
                             <img src="vendor/frontend/images/product-details/rating.png" alt="" />
                             <form action="{{ route('add-to-cart') }}" method="post" id="add-cart-form">
                                 <span>
-                                    <span>${{ number_format($product->product_quantity) }}</span>
+                                    <span>${{ number_format($product->product_price) }}</span>
                                         <label>Quantity:</label>
                                         <input type="hidden" id="product_id" name="product_id" value="{{$product->product_id}}">
                                         <input type="number" name="quantity" value="1" />
@@ -87,7 +112,7 @@
                         </ul>
                     </div>
                     <div class="tab-content">
-                        <div class="tab-pane fade" id="details" >
+                        <div class="tab-pane fade" id="details" ><!--detail-->
                             <div class="col-sm-12">
                                 <p><b>Description:</b> {{ $product->product_desc }}</p>
                                 <p><b>Quantity in stock:</b> {{ number_format($product->product_quantity) }}</p>
@@ -95,7 +120,7 @@
                             </div>
                         </div>
                         
-                        <div class="tab-pane fade" id="features" >
+                        <div class="tab-pane fade" id="features" ><!--features-->
                             <div class="col-sm-12">
                                 <p><b>Description:</b> {{ $product->product_desc }}</p>
                                 <p><b>Quantity in stock:</b> {{ number_format($product->product_quantity) }}</p>
@@ -103,25 +128,28 @@
                             </div>
                         </div>
                         
-                        <div class="tab-pane fade active in" id="reviews" >
+                        <div class="tab-pane fade active in" id="reviews" ><!--reviews-->
                             <div class="col-sm-12">
                                 <ul>
                                     <li><a href=""><i class="fa fa-user"></i>EUGEN</a></li>
                                     <li><a href=""><i class="fa fa-clock-o"></i>12:41 PM</a></li>
                                     <li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
                                 </ul>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                                <p><b>Write Your Review</b></p>
-                                
-                                <form action="#">
-                                    <span>
-                                        <input type="text" placeholder="Your Name"/>
-                                        <input type="email" placeholder="Email Address"/>
-                                    </span>
-                                    <textarea name="" ></textarea>
-                                    <b>Rating: </b> <img src="vendor/frontend/images/product-details/rating.png" alt="" />
-                                    <button type="button" class="btn btn-default pull-right">
-                                        Submit
+                                <div id="comment-show">
+                                </div>              
+                                <br>                               
+                                <form id="add-comment" action="{{ route('add_comment') }}" method="POST" >
+                                    <input type="hidden" name="product_id" value="{{$product->product_id}}">
+                                    @if (!Auth::guard('customer')->check())
+                                        <span>
+                                            <input type="text" name="name" placeholder="Your Name"/>
+                                            <input type="email" name="email" placeholder="Email Address"/>
+                                        </span>                                                                                   
+                                    @endif
+                                    <textarea class="content_comment" name="comment" ></textarea>
+                                    <b>Rating: </b> <img src="vendor/frontend/images/product-details/rating.png" alt="" />  
+                                    <button type="submit" class="btn btn-default pull-right">
+                                        Comment
                                     </button>
                                 </form>
                             </div>
@@ -179,6 +207,44 @@
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
+        });
+
+        $(document).ready(function(){
+            loadComment();
+        });
+        
+        function loadComment(){
+            let product_id = $('#product_id').val();
+            $.ajax({
+                url: "{{ route('load_comment') }}",
+                method: "POST",
+                data: {
+                    product_id : product_id
+                },
+            }).done(function(data){
+                $('#comment-show').html(data);
+            }).fail(function(data){
+                console.log(data);
+            });
+        }
+
+        $("#add-comment").submit(function(e){
+            e.preventDefault(); // avoid to execute the actual submit of the form.
+            var form = $(this);
+            var url = form.attr('action');
+            $.ajax(
+            {
+                url: url,
+                type: "POST",
+                data: form.serialize(),
+            }).done(function(data){               
+                swal('Success!', data.message, data.type);
+                loadComment();
+                form.find(".content_comment").val("");
+            }).fail(function(jqXHR, ajaxOptions, thrownError){
+                swal("Error!", data.message , "error");
+            });
+
         });
 
         $("#add-cart-form").submit(function(e){

@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use DB;
 use Cart;
 use Auth;
+use Date;
+use App\Comment;
+use App\Customer;
 use App\Brand;
 use App\Product;
 
@@ -60,6 +63,58 @@ class FrontendController extends Controller
             ->with('listProductCategories', $listProductCategories)
             ->with('product', $product)
             ->with('listProductsRelatedToThisItem', $listProductsRelatedToThisItem);
+    }
+
+    public function loadComment(Request $request){
+        if($request->ajax()){
+            // $comments = DB::table('comments')->join('customers', 'customers.id', '=', 'comments.customer_id')
+            //     ->select('comments.*', 'customers.name')->where('comments.product_id', $request->product_id)->get();
+            $comments = DB::table('comments')->where('product_id', $request->product_id)->get();
+            $output = "";
+            $name = "";
+            foreach($comments as $key => $comment){
+                $name = ($comment->name_customer === null) ?
+                Customer::find($comment->customer_id)->name
+                :  $comment->name_customer;   
+                $output .= '
+                <div class="comment">
+                    <img src="/storage/images/icon/admin-comment.png" alt="admin-avatar" class="img img-responsive img-thumbnail">
+                    <p style="color: blue;">@'.$name.'</p>
+                    <p>'.$comment->cmt_content.'</p>
+                    <span class="time-right">'.$comment->cmt_created_at.'</span>
+                </div> ';
+            }
+            return $output;
+        }
+    }
+
+    public function addComment(Request $request){
+        
+        if($request->ajax() && $request->comment != null){
+            $data = [];
+            $data['product_id'] = $request->product_id;
+            $data['cmt_content'] = $request->comment;
+            if(Auth::guard('customer')->check()){
+                $data['customer_id'] = Auth::guard('customer')->user()->id;
+                $data['name_customer'] = $request->name;
+                $data['email_customer'] = $request->email;     
+            }else{
+                $data['customer_id'] = null;
+                $data['name_customer'] = $request->name;
+                $data['email_customer'] = $request->email;
+            }
+
+            DB::table('comments')->insert($data);
+            return response()->json([
+                'type' => 'success',
+                'message' => 'Add Comment successfuly!'
+            ]);
+        }
+
+        return response()->json([
+            'type' => 'error',
+            'message' => 'Invalid comment!'
+        ]);      
     }
     
     public function loadProductsByBrand($brand){

@@ -14,19 +14,20 @@ class CreateCommentsTable extends Migration
     public function up()
     {
         Schema::create('comments', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
             $table->increments('cmt_id');
-            $table->text('cmt_content');
+            $table->string('cmt_content', 255);
             $table->tinyInteger('cmt_status')->default(0);
+            $table->string('name_customer', 50)->nullable();
+            $table->string('email_customer', 100)->nullable();
             $table->timestamp('cmt_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('cmt_updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->unsignedInteger('product_id');
-            // $table->unsignedInteger('customer_id');
+            $table->unsignedInteger('customer_id')->nullable();
             
             $table->foreign('product_id')->references('product_id')
                 ->on('products')->onDelete('cascade')->onUpdate('cascade');
-            // $table->foreign('customer_id')->references('customer_id')
-            //     ->on('customers')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('customer_id')->references('id')
+                ->on('customers')->onDelete('cascade')->onUpdate('cascade');
 
         });
     }
