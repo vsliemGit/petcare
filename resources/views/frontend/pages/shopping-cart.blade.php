@@ -130,7 +130,7 @@
                         </li>
                     </ul>
                     <a class="btn btn-default update" href="">Get Quotes</a>
-                    <a class="btn btn-default check_out" href="">Continue</a>
+                    {{-- <a class="btn btn-default check_out" href="">Continue</a> --}}
                 </div>
             </div>
             <div class="col-sm-6">
@@ -143,7 +143,6 @@
                     </ul>
                         {{-- <a class="btn btn-default update" href="">Update</a> --}}
                         <a class="btn btn-default check_out" href="{{ route('checkout') }}">Check Out</a>
-                        <a class="btn btn-default update" id="store-cart" href="">Store cart</a>
                 </div>
             </div>
         </div>
@@ -211,18 +210,18 @@
     });
 
     //Store cart
-    $('#store-cart').click(function(e){
-        e.preventDefault();       
-        $.ajax(
-        {
-            url: "{{ route('store-to-cart') }}",
-            type: "GET"
-        }).done(function(data){
-            alert(data.message);
-        }).fail(function(data){
-            alert(data.message);
-        });
-    });
+    // $('#store-cart').click(function(e){
+    //     e.preventDefault();       
+    //     $.ajax(
+    //     {
+    //         url: "{{ route('store-to-cart') }}",
+    //         type: "GET"
+    //     }).done(function(data){
+    //         alert(data.message);
+    //     }).fail(function(data){
+    //         alert(data.message);
+    //     });
+    // });
 
 </script>
 @endsection

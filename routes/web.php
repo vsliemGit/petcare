@@ -76,6 +76,7 @@ Route::get('/', 'FrontendController@index')->name('frontend.home');
 Route::get('/home', 'FrontendController@index')->name('frontend.home');
 Route::get('/products', 'FrontendController@products')->name('frontend.products');
 Route::get('/product-detail/{id}', 'FrontendController@productDetail')->name('frontend.product_detail');
+Route::get('/contact', 'FrontendController@contact')->name('frontend.contact');
 //Cart
 Route::get('/shopping-cart', 'Frontend\CartController@shoppingCart')->name('shopping_cart');
 Route::post('/add-to-cart', 'Frontend\CartController@addToCart')->name('add-to-cart');

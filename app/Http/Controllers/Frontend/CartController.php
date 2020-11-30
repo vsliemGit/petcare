@@ -14,9 +14,6 @@ class CartController extends Controller
 {
 
     public function shoppingCart(){
-        if(Auth::guard('customer')->check()){
-            Cart::restore(Auth::guard('customer')->user()->id);
-        }
         return view('frontend.pages.shopping-cart');
     }
 

@@ -52,6 +52,7 @@ class CustomerLoginController extends Controller
         // Attempt to log the user in
         if(Auth::guard('customer')->attempt(['email' => $request->email, 'password' => $request->password], $request->remember))
         {
+            Cart::restore(Auth::guard('customer')->user()->id);
             return redirect()->intended(route('frontend.home'));
         }
 

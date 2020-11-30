@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
         view()->composer('*', function ($view) {
             if(Auth::check()){
-                $view->with('auth', Auth::user())->with('customer', Auth::customer());
+                $view->with('auth', Auth::user());
             }
         });
     }

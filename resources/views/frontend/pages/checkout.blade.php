@@ -13,9 +13,9 @@
         </div><!--/breadcrums-->
 
         <div class="step-one">
-            <h2 class="heading">Step1</h2>
+            <h2 class="heading">Step 1</h2>
         </div>
-        <div class="checkout-options">
+        {{-- <div class="checkout-options">
             <h3>New User</h3>
             <p>Checkout options</p>
             <ul class="nav">
@@ -33,7 +33,7 @@
 
         <div class="register-req">
             <p>Please use Register And Checkout to easily get access to your order history, or use Checkout as Guest</p>
-        </div><!--/register-req-->
+        </div><!--/register-req--> --}}
 
         <div class="shopper-informations">
             <div class="row">
@@ -51,20 +51,18 @@
                                 <label for="phone">Phone number: </label>
                                 <input type="text" name="phone" placeholder="User Name" value="{{Auth::guard('customer')->user()->phone}}">
                                 <label>Sex: </label>
-                                <span>
+                                <div>
                                     <input type="radio" id="huey" name="drone" value="huey"
                                             checked>
                                     <label for="huey">Male</label>
-                                </span>
+                                </div>
                                 <span>
                                     <input type="radio" id="dewey" name="drone" value="dewey">
                                     <label for="dewey">Femaile</label>
                                 </span>
-                                <input type="password" placeholder="Password">
-                                <input type="password" placeholder="Confirm password">  
                             </form>
-                            <a class="btn btn-primary" href="">Get Quotes</a>
-                            <a class="btn btn-primary" href="">Update account</a>
+                            {{-- <a class="btn btn-primary" href="">Get Quotes</a>
+                            <a class="btn btn-primary" href="">Update account</a> --}}
                         </div>
                     </div>
                 @endif
@@ -73,11 +71,10 @@
                         <p>Bill To</p>
                         <div class="form-one">
                             <form>
-                                <input type="text" placeholder="Title">
-                                <input type="text" placeholder="Email*">                             
                                 <input type="text" placeholder="First Name *">
                                 <input type="text" placeholder="Middle Name">
                                 <input type="text" placeholder="Last Name *">
+                                <input type="text" placeholder="Email*">                             
                                 <input type="text" placeholder="Phone number *">
                                 <input type="text" placeholder="Address 1 *">
                                 <input type="text" placeholder="Address 2">
@@ -121,9 +118,15 @@
                         <p>Shipping Order</p>
                         <textarea name="message"  placeholder="Notes about your order, Special Notes for Delivery" rows="16"></textarea>
                         <label><input type="checkbox"> Shipping to bill address</label>
+                        {{-- <div>
+                            <a class="btn btn-default check_out" href="" style="width: 200px;">Order Now</a>
+                        </div> --}}
                     </div>	
                 </div>					
             </div>
+        </div>
+        <div class="step-one">
+            <h2 class="heading">Step 2</h2>
         </div>
         <div class="review-payment">
             <h2>Review & Payment</h2>
@@ -141,90 +144,49 @@
                         <td></td>
                     </tr>
                 </thead>
+                @php
+                    $cart_content = Cart::content();
+                @endphp
                 <tbody>
-                    <tr>
+                    @foreach($cart_content as $product)
+                    <tr id="product_{{ $product->id }}">
                         <td class="cart_product">
-                            <a href=""><img src="images/cart/one.png" alt=""></a>
+                            <a href=""><img style="width: 100px; hight: 150px;" src="{{ asset('storage/images/'. $product->options->image ) }}" alt=""></a>
                         </td>
                         <td class="cart_description">
-                            <h4><a href="">Colorblock Scuba</a></h4>
-                            <p>Web ID: 1089772</p>
+                            <h4><a href="{{ route('frontend.product_detail', ['id' => $product->id]) }}">{{ $product->name }}</a></h4>
+                            <p>Web ID: {{ $product->id }}</p>
                         </td>
                         <td class="cart_price">
-                            <p>$59</p>
+                            <p>$ {{ number_format($product->price) .' '. 'VNĐ' }}</p>
                         </td>
+                        <form action="{{ route('update-to-cart') }}" method="post" class="form-update">
+                            @csrf
+                        <input type="hidden" name="rowId" value="{{ $product->rowId }}">
                         <td class="cart_quantity">
                             <div class="cart_quantity_button">
-                                <a class="cart_quantity_up" href=""> + </a>
-                                <input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-                                <a class="cart_quantity_down" href=""> - </a>
+                                <a class="cart_quantity_up" href="javascript:void(0)"> + </a>
+                                <input class="cart_quantity_input" type="text" name="quantity" value="{{ $product->qty }}" autocomplete="off" size="2">
+                                <a class="cart_quantity_down" href="javascript:void(0)"> - </a>
                             </div>
                         </td>
                         <td class="cart_total">
-                            <p class="cart_total_price">$59</p>
-                        </td>
-                        <td class="cart_delete">
-                            <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-                        </td>
+                        <p class="cart_total_price" id="{{ $product->id }}">$ {{ number_format($product->priceTotal).' VNĐ' }}</p>
+                        </td>                      
+                            <td class="cart_delete">
+                                <a class="cart_quantity_delete" data-product-id="{{ $product->id }}" data-id="{{ $product->rowId }}" href="javascript:void(0)"><i class="fa fa-times"></i></a>
+                                <button type="submit" class="cart_quantity_update" data-id="{{ $product->id  }}" href="javascript:void(0)"><i class="fa fa-refresh"></i></button>
+                            </td>
+                        </form>
                     </tr>
-
-                    <tr>
-                        <td class="cart_product">
-                            <a href=""><img src="images/cart/two.png" alt=""></a>
-                        </td>
-                        <td class="cart_description">
-                            <h4><a href="">Colorblock Scuba</a></h4>
-                            <p>Web ID: 1089772</p>
-                        </td>
-                        <td class="cart_price">
-                            <p>$59</p>
-                        </td>
-                        <td class="cart_quantity">
-                            <div class="cart_quantity_button">
-                                <a class="cart_quantity_up" href=""> + </a>
-                                <input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-                                <a class="cart_quantity_down" href=""> - </a>
-                            </div>
-                        </td>
-                        <td class="cart_total">
-                            <p class="cart_total_price">$59</p>
-                        </td>
-                        <td class="cart_delete">
-                            <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="cart_product">
-                            <a href=""><img src="images/cart/three.png" alt=""></a>
-                        </td>
-                        <td class="cart_description">
-                            <h4><a href="">Colorblock Scuba</a></h4>
-                            <p>Web ID: 1089772</p>
-                        </td>
-                        <td class="cart_price">
-                            <p>$59</p>
-                        </td>
-                        <td class="cart_quantity">
-                            <div class="cart_quantity_button">
-                                <a class="cart_quantity_up" href=""> + </a>
-                                <input class="cart_quantity_input" type="text" name="quantity" value="1" autocomplete="off" size="2">
-                                <a class="cart_quantity_down" href=""> - </a>
-                            </div>
-                        </td>
-                        <td class="cart_total">
-                            <p class="cart_total_price">$59</p>
-                        </td>
-                        <td class="cart_delete">
-                            <a class="cart_quantity_delete" href=""><i class="fa fa-times"></i></a>
-                        </td>
-                    </tr>
+                    @endforeach
                     <tr>
                         <td colspan="4">&nbsp;</td>
                         <td colspan="2">
                             <table class="table table-condensed total-result">
                                 <tr>
                                     <td>Cart Sub Total</td>
-                                    <td>$59</td>
+                                    <td><span id="subtotal">$ {{ Cart::subtotal() .' '. 'VNĐ' }}</span></td>
                                 </tr>
                                 <tr>
                                     <td>Exo Tax</td>
@@ -237,6 +199,12 @@
                                 <tr>
                                     <td>Total</td>
                                     <td><span>$61</span></td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><span>
+                                        <a class="btn btn-default check_out" href="">Order Now</a>
+                                    </span></td>
                                 </tr>
                             </table>
                         </td>

@@ -67,6 +67,10 @@ class FrontendController extends Controller
         return $listBrands;
     }
 
+    public function contact(){
+        return view('frontend.pages.contact');
+    }
+
     public function loginCheckout(){
         return view('frontend.pages.login-checkout');
     }

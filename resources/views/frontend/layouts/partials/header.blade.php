@@ -125,7 +125,7 @@
                                 </ul>
                             </li> 
                             <li><a href="{{ route('frontend.error.404') }}">404</a></li>
-                            <li><a href="contact-us.html">Contact</a></li>
+                            <li><a href="{{ route('frontend.contact')}}">Contact</a></li>
                         </ul>
                     </div>
                 </div>

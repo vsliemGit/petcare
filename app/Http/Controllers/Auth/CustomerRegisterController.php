@@ -24,6 +24,7 @@ class CustomerRegisterController extends Controller
     {
         return Auth::guard('customer');
     }
+    
     // protected function validator(array $data)
     // {
     //     return Validator::make($data, [
