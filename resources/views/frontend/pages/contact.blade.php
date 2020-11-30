@@ -3,7 +3,7 @@
 
 {{-- Thay thế nội dung vào Placeholder `title` của view `frontend.layouts.index` --}}
 @section('title')
-Home | PETCARE
+Contact | PETCARE
 @endsection
 
 {{-- Content of index --}}

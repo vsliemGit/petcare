@@ -70,6 +70,9 @@ class FrontendController extends Controller
     public function contact(){
         return view('frontend.pages.contact');
     }
+    public function aboutUs(){
+        return view('frontend.pages.about-us');
+    }
 
     public function loginCheckout(){
         return view('frontend.pages.login-checkout');

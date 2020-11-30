@@ -124,8 +124,8 @@
                                     <li><a href="blog-single.html">Blog Single</a></li>
                                 </ul>
                             </li> 
-                            <li><a href="{{ route('frontend.error.404') }}">404</a></li>
                             <li><a href="{{ route('frontend.contact')}}">Contact</a></li>
+                            <li><a href="{{ route('frontend.about_us')}}">About us</a></li>
                         </ul>
                     </div>
                 </div>
