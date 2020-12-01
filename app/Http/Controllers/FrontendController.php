@@ -7,6 +7,7 @@ use DB;
 use Cart;
 use Auth;
 use Date;
+use App\Rating;
 use App\Comment;
 use App\Customer;
 use App\Brand;
@@ -14,18 +15,6 @@ use App\Product;
 
 class FrontendController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    // public function __construct()
-    // {
-    //     if(Auth::guard('customer')->check()){
-    //         Cart::restore(Auth::guard('customer')->user()->id);
-    //     }
-    // }
-
     public function index(){
         $topThreeNewProducts = DB::table('products')
             ->orderBy('product_created_at')->take(10)->get();
@@ -58,17 +47,17 @@ class FrontendController extends Controller
         $listProductCategories = DB::table('product_categories')
             ->orderBy('pro_category_created_at', 'desc')->get();
         $listProductsRelatedToThisItem = Product::find($id)->category->products;
+        $rating = Rating::where('product_id', $id)->avg('rating_star');
         return view('frontend.pages.product-detail')
             ->with('listBrands', $listBrands)
             ->with('listProductCategories', $listProductCategories)
             ->with('product', $product)
+            ->with('rating', round($rating))
             ->with('listProductsRelatedToThisItem', $listProductsRelatedToThisItem);
     }
 
     public function loadComment(Request $request){
         if($request->ajax()){
-            // $comments = DB::table('comments')->join('customers', 'customers.id', '=', 'comments.customer_id')
-            //     ->select('comments.*', 'customers.name')->where('comments.product_id', $request->product_id)->get();
             $comments = DB::table('comments')->where('product_id', $request->product_id)->get();
             $output = "";
             $name = "";
@@ -89,22 +78,43 @@ class FrontendController extends Controller
     }
 
     public function addComment(Request $request){
+
+        if($request->rating == 0){
+            return response()->json([
+                'type' => 'error',
+                'message' => 'You must rating'
+            ]); 
+        }
         
         if($request->ajax() && $request->comment != null){
-            $data = [];
-            $data['product_id'] = $request->product_id;
-            $data['cmt_content'] = $request->comment;
+
+            $dataComment['product_id'] = $request->product_id;
+            $dataComment['cmt_content'] = $request->comment;
+
+            $dataRating['product_id'] = $request->product_id;         
+            $dataRating['rating_star'] = $request->rating;
+
             if(Auth::guard('customer')->check()){
-                $data['customer_id'] = Auth::guard('customer')->user()->id;
-                $data['name_customer'] = $request->name;
-                $data['email_customer'] = $request->email;     
+                $dataComment['customer_id'] = Auth::guard('customer')->user()->id;
+                $dataComment['name_customer'] = $request->name;
+                $dataComment['email_customer'] = $request->email;
+
+                $dataRating['customer_id'] = Auth::guard('customer')->user()->id;
+                $dataRating['name_customer'] = $request->name;
+                $dataRating['email_customer'] = $request->email;     
             }else{
-                $data['customer_id'] = null;
-                $data['name_customer'] = $request->name;
-                $data['email_customer'] = $request->email;
+                $dataComment['customer_id'] = null;
+                $dataComment['name_customer'] = $request->name;
+                $dataComment['email_customer'] = $request->email;
+
+                $dataComment['customer_id'] = null;
+                $dataComment['name_customer'] = $request->name;
+                $dataComment['email_customer'] = $request->email;
             }
 
-            DB::table('comments')->insert($data);
+            DB::table('comments')->insert($dataComment);
+            DB::table('rating')->insert($dataRating);
+
             return response()->json([
                 'type' => 'success',
                 'message' => 'Add Comment successfuly!'

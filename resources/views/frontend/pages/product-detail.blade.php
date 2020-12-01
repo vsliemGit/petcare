@@ -82,7 +82,27 @@
                             <img src="vendor/frontend/images/product-details/new.jpg" class="newarrival" alt="" />
                             <h2>{{ $product->product_name }}</h2>
                             <p>Web ID: {{ $product->product_id }}</p>
-                            <img src="vendor/frontend/images/product-details/rating.png" alt="" />
+                            <ul class="list-inline">
+                                @for ($i = 1; $i <= 5; $i++)
+                                    @php
+                                        if ($i > $rating){
+                                            $color = "color: #ccc;";
+                                        }                                                       
+                                        else {
+                                            $color = "color: #ffcc00;";
+                                        }    
+                                    @endphp
+                                    <li
+                                        title="Sản phẩm được đánh giá {{$rating}} sao"
+                                        class="rating"
+                                        style="cursor: pointer;
+                                        {{$color}}
+                                        font-size: 25px;"
+                                        >
+                                    &#9733
+                                    </li>  
+                                @endfor                                          
+                            </ul>
                             <form action="{{ route('add-to-cart') }}" method="post" id="add-cart-form">
                                 <span>
                                     <span>${{ number_format($product->product_price) }}</span>
@@ -147,7 +167,32 @@
                                         </span>                                                                                   
                                     @endif
                                     <textarea class="content_comment" name="comment" ></textarea>
-                                    <b>Rating: </b> <img src="vendor/frontend/images/product-details/rating.png" alt="" />  
+                                    <b>Rating: </b> <input type="hidden" id="rating" name="rating" value="0">
+                                        {{-- <img src="vendor/frontend/images/product-details/rating.png" alt="" />   --}}
+                                        <ul class="list-inline">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                @php
+                                                    if ($i > $rating){
+                                                        $color = "color: #ccc;";
+                                                    }                                                       
+                                                    else {
+                                                        $color = "color: #ffcc00;";
+                                                    }    
+                                                @endphp
+                                                <li
+                                                    id="{{$product->product_id}}-{{$i}}"
+                                                    title="Đánh giá {{$i}} sao"
+                                                    data-index = "{{$i}}"
+                                                    data-product_id = "{{$product->product_id}}"
+                                                    class="rating"
+                                                    style="cursor: pointer;
+                                                    color: #ccc;
+                                                    font-size: 25px;"
+                                                    >
+                                                &#9733
+                                                </li>  
+                                            @endfor                                          
+                                        </ul>
                                     <button type="submit" class="btn btn-default pull-right">
                                         Comment
                                     </button>
@@ -202,6 +247,26 @@
 
 @section('custom-scripts')
 <script>
+        //Rating product
+        $(document).on('click', '.rating', function(){
+            let index = $(this).data('index');
+            let product_id = $(this).data('product_id');
+            // let rating = $(this).data('rating');
+            resetRating(product_id);
+            for (let i = 0; i <= index; i++) {
+                $('#'+product_id+'-'+i).css('color', '#ffcc00');
+            }
+            $('#rating').val(index);
+        });
+
+        function resetRating(product_id){
+            for (let i = 0; i <= 5; i++) {
+                $('#'+product_id+'-'+i).css('color', '#ccc');
+            }
+        }
+
+
+
         //Setup CSRF to AJAX
         $.ajaxSetup({
             headers: {
