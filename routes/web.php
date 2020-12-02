@@ -19,38 +19,38 @@ Route::prefix('admin')->group(function () {
     Route::get('/error', function () {
         return view('Error.404');
     })->name('backend.error.404');
-    Route::get('/login', 'BackendController@login')->name('backend.login');
-    Route::get('/register', 'BackendController@register')->name('backend.register');
+    Route::get('/login', 'Backend\BackendController@login')->name('backend.login');
+    Route::get('/register', 'Backend\BackendController@register')->name('backend.register');
     //BackendController
-    Route::get('/', 'BackendController@showHome')->name('home.index')->middleware('auth');
-    Route::get('/home', 'BackendController@showHome')->name('home.index');
+    Route::get('/', 'Backend\BackendController@showHome')->name('home.index')->middleware('auth');
+    Route::get('/home', 'Backend\BackendController@showHome')->name('home.index');
 
-    //UserController
-    Route::get('/user', 'UserController@index')->name('user.index');
+    //Backend\UserController
+    Route::get('/user', 'Backend\UserController@index')->name('user.index');
 
     //ProductController
     Route::prefix('product')->group(function () {
-        Route::get('/', 'ProductController@index')->name('product.index');
-        Route::get('/add', 'ProductController@create')->name('product.create');
-        Route::post('/store', 'ProductController@store')->name('product.store');
-        Route::get('/edit/{id}', 'ProductController@edit')->name('product.edit'); 
-        Route::post('/update', 'ProductController@update')->name('product.update');
-        Route::delete('/delete', 'ProductController@destroy')->name('product.destroy');
+        Route::get('/', 'Backend\ProductController@index')->name('product.index');
+        Route::get('/add', 'Backend\ProductController@create')->name('product.create');
+        Route::post('/store', 'Backend\ProductController@store')->name('product.store');
+        Route::get('/edit/{id}', 'Backend\ProductController@edit')->name('product.edit'); 
+        Route::post('/update', 'Backend\ProductController@update')->name('product.update');
+        Route::delete('/delete', 'Backend\ProductController@destroy')->name('product.destroy');
     });
 
     //ProductCategoryController
     Route::prefix('product-category')->group(function(){
-        Route::get('/', 'ProductCategoryController@index')->name('product_category.index');
-        Route::get('/add', 'ProductCategoryController@create')->name('product_category.create');
-        Route::post('/store', 'ProductCategoryController@store')->name('product_category.store');
-        Route::get('/edit/{id}', 'ProductCategoryController@edit')->name('product_category.edit');
-        Route::post('/update', 'ProductCategoryController@update')->name('product_category.update');
-        Route::delete('/delete', 'ProductCategoryController@destroy')->name('product_category.destroy');
-        Route::post('/change-status', 'ProductCategoryController@changeStatus')->name('product_category.changeStatus');
-        Route::get('/filter-status','ProductCategoryController@filterStatus')->name('product_category.filter_status');
-        Route::get('/pdf', 'ProductCategoryController@createPDF')->name('product_category.pdf');
-        Route::get('/export-excel', 'ProductCategoryController@exportExcel')->name('product_category.export_excel');
-        Route::post('/import-excel', 'ProductCategoryController@importExcel')->name('product_category.import_excel');
+        Route::get('/', 'Backend\ProductCategoryController@index')->name('product_category.index');
+        Route::get('/add', 'Backend\ProductCategoryController@create')->name('product_category.create');
+        Route::post('/store', 'Backend\ProductCategoryController@store')->name('product_category.store');
+        Route::get('/edit/{id}', 'Backend\ProductCategoryController@edit')->name('product_category.edit');
+        Route::post('/update', 'Backend\ProductCategoryController@update')->name('product_category.update');
+        Route::delete('/delete', 'Backend\ProductCategoryController@destroy')->name('product_category.destroy');
+        Route::post('/change-status', 'Backend\ProductCategoryController@changeStatus')->name('product_category.changeStatus');
+        Route::get('/filter-status','Backend\ProductCategoryController@filterStatus')->name('product_category.filter_status');
+        Route::get('/pdf', 'Backend\ProductCategoryController@createPDF')->name('product_category.pdf');
+        Route::get('/export-excel', 'Backend\ProductCategoryController@exportExcel')->name('product_category.export_excel');
+        Route::post('/import-excel', 'Backend\ProductCategoryController@importExcel')->name('product_category.import_excel');
     });
 
     //BrandController
@@ -72,15 +72,15 @@ Route::prefix('admin')->group(function () {
 
 /*----------------- Frontend -------------*/
 Route::get('/error', function () { return view('frontend.errors.404');})->name('frontend.error.404');
-Route::get('/', 'FrontendController@index')->name('frontend.home');
-Route::get('/home', 'FrontendController@index')->name('frontend.home');
-Route::get('/products', 'FrontendController@products')->name('frontend.products');
-Route::get('/product-detail/{id}', 'FrontendController@productDetail')->name('frontend.product_detail');
-Route::get('/contact', 'FrontendController@contact')->name('frontend.contact');
-Route::get('/about-us', 'FrontendController@aboutUs')->name('frontend.about_us');
+Route::get('/', 'Frontend\FrontendController@index')->name('frontend.home');
+Route::get('/home', 'Frontend\FrontendController@index')->name('frontend.home');
+Route::get('/products', 'Frontend\FrontendController@products')->name('frontend.products');
+Route::get('/product-detail/{id}', 'Frontend\FrontendController@productDetail')->name('frontend.product_detail');
+Route::get('/contact', 'Frontend\FrontendController@contact')->name('frontend.contact');
+Route::get('/about-us', 'Frontend\FrontendController@aboutUs')->name('frontend.about_us');
 //Commment
-Route::post('/load-comment', 'FrontendController@loadComment')->name('load_comment');
-Route::post('/add-comment', 'FrontendController@addComment')->name('add_comment');
+Route::post('/load-comment', 'Frontend\FrontendController@loadComment')->name('load_comment');
+Route::post('/add-comment', 'Frontend\FrontendController@addComment')->name('add_comment');
 //Cart
 Route::get('/shopping-cart', 'Frontend\CartController@shoppingCart')->name('shopping_cart');
 Route::post('/add-to-cart', 'Frontend\CartController@addToCart')->name('add-to-cart');
@@ -89,8 +89,8 @@ Route::get('/store-to-cart', 'Frontend\CartController@storeCart')->name('store-t
 Route::post('/update-to-cart', 'Frontend\CartController@updateToCart')->name('update-to-cart');
 
 //Checkout
-Route::get('/login-checkout', 'FrontendController@loginCheckout')->name('login-checkout');
-Route::get('/checkout', 'FrontendController@checkout')->name('checkout')->middleware('customer');
+Route::get('/login-checkout', 'Frontend\FrontendController@loginCheckout')->name('login-checkout');
+Route::get('/checkout', 'Frontend\FrontendController@checkout')->name('checkout')->middleware('customer');
 
 //Auth
 Auth::routes();
