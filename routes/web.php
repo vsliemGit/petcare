@@ -73,6 +73,7 @@ Route::prefix('admin')->group(function () {
 /*----------------- Frontend -------------*/
 Route::get('/error', function () { return view('frontend.errors.404');})->name('frontend.error.404');
 Route::get('/', 'Frontend\FrontendController@index')->name('frontend.home');
+Route::get('/get_ajax_data', 'Frontend\FrontendController@get_ajax_data');
 Route::get('/home', 'Frontend\FrontendController@index')->name('frontend.home');
 Route::get('/products', 'Frontend\FrontendController@products')->name('frontend.products');
 Route::get('/product-detail/{id}', 'Frontend\FrontendController@productDetail')->name('frontend.product_detail');

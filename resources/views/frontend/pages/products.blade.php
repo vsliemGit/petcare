@@ -73,16 +73,18 @@
                 responsive:{
                     0:{
                         items:1,
-                        nav:true
+                        nav:true,
+                        loop:true
                     },
                     600:{
                         items: 2,
-                        nav:false
+                        nav:false,
+                        loop: true
                     },
                     1000:{
                         items: 3,
                         nav:true,
-                        loop:false
+                        loop:true
                     }
                 }
             });
@@ -111,6 +113,46 @@
                 swal("Error!", "No response from server...", "error");
             });
         });
+
+
+        //Paginate list products using ajax
+        $(window).on('hashchange', function() {
+            if (window.location.hash) {
+                var page = window.location.hash.replace('#', '');
+                if (page == Number.NaN || page <= 0) {
+                    return false;
+                }else{
+                    getData(page);
+                }
+            }
+        });
+
+        $(document).ready(function()
+        {
+            $(document).on('click', '.pagination a',function(event)
+            {
+                event.preventDefault();
+                $('li').removeClass('active');
+                $(this).parent('li').addClass('active');
+                var page = $(this).attr('href').split('page=')[1];
+                getData(page);
+            });
+        });
+
+        function getData(page){
+            $.ajax({
+                url: 'get_ajax_data?page='+page,
+                method: 'GET',                
+            }).done(function(data){
+                $("#list-products").html(data);
+                location.hash = page;
+            }).fail(function(data){
+                console.log(data);
+                swal("Error!", "No response from server...", "error");
+            });
+        }
+        //End paginate
+
 
 
     </script>
