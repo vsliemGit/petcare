@@ -79,15 +79,22 @@ Route::get('/products', 'Frontend\FrontendController@products')->name('frontend.
 Route::get('/product-detail/{id}', 'Frontend\FrontendController@productDetail')->name('frontend.product_detail');
 Route::get('/contact', 'Frontend\FrontendController@contact')->name('frontend.contact');
 Route::get('/about-us', 'Frontend\FrontendController@aboutUs')->name('frontend.about_us');
+
 //Commment
 Route::post('/load-comment', 'Frontend\FrontendController@loadComment')->name('load_comment');
 Route::post('/add-comment', 'Frontend\FrontendController@addComment')->name('add_comment');
+
 //Cart
 Route::get('/shopping-cart', 'Frontend\CartController@shoppingCart')->name('shopping_cart');
 Route::post('/add-to-cart', 'Frontend\CartController@addToCart')->name('add-to-cart');
 Route::get('/delete-to-cart', 'Frontend\CartController@deleteToCart')->name('delele-to-cart');
 Route::get('/store-to-cart', 'Frontend\CartController@storeCart')->name('store-to-cart');
 Route::post('/update-to-cart', 'Frontend\CartController@updateToCart')->name('update-to-cart');
+
+//Wishlist
+Route::get('/wishlist', 'Frontend\WishlistController@wishlist')->name('wishlist');
+Route::post('/add-to-wishlist', 'Frontend\WishlistController@addToWishlist')->name('add-to-wishlist');
+Route::get('/delete-to-wishlist', 'Frontend\WishlistController@deleteToWishlist')->name('delele-to-wishlist');
 
 //Checkout
 Route::get('/login-checkout', 'Frontend\FrontendController@loginCheckout')->name('login-checkout');

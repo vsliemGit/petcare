@@ -60,13 +60,15 @@
                     <div class="shop-menu pull-right">
                         <ul class="nav navbar-nav">
                             <li><a href="#"><i class="fa fa-user"></i> Account</a></li>
-                            <li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
+                            <li><a href="{{ route('wishlist') }}"><i class="fa fa-star"></i><span class='badge badge-warning' id='lblWishlistCount'> 
+                                    {{ Cart::instance('wishlist')->count() }} 
+                                </span> Wishlist</a>
+                            </li>   
+                            <li><a href="{{ route('shopping_cart') }}"><i class="fa fa-shopping-cart"></i><span class='badge badge-warning' id='lblCartCount'>
+                                 {{ Cart::instance('cart')->count() }} 
+                                </span> Cart</a>
+                            </li>
                             <li><a href="{{ route('checkout') }}"><i class="fa fa-crosshairs"></i> Checkout</a></li> 
-                            @php
-                                $cart_content = Cart::content();
-                            @endphp
-                            <li><a href="{{ route('shopping_cart') }}"><i class="fa fa-shopping-cart"></i><span class='badge badge-warning' id='lblCartCount'> {{ Cart::count() }} </span> Cart</a></li>
-                    
                             <!-- Authentication Links -->
                             @if(!Auth::guard('customer')->check())
                                 <li><a href="{{ route('login-checkout') }}"><i class="fa fa-lock"></i> Login</a></li>

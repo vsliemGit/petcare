@@ -22,11 +22,13 @@ class FrontendController extends Controller
             ->orderBy('product_created_at')->take(10)->get();
         $listBrands = Brand::all();
         $listProductCategories = DB::table('product_categories')
-            ->orderBy('pro_category_created_at', 'desc')->get();       
+            ->orderBy('pro_category_created_at', 'desc')->get();
+        $listProducts = Product::paginate(8);      
         return view('frontend.index')
             ->with('topThreeNewProducts', $topThreeNewProducts)
             ->with('listBrands', $listBrands)
-            ->with('listProductCategories', $listProductCategories);
+            ->with('listProductCategories', $listProductCategories)
+            ->with('listProducts', $listProducts);
     }
 
     public function products(Request $request){
@@ -139,8 +141,8 @@ class FrontendController extends Controller
     }
     
     public function loadProductsByBrand($brand){
-        $listBrands;
-        return $listBrands;
+        $productsByBrand = DB::table('products')->get();
+        return $productsByBrand;
     }
 
     public function contact(){

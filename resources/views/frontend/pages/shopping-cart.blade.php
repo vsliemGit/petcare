@@ -20,7 +20,7 @@
            @endphp --}}
            
             @php
-                $cart_content = Cart::content();
+                $cart_content = Cart::instance('cart')->content();
             @endphp           
                 
             <table class="table table-condensed">

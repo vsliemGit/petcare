@@ -40,6 +40,7 @@
         .badge-warning[href] {
         background-color: #c67605;
         }
+
         #lblCartCount {
             font-size: 10px;
             background: #ff0000;
@@ -47,6 +48,14 @@
             padding: 0 3px;
             vertical-align: top;
             margin-left: -5px; 
+        }
+        #lblWishlistCount {
+            font-size: 10px;
+            background: #ff0000;
+            color: #fff;
+            padding: 0 3px;
+            vertical-align: top;
+            margin-left: -10px; 
         }
     </style>
 </head><!--/head-->
@@ -74,6 +83,9 @@
     <script>
         function realoadCountCart($value){
             $('#lblCartCount').text($value) ;
+        }
+        function realoadCountWishlist($value){
+            $('#lblWishlistCount').text($value) ;
         }
     </script>
 </body>

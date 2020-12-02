@@ -26,10 +26,10 @@ class CartController extends Controller
         $data['price'] = $product->product_price;
         $data['weight'] = $product->product_quantity;
         $data['options']['image'] = $product->product_image;
-        Cart::add($data);     
+        Cart::instance('cart')->add($data);     
         return response()->json([
             'success' => 'Add Item to Cart successfuly!',
-            'itemInCart' =>  Cart::count()
+            'itemInCart' =>  Cart::instance('cart')->count()
         ]);
     }
 
@@ -37,7 +37,7 @@ class CartController extends Controller
     public function storeCart(Request $request){
         if($request->ajax()){
             if(Auth::guard('customer')->check()){
-                Cart::store(Auth::guard('customer')->user()->id);
+                Cart::instance('cart')->store(Auth::guard('customer')->user()->id);
                 $message = "Store successfully!";
             }else{
                 $message = 'You must login!';
@@ -53,11 +53,11 @@ class CartController extends Controller
 
     public function deleteToCart(Request $request){
         if($request->ajax()){
-            Cart::remove($request->rowId);
+            Cart::instance('cart')->remove($request->rowId);
             return response()->json([
                 'success' => 'Delete Item successfuly!',
-                'itemInCart' => Cart::count(),
-                'subtotal' => Cart::subtotal()
+                'itemInCart' => Cart::instance('cart')->count(),
+                'subtotal' => Cart::instance('cart')->subtotal()
             ]);
         }
         return $this->shoppingCart();
@@ -66,12 +66,12 @@ class CartController extends Controller
     public function updateToCart(Request $request){
         
         if($request->ajax()){
-            Cart::update($request->rowId, $request->quantity);
+            Cart::instance('cart')->update($request->rowId, $request->quantity);
             return response()->json([
                 'success' => 'Delete Item successfuly!',
-                'itemInCart' => Cart::count(),
-                'subtotal' => Cart::subtotal(),
-                'pSubtotal' => number_format(Cart::get($request->rowId)->priceTotal)
+                'itemInCart' => Cart::instance('cart')->count(),
+                'subtotal' => Cart::instance('cart')->subtotal(),
+                'pSubtotal' => number_format(Cart::instance('cart')->get($request->rowId)->priceTotal)
             ]);
         }
         return $this->shoppingCart();
