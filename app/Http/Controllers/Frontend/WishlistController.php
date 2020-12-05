@@ -4,16 +4,14 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use DB;
 use Cart;
-use Auth;
-use App\Brand;
 use App\Product;
 
 class WishlistController extends Controller
 {
     public function wishlist(){
-        return view('frontend.pages.wishlist');
+        $cart_content = Cart::instance('wishlist')->content();
+        return view('frontend.pages.wishlist')->with('cart_content', $cart_content);
     }
 
     public function addToWishlist(Request $request){
@@ -33,7 +31,7 @@ class WishlistController extends Controller
     }
     
     public function deleteToWishlist(Request $request){
-        if($request->ajax()){
+        if($request->ajax() && $request->rowId != null){
             Cart::instance('wishlist')->remove($request->rowId);
             return response()->json([
                 'success' => 'Delete Item successfuly!',

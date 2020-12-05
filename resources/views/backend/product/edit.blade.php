@@ -79,12 +79,7 @@ Admin - Add New Product
                                         <textarea class="form-control" style="resize: none" rows="8" id="product_desc" name="product_desc" required=""></textarea>
                                     </div>
                                 </div>    
-                                <div class="form-group ">
-                                    <label for="product_desc" class="control-label col-lg-3">Mô tả</label>
-                                    <div class="col-lg-6">
-                                        <textarea class="form-control" style="resize: none" rows="8" id="product_desc" name="product_desc" required=""></textarea>
-                                    </div>
-                                </div>
+    
                                 <div class="form-group ">
                                     <label for="product_image" class="control-label col-lg-3">Hình ảnh</label>
                                     <div class="col-lg-6">

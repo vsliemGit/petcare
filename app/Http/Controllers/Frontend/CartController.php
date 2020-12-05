@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use DB;
 use Cart;
 use Auth;
 use App\Brand;
@@ -14,7 +13,8 @@ class CartController extends Controller
 {
 
     public function shoppingCart(){
-        return view('frontend.pages.shopping-cart');
+        $cart_content = Cart::instance('cart')->content();
+        return view('frontend.pages.shopping-cart')->with('cart_content', $cart_content);
     }
 
     public function addToCart(Request $request){

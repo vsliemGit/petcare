@@ -146,6 +146,24 @@ Home | PETCARE
                 swal("Error!", "No response from server...", "error");
             });
         });
+
+        //Add product to Cart using ajax
+        $('.add-to-wishlist').click(function(event){
+            event.preventDefault();
+            $.ajax(
+            {
+                url: "{{ route('add-to-wishlist') }}",
+                type: "POST",
+                data: {
+                    product_id : $(this).data('id')
+                }
+            }).done(function(data){
+                realoadCountWishlist(data.itemInWishlist);
+                swal('Success!', 'Add item to Wishlist successfully!.', 'success');
+            }).fail(function(jqXHR, ajaxOptions, thrownError){
+                swal("Error!", "No response from server...", "error");
+            });
+        });
     </script>
 @endsection
 

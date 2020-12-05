@@ -76,6 +76,7 @@ Route::get('/', 'Frontend\FrontendController@index')->name('frontend.home');
 Route::get('/get_ajax_data', 'Frontend\FrontendController@get_ajax_data');
 Route::get('/home', 'Frontend\FrontendController@index')->name('frontend.home');
 Route::get('/products', 'Frontend\FrontendController@products')->name('frontend.products');
+Route::get('/quickview', 'Frontend\FrontendController@quickview')->name('frontend.quickview');
 Route::get('/product-detail/{id}', 'Frontend\FrontendController@productDetail')->name('frontend.product_detail');
 Route::get('/contact', 'Frontend\FrontendController@contact')->name('frontend.contact');
 Route::get('/about-us', 'Frontend\FrontendController@aboutUs')->name('frontend.about_us');

@@ -21,7 +21,7 @@
                 </div>
                 <div class="choose">
                     <ul class="nav nav-pills nav-justified">
-                        <li><a href="#"><i class="fa fa-star"></i>Add to wishlist</a></li>
+                        <li><a href="javascript:void(0)" data-id="{{$product->product_id}}" class="add-to-wishlist"><i class="fa fa-star"></i>Add to wishlist</a></li>
                         <li><a href="#"><i class="fa fa-eye"></i>Quick view</a></li>
                     </ul>
                 </div>

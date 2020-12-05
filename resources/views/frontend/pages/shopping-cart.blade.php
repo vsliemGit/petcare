@@ -12,16 +12,12 @@
             </ol>
         </div>
         <div class="table-responsive cart_info" id="tablene">
-           {{-- @php
-            $cart_content = Cart::content();
+           @php
+            // $cart_content = Cart::instance('cart')->content();
             //    echo "<pre>";
             //   print_r($cart_content);
             //   echo "</pre>";
-           @endphp --}}
-           
-            @php
-                $cart_content = Cart::instance('cart')->content();
-            @endphp           
+           @endphp  
                 
             <table class="table table-condensed">
                 <thead>

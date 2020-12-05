@@ -14,7 +14,7 @@
         <div class="table-responsive cart_info" id="tablene">
            @php
         //    Cart::instance('wishlist')->destroy();
-            $cart_content = Cart::instance('wishlist')->content();
+            // $cart_content = Cart::instance('wishlist')->content();
             //    echo "<pre>";
             //   print_r($cart_content);
             //   echo "</pre>";
@@ -40,15 +40,11 @@
                         </td>
                         <td class="cart_price">
                             <p>$ {{ number_format($product->price) .' '. 'VNĐ' }}</p>
-                        </td>
-                        <form action="{{ route('update-to-cart') }}" method="post" class="form-update">
-                            @csrf
-                                              
+                        </td>                                            
                         <td class="cart_delete">
                             <a class="wishlist_delete" data-product-id="{{ $product->id }}" data-id="{{ $product->rowId }}" href="javascript:void(0)"><i class="fa fa-times"></i></a>
-                            <button type="submit" class="add-to-cart" data-id="{{ $product->id  }}" data-row="{{ $product->rowId }}" href="javascript:void(0)"><i class="fa fa-shopping-cart"></i></button>
+                            <button type="button" class="add-to-cart" data-id="{{ $product->id  }}" data-row="{{ $product->rowId }}" href="javascript:void(0)"><i class="fa fa-shopping-cart"></i></button>
                         </td>
-                        </form>
                     </tr>
                     @endforeach
                 </tbody>
@@ -63,17 +59,37 @@
     $('.wishlist_delete').click(function(){
         let rowId = $(this).data('id');
         let itemId = $(this).data('product-id');
-        deleteWishlist(rowId, itemId);    
+        // deleteWishlist(rowId, itemId);  
+        $.ajax(
+        {
+            url: "{{ route('delele-to-wishlist') }}",
+            type: "GET",
+            data: {
+                rowId: rowId
+            }
+        }).done(function(data){            
+            document.getElementById('product_'+ itemId).remove();
+            realoadCountWishlist(data.itemInWishlist);
+        }).error(function(data){
+            console.log(data)
+            alert( "error o xoa wishlist" );
+        });  
     });
 
     function deleteWishlist(rowId, itemId){
-        $.get("{{ route('delele-to-wishlist') }}", {rowId: rowId}, function(data){
-            realoadCountWishlist(data.itemInWishlist);
-        }).done(function() {
+        $.ajax(
+        {
+            url: "{{ route('delele-to-wishlist') }}",
+            type: "GET",
+            data: {
+                rowId: rowId
+            }
+        }).done(function(data){           
             document.getElementById('product_'+ itemId).remove();
-        }).fail(function(data) {
+            realoadCountWishlist(data.itemInWishlist);
+        }).error(function(data){
             console.log(data)
-            alert( "error" );
+            alert( "error o xoa wishlist" );
         });
     }
     //Setup CSRF to AJAX
@@ -96,8 +112,8 @@
                     product_id : product_id
                 }
             }).done(function(data){
-                realoadCountCart(data.itemInCart);
                 deleteWishlist(rowId, product_id);
+                realoadCountCart(data.itemInCart);
                 swal('Success!', 'Add item to cart successfully!.', 'success');
             }).fail(function(jqXHR, ajaxOptions, thrownError){
                 swal("Error!", "No response from server...", "error");

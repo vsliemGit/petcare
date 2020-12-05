@@ -54,27 +54,29 @@
                         <div id="similar-product" class="carousel slide" data-ride="carousel">
                             @php
                                 $imageToShow = 3;
-                                $totalItem = ceil(count($listProductsRelatedToThisItem)/$imageToShow);
+                                $totalItem = ceil(count($product->images)/$imageToShow);
                             @endphp
                               <!-- Wrapper for slides -->
                                 <div class="carousel-inner">
                                     <div class="item active">
                                     @foreach ($product->images as $image)
                                         <a href=""><img class="img-similar" src="{{ asset('storage/images/' . $image->getName() ) }}" alt=""></a>
-                                    @if (($loop->index + 1) % $imageToShow == 0)
+                                    @if ((($loop->index + 1) % $imageToShow == 0) && ($loop->index < count($product->images)-1))
                                     </div>
                                         <div class="item">
                                     @endif
                                     @endforeach
-                                    </div>
+                                        </div>
                                 </div>
                               <!-- Controls -->
-                              <a class="left item-control" href="#similar-product" data-slide="prev">
-                                <i class="fa fa-angle-left"></i>
-                              </a>
-                              <a class="right item-control" href="#similar-product" data-slide="next">
-                                <i class="fa fa-angle-right"></i>
-                              </a>
+                              @if(count($product->images) > 3)
+                                <a class="left item-control" href="#similar-product" data-slide="prev">
+                                    <i class="fa fa-angle-left"></i>
+                                </a>
+                                <a class="right item-control" href="#similar-product" data-slide="next">
+                                    <i class="fa fa-angle-right"></i>
+                                </a>
+                              @endif
                         </div>
                     </div>
                     <div class="col-sm-7">

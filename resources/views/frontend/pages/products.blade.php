@@ -7,6 +7,10 @@
         width: 84px;
         height: 84px;
     }
+    .img-quick-view {
+        width: 50px;
+        height: 50px;
+    }
 </style>
 @endsection
 
@@ -29,9 +33,11 @@
             <div class="features_items" id="list-products"><!--features_items-->
                 <!-- List Products  -->
                 @include('frontend.widgets.list-products')
-            </div><!--features_items-->
-        </div>
+            </div><!--features_items-->           
+        </div>     
     </div>
+    <!-- Modal quickview  -->
+    @include('frontend.widgets.modal-quickview')
 @endsection
 
 @section('custom-scripts')
@@ -60,6 +66,7 @@
                 }
             });
         });
+
         //Setup CSRF to AJAX
         $.ajaxSetup({
             headers: {
@@ -85,7 +92,6 @@
             });
         });
 
-
         //Add product to Cart using ajax
         $('.add-to-wishlist').click(function(event){
             event.preventDefault();
@@ -104,6 +110,51 @@
             });
         });
 
+        //Quickview Product
+        $('.quickview').click(function(e){
+            e.preventDefault();
+            let product_id = $(this).data('product-id');
+            $.ajax({
+                url: "{{route('frontend.quickview')}}",
+                method: 'GET',
+                data: {
+                    product_id : product_id
+                }
+            }).done(function(data){
+                console.log(data);
+                $('#modal_lable').text(data.product_name);
+                $('#q_product_name').text(data.product_name);
+                $('#q_product_id').text(product_id);
+                $('#q_rating').html(data.rating);
+                $('#product_id').val(product_id);
+                $('#add-to-cart').data('id', product_id);
+                $('#imagesOfProduct').html(data.listImageOfProduct);
+                $('#q_img_product').attr("src",'storage/images/'+data.product_image);
+                $('#q_product_brand').html(data.brand);
+                $('#q_product_price').text("$"+new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3}).format(data.product_price));
+                $('#q_product_desc').text(data.product_desc);
+            }).fail(function(data){
+                console.log(data);
+            });
+        });
+
+        //Rating product
+        // $(document).on('click', '.rating', function(){
+        //     let index = $(this).data('index');
+        //     let product_id = $(this).data('product_id');
+        //     // let rating = $(this).data('rating');
+        //     resetRating(product_id);
+        //     for (let i = 0; i <= index; i++) {
+        //         $('#'+product_id+'-'+i).css('color', '#ffcc00');
+        //     }
+        //     $('#rating').val(index);
+        // });
+
+        // function resetRating(product_id){
+        //     for (let i = 0; i <= 5; i++) {
+        //         $('#'+product_id+'-'+i).css('color', '#ccc');
+        //     }
+        // }
 
 
         //Paginate list products using ajax

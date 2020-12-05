@@ -16,7 +16,12 @@
             <div class="choose">
                 <ul class="nav nav-pills nav-justified">
                     <li><a href="javascript:void(0)" data-id="{{$product->product_id}}" class="add-to-wishlist"><i class="fa fa-plus-square"></i>Wishlist</a></li>
-                    <li><a href="#"><i class="fa fa-eye"></i>Detail</a></li>
+                    <li><a href=""
+                        class="quickview"
+                        data-toggle="modal"
+                        data-target="#quickview"
+                        data-product-id="{{$product->product_id}}">
+                        <i class="fa fa-eye"></i>Detail</a></li>
                 </ul>
             </div>
         </div>

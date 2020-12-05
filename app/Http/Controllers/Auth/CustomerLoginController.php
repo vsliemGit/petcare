@@ -52,7 +52,8 @@ class CustomerLoginController extends Controller
         // Attempt to log the user in
         if(Auth::guard('customer')->attempt(['email' => $request->email, 'password' => $request->password], $request->remember))
         {
-            Cart::restore(Auth::guard('customer')->user()->id);
+            Cart::instance('cart')->restore(strval(Auth::guard('customer')->user()->id));
+            Cart::instance('wishlist')->restore(Auth::guard('customer')->user()->username);
             return redirect()->intended(route('frontend.home'));
         }
 
@@ -63,7 +64,12 @@ class CustomerLoginController extends Controller
     public function logout()
     {
         if(Auth::guard('customer')->check()){
-            Cart::store(Auth::guard('customer')->user()->id);
+            if(Cart::instance('cart')->count() > 0){
+                Cart::instance('cart')->store(strval(Auth::guard('customer')->user()->id));
+            }
+            if(Cart::instance('wishlist')->count() > 0){
+                Cart::instance('wishlist')->store(Auth::guard('customer')->user()->username); 
+            }
         }
         Session::flush();
         Auth::logout();

@@ -15,6 +15,7 @@ class CustomerRegisterController extends Controller
 {
     use RegistersUsers;
     protected $redirectTo = '/home';
+    
     public function __construct()
     {
         $this->middleware('guest:customer');

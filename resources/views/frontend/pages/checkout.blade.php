@@ -144,9 +144,9 @@
                         <td></td>
                     </tr>
                 </thead>
-                @php
-                    $cart_content = Cart::content();
-                @endphp
+                {{-- @php
+                    $cart_content = Cart::instance('cart')->content();
+                @endphp --}}
                 <tbody>
                     @foreach($cart_content as $product)
                     <tr id="product_{{ $product->id }}">

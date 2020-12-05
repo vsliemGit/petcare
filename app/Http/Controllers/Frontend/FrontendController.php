@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use DB;
 use Cart;
 use Auth;
-use Date;
 use App\Rating;
 use App\Comment;
 use App\Customer;
@@ -45,6 +44,65 @@ class FrontendController extends Controller
             ->with('listProducts', $listProducts);
     }
 
+    public function quickview(Request $request){
+        if($request->ajax()){
+            $product = Product::find($request->product_id);
+            $images = DB::table('images')->where('product_id', $request->product_id)->get();
+            $brand = DB::table('brands')->where('brand_id', $product->brand_id)->first();
+            $rating = DB::table('rating')->where('product_id', $request->product_id)->avg('rating_star');
+            $product_galary = '';
+            foreach($images as $image){
+                $product_galary .= "<p><img style='width: 100%' src='storage/images' ".$image->img_name."/></p>";
+            }
+
+            $imageToShow = 2;
+            $totalItem = ceil(count($images)/$imageToShow);
+
+            $listImageOfProduct = '<div class="carousel-inner"><div class="item active">';
+         
+            foreach($images as $loop => $image){
+                $listImageOfProduct.='<a href=""><img class="img-similar" src="storage/images/'.$image->img_name.'" alt=""></a>';
+                if ((($loop + 1) % $imageToShow == 0) && ($loop < count($images)-1)){
+                    $listImageOfProduct.='</div><div class="item">';
+                }
+            }
+            $listImageOfProduct.='</div></div>';
+
+            if(count($images)>2){
+                $listImageOfProduct.='<a class="left item-control" href="#similar-product" data-slide="prev"><i class="fa fa-angle-left"></i></a>';
+                $listImageOfProduct.='<a class="right item-control" href="#similar-product" data-slide="next"><i class="fa fa-angle-right"></i></a>';
+            }
+
+            $ratinghtml = '';
+            for ($i = 1; $i <= 5; $i++){
+                $color = '';
+                if ($i > round($rating)){
+                    $color = "color: #ccc;";
+                }                                                       
+                else {
+                    $color = "color: #ffcc00;";
+                }    
+
+                $ratinghtml .= '<li title="Sản phẩm được đánh giá 4 sao" class="rating" style="cursor: pointer; '.$color.'"> &#9733 </li> ';
+            }
+                                 
+                            
+            
+            return response()->json([
+                'product_name' => $product->product_name,
+                'product_price' => $product->product_price,
+                'product_desc' => $product->product_desc,
+                'product_image' => $product->product_image,
+                'listImageOfProduct' => $listImageOfProduct,
+                'brand' => $brand->brand_name,
+                'rating' => $ratinghtml
+            ]);
+        }
+        return response()->json([
+            'message' => 'Error when get info product!',
+        ]);
+    }
+
     function get_ajax_data(Request $request)
     {
         if($request->ajax())
@@ -60,7 +118,7 @@ class FrontendController extends Controller
         $listProductCategories = DB::table('product_categories')
             ->orderBy('pro_category_created_at', 'desc')->get();
         $listProductsRelatedToThisItem = Product::find($id)->category->products;
-        $rating = Rating::where('product_id', $id)->avg('rating_star');
+        $rating = Rating::where('product_id', $id)->avg('rating_star');       
         return view('frontend.pages.product-detail')
             ->with('listBrands', $listBrands)
             ->with('listProductCategories', $listProductCategories)
@@ -160,6 +218,7 @@ class FrontendController extends Controller
         if(Auth::check()){
             return view('frontend.pages.login-checkout');
         }
-        return view('frontend.pages.checkout');
+        $cart_content = Cart::instance('cart')->content();
+        return view('frontend.pages.checkout')->with('cart_content', $cart_content);
     }
 }
