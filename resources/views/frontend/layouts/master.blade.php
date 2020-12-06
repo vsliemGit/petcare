@@ -24,7 +24,11 @@
     <link href="vendor/frontend/css/custom-style.css" rel="stylesheet"> 
     {{-- owl_carousel_2 css--}}
     <link href="vendor/frontend/css/owl.carousel.min.css" rel="stylesheet">
-    <link href="vendor/frontend/css/owl.theme.default.min.css" rel="stylesheet">  
+    <link href="vendor/frontend/css/owl.theme.default.min.css" rel="stylesheet">
+    <!-- Slider gallery -->
+    <link type="text/css" rel="stylesheet" href="vendor/frontend/css/lightslider.css" />
+    {{-- <link type="text/css" rel="stylesheet" href="vendor/frontend/css/prettify.css" /> --}}
+    <link type="text/css" rel="stylesheet" href="vendor/frontend/css/lightgallery.min.css" />
     <!-- Các custom script dành riêng cho từng view -->
 	@yield('custom-css')
     <style>
@@ -58,6 +62,7 @@
             margin-left: -10px; 
         }
     </style>
+    <script src="vendor/frontend/js/jquery.js"></script>
 </head><!--/head-->
 
 <body>
@@ -70,7 +75,6 @@
     <!--Footer-->
     @include('frontend.layouts.partials.footer')
 	
-    <script src="vendor/frontend/js/jquery.js"></script>
 	<script src="vendor/frontend/js/bootstrap.min.js"></script>
 	<script src="vendor/frontend/js/jquery.scrollUp.min.js"></script>
 	<script src="vendor/frontend/js/price-range.js"></script>
@@ -78,6 +82,10 @@
     <script src="vendor/frontend/js/main.js"></script>
     {{-- owl_carousel_2 js --}}
     <script src="vendor/frontend/js/owl.carousel.min.js"></script>
+    <!-- Các custom script cho Slider  gallery -->
+    <script src="vendor/frontend/js/lightslider.js"></script>
+    {{-- <script src="vendor/frontend/js/prettify.js"></script> --}}
+    <script src="vendor/frontend/js/lightgallery-all.min.js"></script>
     <!-- Các custom script dành riêng cho từng view -->
     @yield('custom-scripts')
     <script>

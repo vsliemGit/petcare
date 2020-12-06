@@ -50,49 +50,23 @@ class FrontendController extends Controller
             $images = DB::table('images')->where('product_id', $request->product_id)->get();
             $brand = DB::table('brands')->where('brand_id', $product->brand_id)->first();
             $rating = DB::table('rating')->where('product_id', $request->product_id)->avg('rating_star');
-            $product_galary = '';
-            foreach($images as $image){
-                $product_galary .= "<p><img style='width: 100%' src='storage/images' ".$image->img_name."/></p>";
-            }
 
-            $imageToShow = 2;
-            $totalItem = ceil(count($images)/$imageToShow);
-
-            $listImageOfProduct = '<div class="carousel-inner"><div class="item active">';
-         
+            $listImageOfProduct = '<ul id="imageGallery"><li style="height: 300px;" data-thumb="storage/images/'.$product->product_image .'" data-src="storage/images/'.$product->product_image .'"><img width="100%" src="storage/images/'.$product->product_image .'" /></li>';            
             foreach($images as $loop => $image){
-                $listImageOfProduct.='<a href=""><img class="img-similar" src="storage/images/'.$image->img_name.'" alt=""></a>';
-                if ((($loop + 1) % $imageToShow == 0) && ($loop < count($images)-1)){
-                    $listImageOfProduct.='</div><div class="item">';
-                }
+                $listImageOfProduct.= '<li style="height: 300px;" data-thumb="storage/images/'.$image->img_name.'" data-src="storage/images/'.$image->img_name.'"><img width="100%" src="storage/images/'.$image->img_name.'" /></li>';
             }
-            $listImageOfProduct.='</div></div>';
-
-            if(count($images)>2){
-                $listImageOfProduct.='<a class="left item-control" href="#similar-product" data-slide="prev"><i class="fa fa-angle-left"></i></a>';
-                $listImageOfProduct.='<a class="right item-control" href="#similar-product" data-slide="next"><i class="fa fa-angle-right"></i></a>';
-            }
+            $listImageOfProduct .= '</ul>';
 
             $ratinghtml = '';
             for ($i = 1; $i <= 5; $i++){
-                $color = '';
-                if ($i > round($rating)){
-                    $color = "color: #ccc;";
-                }                                                       
-                else {
-                    $color = "color: #ffcc00;";
-                }    
-
+                $color = ($i > round($rating)) ? "color: #ccc;" : "color: #ffcc00;";  
                 $ratinghtml .= '<li title="Sản phẩm được đánh giá 4 sao" class="rating" style="cursor: pointer; '.$color.'"> &#9733 </li> ';
             }
-                                 
-                            
-            
+                                    
             return response()->json([
                 'product_name' => $product->product_name,
                 'product_price' => $product->product_price,
                 'product_desc' => $product->product_desc,
-                'product_image' => $product->product_image,
                 'listImageOfProduct' => $listImageOfProduct,
                 'brand' => $brand->brand_name,
                 'rating' => $ratinghtml

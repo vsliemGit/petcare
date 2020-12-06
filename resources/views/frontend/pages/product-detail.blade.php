@@ -32,6 +32,15 @@
         float: right;
         color: #aaa;
     }
+    /*gallary image*/
+    .lSSlideOuter .lSPager .lSGallery img{
+        display: block;
+        height: 140px;
+        max-width: 100%;
+    }
+    li.active {
+        border: 1px solid #FE980F;
+    }
 </style>
 @endsection
 
@@ -47,11 +56,11 @@
             <div class="col-sm-9 padding-right">
                 <div class="product-details"><!--product-details-->
                     <div class="col-sm-5">
-                        <div class="view-product">
+                        {{-- <div class="view-product">
                             <img src="{{ asset('storage/images/' . $product->product_image) }}" alt="" />
                             <h3>ZOOM</h3>
-                        </div>
-                        <div id="similar-product" class="carousel slide" data-ride="carousel">
+                        </div> --}}
+                        {{-- <div id="similar-product" class="carousel slide" data-ride="carousel">
                             @php
                                 $imageToShow = 3;
                                 $totalItem = ceil(count($product->images)/$imageToShow);
@@ -77,7 +86,23 @@
                                     <i class="fa fa-angle-right"></i>
                                 </a>
                               @endif
-                        </div>
+                        </div> --}}
+                        {{-- SliderGallery --}}
+                        {{-- <ul id="image-gallery" class="gallery list-unstyled cS-hidden">
+                            @foreach ($product->images as $image)
+                            <li data-thumb=""> 
+                                <img src="{{ asset('storage/images/' . $image->getName() ) }}" />
+                                 </li>
+                            @endforeach
+                        </ul> --}}
+
+                        <ul id="imageGallery">
+                            @foreach ($product->images as $image)
+                            <li data-thumb="{{ asset('storage/images/'.$image->getName().'') }}" data-src="{{ asset('storage/images/'.$image->getName().'') }}">
+                                <img width="100%" alt="{{$image->getName()}}" src="{{ asset('storage/images/'.$image->getName().'') }}" />
+                            </li>
+                            @endforeach
+                        </ul>
                     </div>
                     <div class="col-sm-7">
                         <div class="product-information"><!--/product-information-->
@@ -267,7 +292,23 @@
             }
         }
 
-
+        //lightGallery    
+        $(document).ready(function() {
+            $('#imageGallery').lightSlider({
+                gallery:true,
+                item:1,
+                loop:true,
+                thumbItem:4,
+                slideMargin:0,
+                enableDrag: false,
+                currentPagerPosition:'left',
+                onSliderLoad: function(el) {
+                    el.lightGallery({
+                        selector: '#imageGallery .lslide'
+                    });
+                }   
+            });  
+        });
 
         //Setup CSRF to AJAX
         $.ajaxSetup({

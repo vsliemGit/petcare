@@ -93,6 +93,8 @@ Home | PETCARE
             </div>
         </div>
     </div>
+    <!-- Modal quickview  -->
+    @include('frontend.widgets.modal-quickview')
 </section>
 @endsection
 
