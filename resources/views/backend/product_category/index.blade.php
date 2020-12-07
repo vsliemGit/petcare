@@ -283,7 +283,6 @@ Admin - List Product categories
         var slug = $('#pro_category_slug').val();
         var desc = $('#pro_category_desc').val();
         var status = $('#pro_category_status').val();
-        console.log("thêm");
         $.ajax({
           url: "{{route('product_category.store')}}",
           method : 'POST',

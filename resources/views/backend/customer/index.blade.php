@@ -42,7 +42,7 @@
     <div class="table-responsive"  id="tag_container">
       {{-- flash-message --}}
       {{-- content-table --}}
-      @include('backend.user.table-data')
+      @include('backend.customer.table-data')
       {{-- footer --}}
     </div>
     {{-- modal --}}

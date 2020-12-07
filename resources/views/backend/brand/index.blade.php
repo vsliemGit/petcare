@@ -190,8 +190,6 @@ Admin - List Brand
           }
         }
     }
-    
-
-
+  
 </script>
 @endsection

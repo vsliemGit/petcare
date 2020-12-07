@@ -48,7 +48,8 @@ class CustomerLoginController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:8'
         ]);
-        
+
+            
         // Attempt to log the user in
         if(Auth::guard('customer')->attempt(['email' => $request->email, 'password' => $request->password], $request->remember))
         {

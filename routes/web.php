@@ -21,6 +21,7 @@ Route::prefix('admin')->group(function () {
     })->name('backend.error.404');
     Route::get('/login', 'Backend\BackendController@login')->name('backend.login');
     Route::get('/register', 'Backend\BackendController@register')->name('backend.register');
+
     //BackendController
     Route::get('/', 'Backend\BackendController@showHome')->name('home.index')->middleware('auth');
     Route::get('/home', 'Backend\BackendController@showHome')->name('home.index');
@@ -34,7 +35,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/add', 'Backend\ProductController@create')->name('product.create');
         Route::post('/store', 'Backend\ProductController@store')->name('product.store');
         Route::get('/edit/{id}', 'Backend\ProductController@edit')->name('product.edit'); 
-        Route::post('/update', 'Backend\ProductController@update')->name('product.update');
+        Route::post('/update/{id}', 'Backend\ProductController@update')->name('product.update');
         Route::delete('/delete', 'Backend\ProductController@destroy')->name('product.destroy');
     });
 
@@ -66,6 +67,49 @@ Route::prefix('admin')->group(function () {
         Route::get('/pdf', 'Backend\BrandController@createPDF')->name('brand.pdf');
         Route::get('/export-excel', 'Backend\BrandController@exportExcel')->name('brand.export_excel');
         Route::post('/import-excel', 'Backend\BrandController@importExcel')->name('brand.import_excel');
+    });
+
+     //OrderController
+     Route::prefix('order')->group(function(){
+        Route::get('/', 'Backend\OrderController@index')->name('order.index');
+        Route::get('/edit/{id}', 'Backend\OrderController@edit')->name('order.edit');
+        Route::post('/update', 'Backend\OrderController@update')->name('order.update');
+        Route::delete('/delete', 'Backend\OrderController@destroy')->name('order.destroy');
+        Route::post('/change-status', 'Backend\OrderController@changeStatus')->name('order.changeStatus');
+        Route::get('/filter-status','Backend\OrderController@filterStatus')->name('order.filter_status');
+        Route::get('/pdf', 'Backend\OrderController@createPDF')->name('order.pdf');
+        Route::get('/export-excel', 'Backend\OrderController@exportExcel')->name('order.export_excel');
+        Route::post('/import-excel', 'Backend\OrderController@importExcel')->name('order.import_excel');
+    });
+
+     //UserController
+     Route::prefix('user')->group(function(){
+        Route::get('/', 'Backend\UserController@index')->name('user.index');
+        Route::get('/add', 'Backend\UserController@create')->name('user.create');
+        Route::post('/store', 'Backend\UserController@store')->name('user.store');
+        Route::get('/edit/{id}', 'Backend\UserController@edit')->name('user.edit');
+        Route::post('/update', 'Backend\UserController@update')->name('user.update');
+        Route::delete('/delete', 'Backend\UserController@destroy')->name('user.destroy');
+        Route::post('/change-status', 'Backend\UserController@changeStatus')->name('user.changeStatus');
+        Route::get('/filter-status','Backend\UserController@filterStatus')->name('user.filter_status');
+        Route::get('/pdf', 'Backend\UserController@createPDF')->name('user.pdf');
+        Route::get('/export-excel', 'Backend\UserController@exportExcel')->name('user.export_excel');
+        Route::post('/import-excel', 'Backend\UserController@importExcel')->name('user.import_excel');
+    });
+
+    //CustomerController
+    Route::prefix('customer')->group(function(){
+        Route::get('/', 'Backend\CustomerController@index')->name('customer.index');
+        Route::get('/add', 'Backend\CustomerController@create')->name('customer.create');
+        Route::post('/store', 'Backend\CustomerController@store')->name('customer.store');
+        Route::get('/edit/{id}', 'Backend\CustomerController@edit')->name('customer.edit');
+        Route::post('/update', 'Backend\CustomerController@update')->name('customer.update');
+        Route::delete('/delete', 'Backend\CustomerController@destroy')->name('customer.destroy');
+        Route::post('/change-status', 'Backend\CustomerController@changeStatus')->name('customer.changeStatus');
+        Route::get('/filter-status','Backend\CustomerController@filterStatus')->name('customer.filter_status');
+        Route::get('/pdf', 'Backend\CustomerController@createPDF')->name('customer.pdf');
+        Route::get('/export-excel', 'Backend\CustomerController@exportExcel')->name('customer.export_excel');
+        Route::post('/import-excel', 'Backend\CustomerController@importExcel')->name('customer.import_excel');
     });
 
 });
@@ -100,6 +144,8 @@ Route::get('/delete-to-wishlist', 'Frontend\WishlistController@deleteToWishlist'
 //Checkout
 Route::get('/login-checkout', 'Frontend\FrontendController@loginCheckout')->name('login-checkout');
 Route::get('/checkout', 'Frontend\FrontendController@checkout')->name('checkout')->middleware('customer');
+Route::post('/order', 'Frontend\FrontendController@order')->name('order')->middleware('customer');
+Route::get('/order-finish', 'Frontend\FrontendController@orderFinish')->name('orderFinish');
 
 //Auth
 Auth::routes();

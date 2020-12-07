@@ -18,7 +18,7 @@ class CreateOrderDetailsTable extends Migration
             $table->unsignedInteger('product_id');
             $table->unsignedInteger('order_id');
             $table->integer('order_detail_quantity')->unsigned()->default(0);
-
+            
             $table->primary(['product_id', 'order_id']);
 
             $table->foreign('product_id')->references('product_id')

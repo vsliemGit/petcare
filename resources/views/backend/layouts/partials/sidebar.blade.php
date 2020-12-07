@@ -40,6 +40,33 @@
                         <li><a href="{{Route('product.create')}}">Add Products</a></li>
                     </ul>
                 </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-shopping-cart"></i>
+                        <span>Orers</span>
+                    </a>
+                    <ul class="sub">
+						<li></i><a href="{{Route('order.index')}}">List Orders</a></li>
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-user"></i>
+                        <span>Users</span>
+                    </a>
+                    <ul class="sub">
+						<li></i><a href="{{Route('user.index')}}">List Users</a></li>
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-users"></i>
+                        <span>Customers</span>
+                    </a>
+                    <ul class="sub">
+						<li></i><a href="{{Route('customer.index')}}">List Customers</a></li>
+                    </ul>
+                </li>
             </ul>            
         </div>
         <!-- sidebar menu end-->

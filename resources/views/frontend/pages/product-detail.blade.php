@@ -56,47 +56,8 @@
             <div class="col-sm-9 padding-right">
                 <div class="product-details"><!--product-details-->
                     <div class="col-sm-5">
-                        {{-- <div class="view-product">
-                            <img src="{{ asset('storage/images/' . $product->product_image) }}" alt="" />
-                            <h3>ZOOM</h3>
-                        </div> --}}
-                        {{-- <div id="similar-product" class="carousel slide" data-ride="carousel">
-                            @php
-                                $imageToShow = 3;
-                                $totalItem = ceil(count($product->images)/$imageToShow);
-                            @endphp
-                              <!-- Wrapper for slides -->
-                                <div class="carousel-inner">
-                                    <div class="item active">
-                                    @foreach ($product->images as $image)
-                                        <a href=""><img class="img-similar" src="{{ asset('storage/images/' . $image->getName() ) }}" alt=""></a>
-                                    @if ((($loop->index + 1) % $imageToShow == 0) && ($loop->index < count($product->images)-1))
-                                    </div>
-                                        <div class="item">
-                                    @endif
-                                    @endforeach
-                                        </div>
-                                </div>
-                              <!-- Controls -->
-                              @if(count($product->images) > 3)
-                                <a class="left item-control" href="#similar-product" data-slide="prev">
-                                    <i class="fa fa-angle-left"></i>
-                                </a>
-                                <a class="right item-control" href="#similar-product" data-slide="next">
-                                    <i class="fa fa-angle-right"></i>
-                                </a>
-                              @endif
-                        </div> --}}
-                        {{-- SliderGallery --}}
-                        {{-- <ul id="image-gallery" class="gallery list-unstyled cS-hidden">
-                            @foreach ($product->images as $image)
-                            <li data-thumb=""> 
-                                <img src="{{ asset('storage/images/' . $image->getName() ) }}" />
-                                 </li>
-                            @endforeach
-                        </ul> --}}
-
                         <ul id="imageGallery">
+                            <li style="height: 300px;" data-thumb="{{ asset('storage/images/' . $product->product_image) }}" data-src="{{ asset('storage/images/' . $product->product_image) }}"><img width="100%" src="{{ asset('storage/images/' . $product->product_image) }}" /></li>
                             @foreach ($product->images as $image)
                             <li data-thumb="{{ asset('storage/images/'.$image->getName().'') }}" data-src="{{ asset('storage/images/'.$image->getName().'') }}">
                                 <img width="100%" alt="{{$image->getName()}}" src="{{ asset('storage/images/'.$image->getName().'') }}" />

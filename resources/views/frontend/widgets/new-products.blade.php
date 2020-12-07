@@ -7,13 +7,37 @@
                     <div class="productinfo text-center">
                         <img src="{{ asset('storage/images/' . $product->product_image) }}"  style="width: 200px;" alt="" />
                         <h2>${{ number_format($product->product_price, 2)}} </h2>
-                        <p>{{ $product->product_name }}</p>
-                        <a href="#" class="btn btn-default"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                        <a href="{{ route('frontend.product_detail', ['id' => $product->product_id ]) }}"><h4 style="color: blue">{{ $product->product_name }}</h4></a>
+                        <ul class="list-inline">
+                            @for ($i = 1; $i <= 5; $i++)
+                                @php
+                                
+                                    if ($i > $rating[$product->product_id]){
+                                        $color = "color: #ccc;";
+                                    }                                                       
+                                    else {
+                                        $color = "color: #ffcc00;";
+                                    }    
+                                @endphp
+                                <li
+                                    title="Sản phẩm được đánh giá 4 sao"
+                                    class="rating"
+                                    style="cursor: pointer;
+                                    {{$color}}
+                                    font-size: 15px;"
+                                    >
+                                &#9733
+                                </li>  
+                            @endfor                                          
+                        </ul>
+                        <p>{{$product->brand->brand_name}}</p>   
+                        {{-- <a href="#" class="btn btn-default"><i class="fa fa-shopping-cart"></i>Add to cart</a> --}}
                     </div>
                     <div class="product-overlay">
                         <div class="overlay-content">
                             <h2>${{ number_format($product->product_price, 0)}}</h2>
-                            <p>{{ $product->product_name }}</p>
+                            <a href="{{ route('frontend.product_detail', ['id' => $product->product_id ]) }}"><h4 >{{ $product->product_name }}</h4></a>
+                            <p>{{$product->brand->brand_name}}</p>
                             <a href="#" data-id="{{ $product->product_id }}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                         </div>
                     </div>

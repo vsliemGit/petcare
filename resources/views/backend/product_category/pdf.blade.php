@@ -42,6 +42,11 @@
         .page-break {
             page-break-after: always;
         }
+
+        .img-logo {
+            width: 30px;
+            height: 30px;
+        }
     </style>
 </head>
 
@@ -54,7 +59,7 @@
                     Product Categories Table<br/>
                     http://petcareshop.com <br />
                     (0292)3.1111.999 # 0339522221<br />
-                    <img src="{{ asset('/storage/img/logo.png') }}" />
+                    <img style="img-logo" src="{{ asset('storage/images/logo.png') }}" />
                 </td>
             </tr>
         </table>

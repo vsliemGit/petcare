@@ -42,15 +42,15 @@
                         <div class="shopper-info">
                             <p>Shopper Information</p>
                             <form>
-                                <label for="name">Name: </label>
-                                <input type="text" name="name" placeholder="Display Name" value="{{Auth::guard('customer')->user()->name}}">
-                                <label for="username">Username: </label>
-                                <input type="text" name="username" placeholder="User Name" value="{{Auth::guard('customer')->user()->username}}">
-                                <label for="email">Email: </label>
-                                <input type="text" name="email" placeholder="User Name" value="{{Auth::guard('customer')->user()->email}}">
-                                <label for="phone">Phone number: </label>
-                                <input type="text" name="phone" placeholder="User Name" value="{{Auth::guard('customer')->user()->phone}}">
-                                <label>Sex: </label>
+                                <span for="name">Name: </span>
+                                <input type="text" name="name" placeholder="Display Name" value="{{Auth::guard('customer')->user()->name}}" readonly>
+                                <span for="email">Email: </span>
+                                <input type="text" name="email" placeholder="User Name" value="{{Auth::guard('customer')->user()->email}}" readonly>
+                                <span for="phone">Phone number: </span>
+                                <input type="text" name="phone" placeholder="User Name" value="{{Auth::guard('customer')->user()->phone}}" readonly>
+                                <span for="username">Username: </span>
+                                <input type="text" name="username" placeholder="User Name" value="{{Auth::guard('customer')->user()->username}}" readonly>
+                                {{-- <label>Sex: </label>
                                 <div>
                                     <input type="radio" id="huey" name="drone" value="huey"
                                             checked>
@@ -59,70 +59,75 @@
                                 <span>
                                     <input type="radio" id="dewey" name="drone" value="dewey">
                                     <label for="dewey">Femaile</label>
-                                </span>
+                                </span> --}}
                             </form>
                             {{-- <a class="btn btn-primary" href="">Get Quotes</a>
                             <a class="btn btn-primary" href="">Update account</a> --}}
                         </div>
                     </div>
                 @endif
+                
                 <div class="col-sm-5 clearfix">
                     <div class="bill-to">
                         <p>Bill To</p>
-                        <div class="form-one">
-                            <form>
-                                <input type="text" placeholder="First Name *">
-                                <input type="text" placeholder="Middle Name">
-                                <input type="text" placeholder="Last Name *">
-                                <input type="text" placeholder="Email*">                             
-                                <input type="text" placeholder="Phone number *">
-                                <input type="text" placeholder="Address 1 *">
-                                <input type="text" placeholder="Address 2">
-                            </form>
+                        <div class="form-one">                         
+                            <form id="form_bill_info">
+                                <input type="hidden" name="customer_id" value="{{Auth::guard('customer')->user()->id}}" >
+                                <span for="to_name">To Name: </span>
+                                <input type="text" name="to_name" placeholder="Name *" value="{{Auth::guard('customer')->user()->name}}" required>
+                                <span for="to_email">To Email: </span>
+                                <input type="text" name="to_email" placeholder="Email*" value="{{Auth::guard('customer')->user()->email}}" required>
+                                <span for="to_phone">To Phone: </span>                            
+                                <input type="text" name="to_phone" placeholder="Phone number *" value="{{Auth::guard('customer')->user()->phone}}" required>
+                                <span for="to_address">To Address: </span>
+                                <input type="text" name="to_address" placeholder="Address 1 *" value="{{Auth::guard('customer')->user()->address}}" required>
                         </div>
                         <div class="form-two">
-                            {{-- <form>
-                                <input type="text" placeholder="Zip / Postal Code *">
-                                <select>
-                                    <option>-- Country --</option>
-                                    <option>United States</option>
-                                    <option>Bangladesh</option>
-                                    <option>UK</option>
-                                    <option>India</option>
-                                    <option>Pakistan</option>
-                                    <option>Ucrane</option>
-                                    <option>Canada</option>
-                                    <option>Dubai</option>
-                                </select>
-                                <select>
-                                    <option>-- State / Province / Region --</option>
-                                    <option>United States</option>
-                                    <option>Bangladesh</option>
-                                    <option>UK</option>
-                                    <option>India</option>
-                                    <option>Pakistan</option>
-                                    <option>Ucrane</option>
-                                    <option>Canada</option>
-                                    <option>Dubai</option>
-                                </select>
-                                <input type="password" placeholder="Confirm password">
-                                <input type="text" placeholder="Phone *">
-                                <input type="text" placeholder="Mobile Phone">
-                                <input type="text" placeholder="Fax">
-                            </form> --}}
+                                {{-- <select name="transfer">
+                                    <option value="" selected hidden>Choose Transfer method</option>
+                                    @foreach ($listTransfersMethod as $transfer)
+                                        <option value="{{ $transfer->transfer_id }}">{{ $transfer->transfer_name }}</option>
+                                    @endforeach
+                                </select> --}}
+                                <p>Shipping Method</p>
+                                @foreach ($listTransfersMethod as $transfer)
+                                <div>
+                                    @if ($loop->index == 0)
+                                        <input type="radio" name="transfer" value="{{$transfer->transfer_id}}" checked="checked">
+                                        {{$transfer->transfer_name}} <br>
+                                    @else
+                                        <input type="radio" name="transfer" value="{{$transfer->transfer_id}}">
+                                        {{$transfer->transfer_name}} <br>
+                                    @endif
+                                </div>
+                                @endforeach
+                                <div><br></div>
+                                <p>Payment Method</p>
+                                @foreach ($listPaymentsMethod as $payment)
+                                <div>
+                                    @if ($loop->index == 0)
+                                        <input type="radio" name="payment" value="{{$payment->payment_id}}" checked="checked">
+                                        {{$payment->payment_name}} <br>
+                                    @else
+                                        <input type="radio" name="payment" value="{{$payment->payment_id}}">
+                                        {{$payment->payment_name}} <br>
+                                    @endif
+                                </div>
+                                @endforeach 
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="order-message">
-                        <p>Shipping Order</p>
-                        <textarea name="message"  placeholder="Notes about your order, Special Notes for Delivery" rows="16"></textarea>
-                        <label><input type="checkbox"> Shipping to bill address</label>
+                        <p>Notes Order</p>
+                        <textarea name="message" placeholder="Notes about your order, Special Notes for Delivery" rows="16"></textarea>
+                        {{-- <label><input type="checkbox"> Shipping to bill address</label> --}}
                         {{-- <div>
                             <a class="btn btn-default check_out" href="" style="width: 200px;">Order Now</a>
                         </div> --}}
                     </div>	
-                </div>					
+                </div>
+            </form>					
             </div>
         </div>
         <div class="step-one">
@@ -131,6 +136,20 @@
         <div class="review-payment">
             <h2>Review & Payment</h2>
         </div>
+        <br>
+        {{-- <div class="payment-options">
+                @foreach ($listPaymentsMethod as $payment)
+                <span>
+                    @if ($loop->index == 0)
+                        <input type="radio" name="payment" value="{{$payment->payment_id}}" checked="checked">
+                        <label for="payment">{{$payment->payment_name}}</label>
+                    @else
+                        <input type="radio" name="payment" value="{{$payment->payment_id}}">
+                        <label for="payment">{{$payment->payment_name}}</label>
+                    @endif
+                </span>
+            @endforeach
+        </div> --}}
 
         <div class="table-responsive cart_info">
             <table class="table table-condensed">
@@ -186,11 +205,11 @@
                             <table class="table table-condensed total-result">
                                 <tr>
                                     <td>Cart Sub Total</td>
-                                    <td><span id="subtotal">$ {{ Cart::subtotal() .' '. 'VNĐ' }}</span></td>
+                                    <td><span id="subtotal">${{ Cart::subtotal() .' '. 'VNĐ' }}</span></td>
                                 </tr>
                                 <tr>
                                     <td>Exo Tax</td>
-                                    <td>$2</td>
+                                    <td>$0 VNĐ</td>
                                 </tr>
                                 <tr class="shipping-cost">
                                     <td>Shipping Cost</td>
@@ -198,12 +217,14 @@
                                 </tr>
                                 <tr>
                                     <td>Total</td>
-                                    <td><span>$61</span></td>
+                                    <td><span id="subtotal">${{ Cart::subtotal() .' '. 'VNĐ' }}</span></td>
                                 </tr>
                                 <tr>
                                     <td></td>
                                     <td><span>
-                                        <a class="btn btn-default check_out" href="">Order Now</a>
+                                        <button id="checkout" class="btn btn-default check_out"
+                                        {{ ( Cart::content()->count() < 1) ? "disabled" : "" }}>
+                                            Order Now</button>
                                     </span></td>
                                 </tr>
                             </table>
@@ -212,18 +233,37 @@
                 </tbody>
             </table>
         </div>
-        <div class="payment-options">
-                <span>
-                    <label><input type="checkbox"> Direct Bank Transfer</label>
-                </span>
-                <span>
-                    <label><input type="checkbox"> Check Payment</label>
-                </span>
-                <span>
-                    <label><input type="checkbox"> Paypal</label>
-                </span>
-            </div>
     </div>
 </section> <!--/#cart_items-->
+@endsection
 
+@section('custom-scripts')
+<script>
+    //Setup CSRF to AJAX
+    $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+    //Checkout
+    $("#checkout").click(function(e){
+        e.preventDefault();
+        let form = $('#form_bill_info');
+        $.ajax(
+            {
+                url: "{{route('order')}}",
+                type: "POST",
+                dataType : 'json',
+                data: form.serialize()
+            }).done(function(data){               
+                swal('Success!', data.message);
+                setTimeout(function() { 
+                    window.open(data.redirectUrl,  "_self", "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes");
+                }, 3000);
+            }).fail(function(jqXHR, ajaxOptions, thrownError){
+                swal("Error!", data.message , "error");
+            });
+    });
+</script>
 @endsection

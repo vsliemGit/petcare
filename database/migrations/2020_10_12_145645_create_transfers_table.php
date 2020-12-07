@@ -18,7 +18,7 @@ class CreateTransfersTable extends Migration
             $table->increments('transfer_id');
             $table->string('transfer_name', 100);
             $table->float('transfer_shipping')->nullable()->default(123.45);
-            $table->tinyInteger('transfer_status');
+            $table->tinyInteger('transfer_status')->default(0);
             $table->text('transfer_desc')->nullable();
             $table->timestamp('transfer_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('transfer_updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));

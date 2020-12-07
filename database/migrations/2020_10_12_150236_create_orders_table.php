@@ -18,16 +18,20 @@ class CreateOrdersTable extends Migration
             $table->increments('order_id');
             $table->string('order_adress', 100);
             $table->tinyInteger('order_status')->default(0);
+            $table->text('order_notes')->nullable();
             $table->timestamp('order_date_shipping')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('order_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('order_updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->unsignedInteger('transfer_id');
-            // $table->unsignedInteger('customer_id');
+            $table->unsignedInteger('payment_id');
+            $table->unsignedInteger('customer_id')->nullable();
 
             $table->foreign('transfer_id')->references('transfer_id')
                 ->on('transfers')->onDelete('cascade')->onUpdate('cascade');
-            // $table->foreign('customer_id')->references('customer_id')
-            //     ->on('customers')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('payment_id')->references('payment_id')
+                ->on('payments')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('customer_id')->references('id')
+                ->on('customers')->onDelete('cascade')->onUpdate('cascade');
 
         });
     }

@@ -33,16 +33,17 @@ Admin - Add New Product
                     @endif
                     <div class="panel-body">
                         <div class=" form">
-                        <form class="cmxform form-horizontal " id="commentForm" action="{{route('product.store')}}" method="post" enctype="multipart/form-data">
+                        <form class="cmxform form-horizontal " id="commentForm" action="{{route('product.update', ['id' => $product->product_id])}}" method="post" enctype="multipart/form-data">
                                 @csrf
                                 <div class="row">
                                     <div class="form-group col-md-6">
                                         <label for="pro_category_id" class="control-label col-lg-3">Tên loại <span class="required" style="color:red">*</span></label>
                                         <div class="col-lg-9">
-                                            <select name="pro_category_id" class="form-control m-bot15">
+                                        <select name="pro_category_id" class="form-control m-bot15">
                                                 <option value="" selected hidden>Choose Product Caterogy</option>
                                                 @foreach ($listProductCategories as $productCatetory)
-                                                    <option value="{{ $productCatetory->pro_category_id }}">{{ $productCatetory->pro_category_name }}</option>
+                                                    <option value="{{ $productCatetory->pro_category_id }}" 
+                                                        {{ old('pro_category_id', $product->pro_category_id) == $productCatetory->pro_category_id ? "selected" : "" }}>{{ $productCatetory->pro_category_name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -53,7 +54,8 @@ Admin - Add New Product
                                             <select name="brand_id" class="form-control m-bot15">
                                                 <option value="" selected hidden>Choose Brand</option>
                                                 @foreach ($listBrands as $brand)
-                                                    <option value="{{ $brand->brand_id }}">{{ $brand->brand_name }}</option>
+                                                    <option value="{{ $brand->brand_id }}"
+                                                        {{ old('brand_id', $product->brand_id) == $brand->brand_id ? "selected" : "" }}>{{ $brand->brand_name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -76,7 +78,7 @@ Admin - Add New Product
                                 <div class="col-md-12 form-group">
                                     <label for="product_desc" class="control-label col-md-1">Mô tả</label>
                                     <div class="col-md-10">
-                                        <textarea class="form-control" style="resize: none" rows="8" id="product_desc" name="product_desc" required=""></textarea>
+                                        <textarea class="form-control" style="resize: none" rows="8" id="product_desc" name="product_desc" required="">{{$product->product_desc}}</textarea>
                                     </div>
                                 </div>    
     
@@ -89,7 +91,7 @@ Admin - Add New Product
                                 <div class="form-group">
                                     <label for="product_quantity" class="control-label col-lg-3">Quantity</label>
                                     <div class="col-lg-6">
-                                      <input id="product_quantity" name="product_quantity" class="form-control" type="number" value="0" min="0" max="1000">
+                                      <input id="product_quantity" name="product_quantity" class="form-control" type="number" min="0" max="10000" value="{{$product->product_quantity}}">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -97,7 +99,7 @@ Admin - Add New Product
                                     <div class="col-lg-6">
                                         <div class="input-group m-bot15">
                                             <span class="input-group-addon">$</span>
-                                                <input id="product_basis_price" name="product_basis_price" type="number" class="form-control">
+                                                <input id="product_basis_price" name="product_basis_price" type="number" class="form-control" value="{{$product->product_basis_price}}">
                                             <span class="input-group-addon ">.00</span>
                                         </div>
                                     </div>
@@ -107,7 +109,7 @@ Admin - Add New Product
                                     <div class="col-lg-6">
                                         <div class="input-group m-bot15">
                                             <span class="input-group-addon">$</span>
-                                                <input id="product_price" name="product_price" type="number" class="form-control">
+                                                <input id="product_price" name="product_price" type="number" class="form-control" value="{{$product->product_price}}">
                                             <span class="input-group-addon ">.00</span>
                                         </div>
                                     </div>
@@ -123,14 +125,14 @@ Admin - Add New Product
                                     <div class="col-lg-6">
                                         <select class="form-control m-bot15" name="product_status">
                                             <option value="" selected disabled hidden></option>
-                                            <option value="1">Khả dụng</option>
-                                            <option value="0">Khóa</option>
+                                            <option value="1" {{ old('product_status', $product->product_status) == 1 ? "selected" : "" }}>Khả dụng</option>
+                                            <option value="0" {{ old('product_status', $product->product_status) == 0 ? "selected" : "" }}>Khóa</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-lg-offset-3 col-lg-6">
-                                        <button class="btn btn-primary" type="submit">Thêm</button>
+                                        <button class="btn btn-primary" type="submit">Lưu</button>
                                         <button class="btn btn-default" type="button">Cancel</button>
                                     </div>
                                 </div>

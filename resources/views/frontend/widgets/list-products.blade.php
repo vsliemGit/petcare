@@ -7,6 +7,29 @@
                     <img src="{{ asset('storage/images/' . $product->product_image) }}" alt="" />
                     <h2>${{ number_format($product->product_price, 2)}} </h2>
                     <a href="{{ route('frontend.product_detail', ['id' => $product->product_id ]) }}"><h4 style="color: blue">{{ $product->product_name }}</h4></a>
+                    <ul class="list-inline">
+                        @for ($i = 1; $i <= 5; $i++)
+                            @php
+                            
+                                if ($i > $rating[$product->product_id]){
+                                    $color = "color: #ccc;";
+                                }                                                       
+                                else {
+                                    $color = "color: #ffcc00;";
+                                }    
+                            @endphp
+                            <li
+                                title="Sản phẩm được đánh giá 4 sao"
+                                class="rating"
+                                style="cursor: pointer;
+                                {{$color}}
+                                font-size: 15px;"
+                                >
+                            &#9733
+                            </li>  
+                        @endfor                                          
+                    </ul>
+                    <p>{{$product->brand->brand_name}}</p>  
                     <button type="button" class="btn btn-fefault add-to-cart" data-id="{{$product->product_id}}">
                         <i class="fa fa-shopping-cart"></i>
                         Add to cart
@@ -50,7 +73,7 @@
             swal("Error!", "No response from server...", "error");
         });
     });
-
+    
     //Add product to Cart using ajax
     $('.add-to-wishlist').click(function(event){
             event.preventDefault();
@@ -71,12 +94,15 @@
             });
         });
 
+    
     //Reset modal
     $('#imageGallery').on('hidden.bs.modal', function(e)
         { 
             $(this).removeData();
         });
 
+    
+    
     //Quickview Product
     $('.quickview').click(function(e){
         e.preventDefault();

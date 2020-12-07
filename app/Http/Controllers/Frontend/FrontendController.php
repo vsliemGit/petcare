@@ -13,35 +13,55 @@ use App\Comment;
 use App\Customer;
 use App\Brand;
 use App\Product;
+use App\Order;
 
 class FrontendController extends Controller
 {
     public function index(){
-        $topThreeNewProducts = DB::table('products')
-            ->orderBy('product_created_at')->take(10)->get();
+        $topThreeNewProducts = Product::orderBy('product_created_at')->take(10)->get();
         $listBrands = Brand::all();
         $listProductCategories = DB::table('product_categories')
             ->orderBy('pro_category_created_at', 'desc')->get();
-        $listProducts = Product::paginate(8);      
+        $listProducts = Product::paginate(8);
+        $allProducts = Product::all();
+        foreach($allProducts as $key => $product){
+            $rating[$product->product_id] = $this->getRating($product->product_id);
+        }  
         return view('frontend.index')
             ->with('topThreeNewProducts', $topThreeNewProducts)
             ->with('listBrands', $listBrands)
             ->with('listProductCategories', $listProductCategories)
-            ->with('listProducts', $listProducts);
+            ->with('listProducts', $listProducts)
+            ->with('rating', $rating);
     }
 
     public function products(Request $request){
         $listProducts = Product::paginate(8);
         $listBrands = Brand::all();
-        $topThreeNewProducts = DB::table('products')
-            ->orderBy('product_created_at')->take(10)->get();
+        $allProducts = Product::all();
+        $topThreeNewProducts = Product::orderBy('product_created_at')->take(10)->get();
         $listProductCategories = DB::table('product_categories')
             ->orderBy('pro_category_created_at', 'desc')->get();
+
+        foreach($allProducts as $key => $product){
+            $rating[$product->product_id] = $this->getRating($product->product_id);
+        }
         return view('frontend.pages.products')
             ->with('listBrands', $listBrands)
             ->with('topThreeNewProducts', $topThreeNewProducts)
             ->with('listProductCategories', $listProductCategories)
+            ->with('rating', $rating)
             ->with('listProducts', $listProducts);
+    }
+
+    public function getRating($id){
+        return   (DB::table('rating')->where('product_id', $id)->avg('rating_star'));
+        $ratinghtml = '';
+        for ($i = 1; $i <= 5; $i++){
+            $color = ($i > round($rating)) ? "color: #ccc;" : "color: #ffcc00;";  
+            $ratinghtml .= '<li title="Sản phẩm được đánh giá '.round($rating).' sao" class="rating" style="cursor: pointer; '.$color.'"> &#9733 </li> ';
+        }
+        return $ratinghtml;
     }
 
     public function quickview(Request $request){
@@ -81,8 +101,14 @@ class FrontendController extends Controller
     {
         if($request->ajax())
         {
+            $allProducts = Product::all();
+            foreach($allProducts as $key => $product){
+                $rating[$product->product_id] = $this->getRating($product->product_id);
+            } 
             $data = Product::paginate(8);
-            return view('frontend.widgets.list-products')->with('listProducts', $data);
+            return view('frontend.widgets.list-products')
+            ->with('listProducts', $data)
+            ->with('rating', $rating);
         }
     }
 
@@ -189,10 +215,58 @@ class FrontendController extends Controller
     }
 
     public function checkout(){
-        if(Auth::check()){
-            return view('frontend.pages.login-checkout');
-        }
+        // if(Auth::check()){
+        //     return view('frontend.pages.login-checkout');
+        // }
         $cart_content = Cart::instance('cart')->content();
-        return view('frontend.pages.checkout')->with('cart_content', $cart_content);
+        $listPaymentsMethod = DB::table('payments')->get();
+        $listTransfersMethod = DB::table('transfers')->get();
+        return view('frontend.pages.checkout')
+            ->with('listPaymentsMethod', $listPaymentsMethod)
+            ->with('listTransfersMethod', $listTransfersMethod)
+            ->with('cart_content', $cart_content);
+    }
+
+    public function orderFinish(){
+        return view('frontend.pages.order-finish');
+    }
+
+    public function order(Request $request){
+        try{
+
+            $order_id =  DB::table('orders')->insertGetId([
+                'customer_id' => $request->customer_id,
+                'transfer_id' => $request->transfer,
+                'payment_id' => $request->payment,
+                'order_adress' => $request->to_address,
+                'order_notes' => $request->message
+            ]);
+
+            DB::table('customers')
+              ->where('id', Auth::guard('customer')->user()->id)
+              ->update(['address' => $request->to_address]);
+
+            $cart_content = Cart::instance('cart')->content();
+            foreach($cart_content as $product){
+                $orderDetail = DB::table('order_details')->insert([
+                    'product_id' => $product->id,
+                    'order_id' => $order_id,
+                    'order_detail_quantity' => $product->qty
+                ]);
+                Cart::instance('cart')->remove($product->rowId);
+            }   
+
+        }catch(ValidationException $e) {
+            return response()->json(array(
+                'code'  => 500,
+                'message' => $e,
+                'redirectUrl' => route('frontend.home')
+            ));
+        }      
+        return response()->json(array(
+            'code'  => 200,
+            'message' => 'Tạo đơn hàng thành công!',
+            'redirectUrl' => route('orderFinish')
+        ));
     }
 }

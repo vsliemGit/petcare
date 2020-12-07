@@ -86,8 +86,44 @@ class ProductController extends Controller
     }
 
     //Update product
-    public function update(Request $request){
+    public function update(Request $request, $id){        
+        $product = Product::find($id);
+        $product->product_name = $request->product_name;
+        $product->product_slug = $request->product_slug;
+        $product->product_desc = $request->product_desc;
+        $product->product_quantity = $request->product_quantity;
+        $product->product_basis_price = $request->product_basis_price;
+        $product->product_price = $request->product_price;
+        $product->product_status = $request->product_status;
+        $product->pro_category_id = $request->pro_category_id;
+        $product->brand_id = $request->brand_id;
+        
+        if($request->hasFile('product_image'))
+        {
+            $file = $request->product_image;
 
+            // Lưu tên hình vào column product_image
+            $product->product_image = $file->getClientOriginalName();
+            
+            // Chép file vào thư mục "images"
+            $fileSaved = $file->storeAs('public/images', $product->product_image);
+        }
+        $product->save();       
+        // Lưu hình ảnh liên quan
+        if($request->hasFile('product_images')) {
+            $files = $request->product_images;
+            // Duyệt từng ảnh và thực hiện lưu
+            foreach ($files as $index => $file) {
+                $file->storeAs('public/photos', $file->getClientOriginalName());
+                // Tạo đối tưọng Image
+                Image::insert([
+                    'product_id' => $product->product_id,
+                    'img_name' => $file->getClientOriginalName()
+                ]);
+            }
+        }
+        Session::flash('alert-info', 'Cập nhật sản phẩm thành công!!!');
+        return redirect()->route('product.index'); 
     }
 
     //Delete item
