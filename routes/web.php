@@ -157,3 +157,11 @@ Route::post('/customer/login', 'Auth\CustomerLoginController@login')->name('cust
 Route::post('/customer/logout', 'Auth\CustomerLoginController@logout')->name('customer.logout');
 Route::post('/customer/register', 'Auth\CustomerRegisterController@register')->name('customer.register');
 
+
+//Paypal
+Route::get('/payments/paypal-status', [
+    'uses' => 'PaypalController@getPaypalPaymentStatus'
+])->name('payment.status');
+Route::post('/payments/purchase-with-paypal', [
+    'uses' => 'PaypalController@purchaseWithPaypal'
+])->name('payments.purchase');

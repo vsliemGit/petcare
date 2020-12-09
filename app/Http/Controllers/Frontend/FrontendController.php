@@ -17,6 +17,7 @@ use App\Order;
 
 class FrontendController extends Controller
 {
+   
     public function index(){
         $topThreeNewProducts = Product::orderBy('product_created_at')->take(10)->get();
         $listBrands = Brand::all();

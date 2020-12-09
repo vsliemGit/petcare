@@ -66,6 +66,17 @@
 </head><!--/head-->
 
 <body>
+    <div class="flash-message">
+        @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+          @if(Session::has('alert-' . $msg))
+          <p id="flash-message" class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a  href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
+          @php
+          Session::forget('alert-' . $msg) 
+        @endphp
+          @endif    
+        @endforeach
+        
+    </div>
     <!--Header-->
     @include('frontend.layouts.partials.header')
 

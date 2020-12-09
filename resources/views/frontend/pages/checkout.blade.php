@@ -71,7 +71,8 @@
                     <div class="bill-to">
                         <p>Bill To</p>
                         <div class="form-one">                         
-                            <form id="form_bill_info">
+                            <form id="form_bill_info" method="post">
+                                @csrf
                                 <input type="hidden" name="customer_id" value="{{Auth::guard('customer')->user()->id}}" >
                                 <span for="to_name">To Name: </span>
                                 <input type="text" name="to_name" placeholder="Name *" value="{{Auth::guard('customer')->user()->name}}" required>
@@ -106,10 +107,10 @@
                                 @foreach ($listPaymentsMethod as $payment)
                                 <div>
                                     @if ($loop->index == 0)
-                                        <input type="radio" name="payment" value="{{$payment->payment_id}}" checked="checked">
+                                    <input type="radio" id="radio_{{$loop->index}}" name="payment" value="{{$payment->payment_id}}" checked="checked">
                                         {{$payment->payment_name}} <br>
                                     @else
-                                        <input type="radio" name="payment" value="{{$payment->payment_id}}">
+                                        <input type="radio" id="radio_{{$loop->index}}"  name="payment" value="{{$payment->payment_id}}">
                                         {{$payment->payment_name}} <br>
                                     @endif
                                 </div>
@@ -136,20 +137,6 @@
         <div class="review-payment">
             <h2>Review & Payment</h2>
         </div>
-        <br>
-        {{-- <div class="payment-options">
-                @foreach ($listPaymentsMethod as $payment)
-                <span>
-                    @if ($loop->index == 0)
-                        <input type="radio" name="payment" value="{{$payment->payment_id}}" checked="checked">
-                        <label for="payment">{{$payment->payment_name}}</label>
-                    @else
-                        <input type="radio" name="payment" value="{{$payment->payment_id}}">
-                        <label for="payment">{{$payment->payment_name}}</label>
-                    @endif
-                </span>
-            @endforeach
-        </div> --}}
 
         <div class="table-responsive cart_info">
             <table class="table table-condensed">
@@ -225,6 +212,13 @@
                                         <button id="checkout" class="btn btn-default check_out"
                                         {{ ( Cart::content()->count() < 1) ? "disabled" : "" }}>
                                             Order Now</button>
+                                        {{-- <form action="{{route('payments.purchase')}}" method="post"> --}}
+                                            
+                                            <button id="checkout_paypal"class="btn btn-default check_out"
+                                            {{ ( Cart::content()->count() < 1) ? "disabled" : "" }}>
+                                            Order With Paypal</button>
+                                        {{-- </form> --}}
+                                            
                                     </span></td>
                                 </tr>
                             </table>
@@ -246,13 +240,19 @@
             }
         });
 
+    $('#checkout_paypal').click(function(){
+        $('#form_bill_info').attr('action', '{{route("payments.purchase")}}');
+        $('#form_bill_info').submit();
+    });
+    
     //Checkout
     $("#checkout").click(function(e){
         e.preventDefault();
         let form = $('#form_bill_info');
+        let url = "{{route('order')}}";
         $.ajax(
             {
-                url: "{{route('order')}}",
+                url: url,
                 type: "POST",
                 dataType : 'json',
                 data: form.serialize()
