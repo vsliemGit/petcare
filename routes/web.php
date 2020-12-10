@@ -165,3 +165,11 @@ Route::get('/payments/paypal-status', [
 Route::post('/payments/purchase-with-paypal', [
     'uses' => 'PaypalController@purchaseWithPaypal'
 ])->name('payments.purchase');
+
+//Locale
+Route::get('setLocale/{locale}', function ($locale) {
+    if (in_array($locale, Config::get('app.locales'))) {
+      Session::put('locale', $locale);
+    }
+    return redirect()->back();
+})->name('app.setLocale');

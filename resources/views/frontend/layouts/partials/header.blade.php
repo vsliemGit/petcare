@@ -35,12 +35,12 @@
                     <div class="btn-group pull-right">
                         <div class="btn-group">
                             <button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
-                                USA
+                                {{ __('header.language') }}
                                 <span class="caret"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a href="#">VI</a></li>
-                                <li><a href="#">UK</a></li>
+                                <li><a href="{{ route('app.setLocale', ['locale' => 'vi']) }}">VI</a></li>
+                                <li><a href="{{ route('app.setLocale', ['locale' => 'en']) }}">EN</a></li>
                             </ul>
                         </div>
                         
@@ -59,19 +59,19 @@
                 <div class="col-sm-8">
                     <div class="shop-menu pull-right">
                         <ul class="nav navbar-nav">
-                            <li><a href="#"><i class="fa fa-user"></i> Account</a></li>
+                            <li><a href="#"><i class="fa fa-user"></i> {{ __('header.account') }}</a></li>
                             <li><a href="{{ route('wishlist') }}"><i class="fa fa-star"></i><span class='badge badge-warning' id='lblWishlistCount'> 
                                     {{ Cart::instance('wishlist')->count() }} 
-                                </span> Wishlist</a>
+                                </span> {{ __('header.wishlist') }}</a>
                             </li>   
                             <li><a href="{{ route('shopping_cart') }}"><i class="fa fa-shopping-cart"></i><span class='badge badge-warning' id='lblCartCount'>
                                  {{ Cart::instance('cart')->count() }} 
-                                </span> Cart</a>
+                                </span> {{ __('header.cart') }}</a>
                             </li>
-                            <li><a href="{{ route('checkout') }}"><i class="fa fa-crosshairs"></i> Checkout</a></li> 
+                            <li><a href="{{ route('checkout') }}"><i class="fa fa-crosshairs"></i>{{ __('header.checkout') }}</a></li> 
                             <!-- Authentication Links -->
                             @if(!Auth::guard('customer')->check())
-                                <li><a href="{{ route('login-checkout') }}"><i class="fa fa-lock"></i> Login</a></li>
+                                <li><a href="{{ route('login-checkout') }}"><i class="fa fa-lock"></i> {{ __('header.login') }}</a></li>
                             @else
                                 <li class="dropdown">
                                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -81,7 +81,7 @@
                                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                         <a class="dropdown-item" href="{{ route('logout') }}"
                                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                            {{ __('Logout') }}
+                                            {{ __('header.logout') }}
                                         </a>
                                         <form id="logout-form" action="{{ route('customer.logout') }}" method="POST" class="d-none">
                                             @csrf
@@ -111,23 +111,23 @@
                     </div>
                     <div class="mainmenu pull-left">
                         <ul class="nav navbar-nav collapse navbar-collapse">
-                            <li><a href="{{ route('frontend.home') }}" class="active">Home</a></li>
-                            <li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
+                            <li><a href="{{ route('frontend.home') }}" class="active">{{__('header.home')}}</a></li>
+                            <li class="dropdown"><a href="#">{{__('header.shop')}}<i class="fa fa-angle-down"></i></a>
                                 <ul role="menu" class="sub-menu">
-                                    <li><a href="{{ route('frontend.products') }}">Products</a></li>
-                                    <li><a href="checkout.html">Checkout</a></li> 
-                                    <li><a href="{{ route('shopping_cart') }}">Cart</a></li> 
-                                    <li><a href="{{ route('login-checkout') }}">Login</a></li> 
+                                    <li><a href="{{ route('frontend.products') }}">{{__('header.products')}}</a></li>
+                                    <li><a href="checkout.html">{{__('header.checkout')}}</a></li> 
+                                    <li><a href="{{ route('shopping_cart') }}">{{__('header.cart')}}</a></li> 
+                                    <li><a href="{{ route('login-checkout') }}">{{__('header.login')}}</a></li> 
                                 </ul>
                             </li> 
-                            <li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>
+                            <li class="dropdown"><a href="#">{{__('header.blog')}}<i class="fa fa-angle-down"></i></a>
                                 <ul role="menu" class="sub-menu">
-                                    <li><a href="blog.html">Blog List</a></li>
-                                    <li><a href="blog-single.html">Blog Single</a></li>
+                                    <li><a href="blog.html">{{__('header.blog_list')}}</a></li>
+                                    <li><a href="blog-single.html">{{__('header.blog_single')}}</a></li>
                                 </ul>
                             </li> 
-                            <li><a href="{{ route('frontend.contact')}}">Contact</a></li>
-                            <li><a href="{{ route('frontend.about_us')}}">About us</a></li>
+                            <li><a href="{{ route('frontend.contact')}}">{{__('header.contact')}}</a></li>
+                            <li><a href="{{ route('frontend.about_us')}}">{{__('header.about_us')}}</a></li>
                         </ul>
                     </div>
                 </div>
