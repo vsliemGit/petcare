@@ -39,6 +39,16 @@ Route::prefix('admin')->group(function () {
         Route::delete('/delete', 'Backend\ProductController@destroy')->name('product.destroy');
     });
 
+    //ServiceController
+    Route::prefix('service')->group(function () {
+        Route::get('/', 'Backend\ServiceController@index')->name('service.index');
+        Route::get('/add', 'Backend\ServiceController@create')->name('service.create');
+        Route::post('/store', 'Backend\ServiceController@store')->name('service.store');
+        Route::get('/edit/{id}', 'Backend\ServiceController@edit')->name('service.edit'); 
+        Route::post('/update/{id}', 'Backend\ServiceController@update')->name('service.update');
+        Route::delete('/delete', 'Backend\ServiceController@destroy')->name('service.destroy');
+    });
+
     //ProductCategoryController
     Route::prefix('product-category')->group(function(){
         Route::get('/', 'Backend\ProductCategoryController@index')->name('product_category.index');
@@ -147,6 +157,10 @@ Route::get('/checkout', 'Frontend\FrontendController@checkout')->name('checkout'
 Route::post('/order', 'Frontend\FrontendController@order')->name('order')->middleware('customer');
 Route::get('/order-finish', 'Frontend\FrontendController@orderFinish')->name('orderFinish');
 
+//Servies
+Route::get('/services', 'Frontend\ServiceController@index')->name('servies.index');
+Route::get('/services/service_single', 'Frontend\ServiceController@service_single')->name('servies.service_single');
+
 //Auth
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
@@ -173,3 +187,4 @@ Route::get('setLocale/{locale}', function ($locale) {
     }
     return redirect()->back();
 })->name('app.setLocale');
+

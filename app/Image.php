@@ -7,20 +7,31 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Image extends Model
 {
-    public    $timestamps   = false; //created_at, updated_at
+    // public    $timestamps   = false; //created_at, updated_at
 
-    protected $table        = 'images';
-    protected $fillable     = ['img_name', 'product_id'];
+    // protected $table        = 'images';
+    // protected $primaryKey   = ['img_id'];
+    // protected $dateFomat = 'Y-m-d H:i:s';
+    // protected $dates = ['img_created_at','img_updated_at'];
+    // public $incrementing = false;
 
-    protected $primaryKey   = ['img_id'];
+    protected $table = 'images';
+    protected $primaryKey = 'img_id';
+    protected $dates = ['img_created_at','img_updated_at'];
+    protected $dateFomat = 'Y-m-d H:i:s';
+    protected $guarded = ['img_id'];
+    protected $fillable  = ['img_name'];
 
-    public function product(){
-        return $this->belongsTo('App\Product', 'product_id', 'product_id');
-    }
+    const CREATED_AT = 'img_created_at';
+    const UPDATED_AT = 'img_updated_at';
 
     public function getName()
     {
         return $this->attributes['img_name'];
+    }
+
+    public function products(){
+        return $this->belongsToMany('App\Product')->using('App\Image_Product', 'product_id', 'product_id');
     }
 
     /**

@@ -30,7 +30,7 @@
       @php $i = 0;  @endphp
       @foreach($listProducts as $product)
       @php $i++;  @endphp
-      <tr>
+      <tr id="row_for_product_{{$product->product_id}}">
           <td><label class="i-checks m-b-none"><input type="checkbox" class="sub_chk" data-id="{{ $product->product_id }}"><i></i></label></td>
           <td class="td-id">{{ $product->product_id }}</td>
           <td><img src="{{ asset('storage/images/' . $product->product_image) }}" class="img-list" /></td>
@@ -98,4 +98,5 @@
         }
       });
     });
+    
   </script>

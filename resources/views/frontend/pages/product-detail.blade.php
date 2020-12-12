@@ -59,8 +59,8 @@
                         <ul id="imageGallery">
                             <li style="height: 300px;" data-thumb="{{ asset('storage/images/' . $product->product_image) }}" data-src="{{ asset('storage/images/' . $product->product_image) }}"><img width="100%" src="{{ asset('storage/images/' . $product->product_image) }}" /></li>
                             @foreach ($product->images as $image)
-                            <li data-thumb="{{ asset('storage/images/'.$image->getName().'') }}" data-src="{{ asset('storage/images/'.$image->getName().'') }}">
-                                <img width="100%" alt="{{$image->getName()}}" src="{{ asset('storage/images/'.$image->getName().'') }}" />
+                            <li data-thumb="{{ asset('storage/images/'.$image->img_name.'') }}" data-src="{{ asset('storage/images/'.$image->img_name.'') }}">
+                                <img width="100%" alt="{{$image->img_name}}" src="{{ asset('storage/images/'.$image->img_name.'') }}" />
                             </li>
                             @endforeach
                         </ul>

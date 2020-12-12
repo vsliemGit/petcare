@@ -20,7 +20,8 @@ class Product extends Model
     public function brand(){
         return $this->belongsTo('App\Brand', 'brand_id', 'brand_id');
     }
+    
     public function images(){
-        return $this->hasMany('App\Image', 'product_id', 'product_id');
+        return $this->belongsToMany('App\Image', 'image_product', 'product_id', 'img_id');
     }
 }

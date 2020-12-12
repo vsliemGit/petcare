@@ -6,6 +6,16 @@
 Home | PETCARE
 @endsection
 
+@section('custom-css')
+<style>
+    .img-similar {
+        width: 84px;
+        height: 200px;
+    }
+  
+</style>
+@endsection
+
 {{-- Content of index --}}
 @section('main-content')
 <!--Slider-->
@@ -22,7 +32,7 @@ Home | PETCARE
             <div class="col-sm-9 padding-right">
                 <!-- New products  -->
                 @include('frontend.widgets.new-products')
-                @include('frontend.widgets.new-products')
+                @include('frontend.widgets.new-services')
                 @include('frontend.widgets.new-products')
                               
                 {{-- <div class="category-tab"><!--category-tab--> --}}
@@ -108,7 +118,7 @@ Home | PETCARE
                 responsiveClass:true,
                 loop: true,
                 autoplay:true,
-                autoplayTimeout: 1000,
+                autoplayTimeout: 3000,
                 autoplayHoverPause:true,
                 lazyLoad: true,
                 responsive:{

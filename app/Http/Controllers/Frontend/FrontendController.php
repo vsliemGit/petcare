@@ -13,6 +13,7 @@ use App\Comment;
 use App\Customer;
 use App\Brand;
 use App\Product;
+use App\Service;
 use App\Order;
 
 class FrontendController extends Controller
@@ -20,6 +21,7 @@ class FrontendController extends Controller
    
     public function index(){
         $topThreeNewProducts = Product::orderBy('product_created_at')->take(10)->get();
+        $topNewServices = Service::orderBy('service_created_at')->take(10)->get();
         $listBrands = Brand::all();
         $listProductCategories = DB::table('product_categories')
             ->orderBy('pro_category_created_at', 'desc')->get();
@@ -27,9 +29,10 @@ class FrontendController extends Controller
         $allProducts = Product::all();
         foreach($allProducts as $key => $product){
             $rating[$product->product_id] = $this->getRating($product->product_id);
-        }  
+        } 
         return view('frontend.index')
             ->with('topThreeNewProducts', $topThreeNewProducts)
+            ->with('topNewServices', $topNewServices)
             ->with('listBrands', $listBrands)
             ->with('listProductCategories', $listProductCategories)
             ->with('listProducts', $listProducts)
@@ -140,7 +143,7 @@ class FrontendController extends Controller
                 $output .= '
                 <div class="comment">
                     <img src="/storage/images/icon/admin-comment.png" alt="admin-avatar" class="img img-responsive img-thumbnail">
-                    <p style="color: blue;">@'.$name.'</p>
+                    <p style="color: blue;"><i class="fa fa-user"></i> '.$name.'</p>
                     <p>'.$comment->cmt_content.'</p>
                     <span class="time-right">'.$comment->cmt_created_at.'</span>
                 </div> ';

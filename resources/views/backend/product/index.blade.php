@@ -128,7 +128,6 @@ Admin - List Products
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-
     //Delete Using AJAX
     function deleteItemAjax(product_id){  
       let currentPageNumner =  $('.pagination').find('.active').children().text();
@@ -142,21 +141,23 @@ Admin - List Products
         if (willDelete) {
           var page = window.location.hash.replace('#', '');
           var url = "{{route('product.destroy')}}";
+          $( '#row_for_product_'+product_id).remove();
           $.ajax({
             url: url,
             type: 'DELETE',
             data: {id: product_id}
-          }).done(function(data){
+          }).done(function(data){   
+            console.log(data);    
             swal('Deleted!', 'Your file is deleted...', 'success');
             $("#tag_container").empty().html(data);
-            // getData(currentPageNumner);
+            getData(page);          
           }).error(function(data){
             console.log(data);
             swal("Error!", "No response from server...", "error");
           });
         } else {
           swal("Cancel!", "Your file isn't deleted...", "info");
-        }
+         }
       });
     }
 
@@ -179,6 +180,7 @@ Admin - List Products
                 id : allIdDelete
               }
             }).done(function(data){
+              document.getElementById('#row_for_product_'+id).remove();
               $("#tag_container").empty().html(data);
               getData("1");
             }).error(function(data){

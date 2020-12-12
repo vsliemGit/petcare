@@ -42,6 +42,16 @@
                 </li>
                 <li class="sub-menu">
                     <a href="javascript:;">
+                        <i class="fa fa-table"></i>
+                        <span>Services</span>
+                    </a>
+                    <ul class="sub">
+						<li></i><a href="{{Route('service.index')}}">List Services</a></li>
+                        <li><a href="{{Route('service.create')}}">Add Services</a></li>
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
                         <i class="fa fa-shopping-cart"></i>
                         <span>Orers</span>
                     </a>

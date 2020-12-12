@@ -14,12 +14,10 @@ class CreateImagesTables extends Migration
     public function up()
     {
         Schema::create('images', function (Blueprint $table) {
-            $table->engine = 'InnoDB';
             $table->increments('img_id');
-            $table->unsignedInteger('product_id');
             $table->string('img_name', 200);
-
-            $table->foreign('product_id')->references('product_id')->on('products')->onDelete('CASCADE')->onUpdate('CASCADE');
+            $table->timestamp('img_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('img_updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

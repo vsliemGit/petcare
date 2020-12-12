@@ -11,6 +11,7 @@ use App\Product;
 use App\ProductCategory;
 use App\Brand;
 use App\Image;
+use App\Image_Product;
 
 class ProductController extends Controller
 {
@@ -35,9 +36,9 @@ class ProductController extends Controller
     //Store new Pruduct
     public function store(Request $request){       
         $validation = $request->validate([
-            'product_image' => 'required|file|image|mimes:jpeg,png,gif,webp|max:2048',
+            'product_image' => 'required|file|image|mimes:jpeg,jpg,png,gif,webp|max:2048',
             // Cú pháp dùng upload nhiều file
-            'product_images.*' => 'file|image|mimes:jpeg,png,gif,webp|max:2048'
+            'product_images.*' => 'file|image|mimes:jpeg,jpg,png,gif,webp|max:2048'
         ]);
         $newProduct = new Product();
         $newProduct->product_name = $request->product_name;
@@ -61,15 +62,19 @@ class ProductController extends Controller
         }
         $newProduct->save();       
         // Lưu hình ảnh liên quan
+
         if($request->hasFile('product_images')) {
             $files = $request->product_images;
             // Duyệt từng ảnh và thực hiện lưu
             foreach ($files as $index => $file) {
                 $file->storeAs('public/photos', $file->getClientOriginalName());
                 // Tạo đối tưọng Image
-                Image::insert([
-                    'product_id' => $newProduct->product_id,
+                $id_image = DB::table('images')->insertGetId([                  
                     'img_name' => $file->getClientOriginalName()
+                ]);
+                DB::table('image_product')->insert([
+                    'product_id' => $newProduct->product_id,
+                    'img_id' => $id_image
                 ]);
             }
         }
@@ -116,9 +121,16 @@ class ProductController extends Controller
             foreach ($files as $index => $file) {
                 $file->storeAs('public/photos', $file->getClientOriginalName());
                 // Tạo đối tưọng Image
-                Image::insert([
-                    'product_id' => $product->product_id,
+                foreach($product->images as $img){
+                    $img->delete();
+                }
+                
+                $id_image = DB::table('images')->insertGetId([                  
                     'img_name' => $file->getClientOriginalName()
+                ]);
+                DB::table('image_product')->insert([
+                    'product_id' => $product->product_id,
+                    'img_id' => $id_image 
                 ]);
             }
         }
@@ -137,17 +149,18 @@ class ProductController extends Controller
             //Delete images of product
             if(empty($images) == false){
                 foreach ($images as $image) {
-                    Storage::delete('public/photos/'.$image->getName());
+                    // Storage::delete('public/photos/'.$image->getName());
                     $image->delete();
                 }
             }
             $product->delete();
             //Delete product_image of product
-            Storage::delete('public/images/'.$product->product_image);
+            // Storage::delete('public/images/'.$product->product_image);
         }
         $listProducts = DB::table('products')->orderBy('product_created_at', 'desc')->paginate(5);
         if($request->ajax()){
-            return view('backend.product.table-data')->with('listProducts', $listProducts);
+            return "ajax";
+            // return view('backend.product.table-data')->with('listProducts', $listProducts);
         }
         return view('backend.product.index')->with('listProducts', $listProducts);
     }
