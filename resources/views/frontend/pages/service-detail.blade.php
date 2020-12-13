@@ -14,7 +14,7 @@ Service Single | PETCARE
             <!--Left-sidebar-->
             @include('frontend.widgets.left-sidebar')
         </div>
-        <div class="col-sm-9">
+        {{-- <div class="col-sm-9">
             <div class="blog-post-area">
                 <h2 class="title text-center">Latest From our Blog</h2>
                 <div class="single-blog-post">
@@ -180,8 +180,10 @@ Service Single | PETCARE
                     </div>
                 </div>
             </div><!--/Repaly Box-->
+        </div> --}}
+        <div class="col-sm-9">
+            <div>{!! $service_detail->service_detail_content !!}</div>
         </div>
-          
     </div>     
 </div>
 @endsection

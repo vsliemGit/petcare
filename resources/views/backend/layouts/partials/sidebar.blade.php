@@ -42,7 +42,7 @@
                 </li>
                 <li class="sub-menu">
                     <a href="javascript:;">
-                        <i class="fa fa-table"></i>
+                        <i class="fa fa-ambulance"></i>
                         <span>Services</span>
                     </a>
                     <ul class="sub">
@@ -72,6 +72,15 @@
                     <a href="javascript:;">
                         <i class="fa fa-users"></i>
                         <span>Customers</span>
+                    </a>
+                    <ul class="sub">
+						<li></i><a href="{{Route('customer.index')}}">List Customers</a></li>
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa  fa-truck"></i>
+                        <span>Transfers</span>
                     </a>
                     <ul class="sub">
 						<li></i><a href="{{Route('customer.index')}}">List Customers</a></li>

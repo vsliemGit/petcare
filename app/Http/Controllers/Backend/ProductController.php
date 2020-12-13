@@ -58,7 +58,7 @@ class ProductController extends Controller
             $newProduct->product_image = $file->getClientOriginalName();
             
             // Chép file vào thư mục "images"
-            $fileSaved = $file->storeAs('public/images', $newProduct->product_image);
+            $fileSaved = $file->storeAs('public/images', $file->getClientOriginalName());
         }
         $newProduct->save();       
         // Lưu hình ảnh liên quan
@@ -105,13 +105,13 @@ class ProductController extends Controller
         
         if($request->hasFile('product_image'))
         {
-            $file = $request->product_image;
+            $file = $request->file('product_image');
 
             // Lưu tên hình vào column product_image
             $product->product_image = $file->getClientOriginalName();
             
             // Chép file vào thư mục "images"
-            $fileSaved = $file->storeAs('public/images', $product->product_image);
+            $fileSaved = $file->storeAs('storage/images', $product->product_image);
         }
         $product->save();       
         // Lưu hình ảnh liên quan
@@ -119,7 +119,7 @@ class ProductController extends Controller
             $files = $request->product_images;
             // Duyệt từng ảnh và thực hiện lưu
             foreach ($files as $index => $file) {
-                $file->storeAs('public/photos', $file->getClientOriginalName());
+                $file->storeAs('storage/images', $file->getClientOriginalName());
                 // Tạo đối tưọng Image
                 foreach($product->images as $img){
                     $img->delete();

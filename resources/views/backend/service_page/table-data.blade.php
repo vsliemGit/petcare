@@ -45,7 +45,7 @@
           </td>
           <td><span class="text-ellipsis">{{ $service->service_desc }}</span></td>
           <td>
-          <a href="{{ route('service.edit', ['id' => $service->service_id])}} "
+          <a href="{{ route('service.edit', ['id' => $service->service_id])}}"
               class="active styling-edit edit-item" ui-toggle-class="">
               <i class="fa fa-pencil-square-o text-success text-active"></i></a>
           <a onclick="deleteItemAjax({{$service->service_id}})"        
@@ -54,6 +54,11 @@
               class="active styling-edit" ui-toggle-class="">
               <i class="fa fa-trash-o" style="color: red;"></i>
           </a>
+          <a href="{{ route('service.detail', ['id' => $service->service_id])}} "
+            id="remove-step-form"
+            class="active styling-edit" ui-toggle-class="">
+            <i class="fa fa-building-o"></i>
+        </a>
           </td>
       </tr>
       @endforeach

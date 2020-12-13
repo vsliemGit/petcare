@@ -47,6 +47,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/edit/{id}', 'Backend\ServiceController@edit')->name('service.edit'); 
         Route::post('/update/{id}', 'Backend\ServiceController@update')->name('service.update');
         Route::delete('/delete', 'Backend\ServiceController@destroy')->name('service.destroy');
+        Route::get('/detail/{id}', 'Backend\ServiceController@detail')->name('service.detail');
+        Route::post('/detail/update/{id}', 'Backend\ServiceController@updateDetail')->name('service.detail_update');
+        Route::post('/ckeditor/upload', 'Backend\ServiceController@upload')->name('ckeditor.upload');
     });
 
     //ProductCategoryController
@@ -159,7 +162,7 @@ Route::get('/order-finish', 'Frontend\FrontendController@orderFinish')->name('or
 
 //Servies
 Route::get('/services', 'Frontend\ServiceController@index')->name('servies.index');
-Route::get('/services/service_single', 'Frontend\ServiceController@service_single')->name('servies.service_single');
+Route::get('/services/service_single/{id}', 'Frontend\ServiceController@service_single')->name('servies.service_single');
 
 //Auth
 Auth::routes();

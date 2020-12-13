@@ -63,6 +63,12 @@ class ServiceController extends Controller
             $fileSaved = $file->storeAs('public/images/services', $newService->service_image);
         }
         $newService->save();
+
+        DB::table('service_details')->insert([
+            'service_detail_content' => 'detail service '.$newService->service_name,
+            'service_id' => $newService->service_id
+        ]);
+
         Session::flash('alert-info', 'Thêm mới thành công!!!');
         return redirect()->route('service.index');    
     }
@@ -73,9 +79,38 @@ class ServiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function detail($id)
     {
-        //
+        $service = DB::table('services')->where('service_id', $id)->first();
+        $service_detail = DB::table('service_details')->where('service_id', $id)->first();
+        return view('backend.service_page.service-detail', ['service' => $service, 'data' => $service_detail]);
+
+    }
+
+    public function updateDetail(Request $request, $id)
+    {
+        $detail = DB::table('service_details')->where('service_detail_id', $id);
+        $detail->update([
+            'service_detail_content' => $request->service_content,
+            'service_detail_status' => $request->service_detail_status
+        ]);
+
+        if($request->hasFile('service_detail_image'))
+        {
+            $file = $request->service_detail_image;
+
+            // Lưu tên hình vào column product_image
+            DB::table('service_details')->where('service_detail_id', $id)
+            ->update([
+                'service_detail_image' => $file->getClientOriginalName(),
+            ]);
+            
+            // Chép file vào thư mục "images"
+            $fileSaved = $file->storeAs('public/images/services/service_details', $file->getClientOriginalName());
+        }
+        
+        Session::flash('alert-info', 'Cập nhật thành công!!!');
+        return redirect()->route('service.index');
     }
 
     /**
@@ -88,6 +123,26 @@ class ServiceController extends Controller
     {
         $service = Service::find($id);
         return view('backend.service_page.edit', ['service' => $service]);
+    }
+
+    public function upload(Request $request)
+    {
+        if($request->hasFile('upload')) {
+            $originName = $request->file('upload')->getClientOriginalName();
+            $fileName = pathinfo($originName, PATHINFO_FILENAME);
+            $extension = $request->file('upload')->getClientOriginalExtension();
+            $fileName = $fileName.'_'.time().'.'.$extension;
+        
+            $request->file('upload')->move(public_path('images'), $fileName);
+   
+            $CKEditorFuncNum = $request->input('CKEditorFuncNum');
+            $url = asset('images/'.$fileName); 
+            $msg = 'Image uploaded successfully'; 
+            $response = "<script>window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url', '$msg')</script>";
+               
+            @header('Content-type: text/html; charset=utf-8'); 
+            echo $response;
+        }
     }
 
     /**
@@ -115,7 +170,9 @@ class ServiceController extends Controller
             // Chép file vào thư mục "images"
             $fileSaved = $file->storeAs('public/images/services', $service->service_image);
         }
-        $service->save();       
+        $service->save();
+        Session::flash('alert-info', 'Cập nhật thành công!!!');
+        return redirect()->route('service.index');       
     }
 
     /**

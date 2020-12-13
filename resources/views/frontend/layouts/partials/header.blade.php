@@ -123,7 +123,7 @@
                             <li class="dropdown"><a href="#">{{__('header.blog')}}<i class="fa fa-angle-down"></i></a>
                                 <ul role="menu" class="sub-menu">
                                     <li><a href="{{ route('servies.index') }}">{{__('header.blog_list')}}</a></li>
-                                    <li><a href="{{ route('servies.service_single') }}">{{__('header.blog_single')}}</a></li>
+                                    <li><a href="{{route('servies.service_single', ['id' => 1])}}">{{__('header.blog_single')}}</a></li>
                                 </ul>
                             </li> 
                             <li><a href="{{ route('frontend.contact')}}">{{__('header.contact')}}</a></li>
