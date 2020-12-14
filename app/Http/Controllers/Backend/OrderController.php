@@ -28,6 +28,12 @@ class OrderController extends Controller
         return view('backend.order.index')->with('listOrders', $listOrders);
     }
 
+    public function viewOrder($id){
+        $order = Order::find($id);
+        // return $order;
+        return view('backend.order.view-order', ['order' => $order]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

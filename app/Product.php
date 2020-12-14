@@ -24,4 +24,11 @@ class Product extends Model
     public function images(){
         return $this->belongsToMany('App\Image', 'image_product', 'product_id', 'img_id');
     }
+
+    public function order(){
+        return $this->belongsToMany('App\Order')->using('App\OrderDetail')
+        ->withPivot([
+            'order_detail_quantity'
+        ]);
+    }
 }

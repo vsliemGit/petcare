@@ -22,11 +22,23 @@ class WishlistController extends Controller
         $data['price'] = $product->product_price;
         $data['weight'] = 1;
         $data['options']['image'] = $product->product_image;
+    
+        foreach(Cart::instance('wishlist')->content() as $item)
+        {
+            if($item->id == $product->product_id)
+                return response()->json([
+                    'code' => 500,
+                    'message' => 'Products already in the ',
+                    'itemInWishlist' =>  Cart::instance('wishlist')->count(),
+                ]);
+        };
+        
         Cart::instance('wishlist')->add($data);
 
         return response()->json([
-            'success' => 'Add Item to Wishlist successfuly!',
-            'itemInWishlist' =>  Cart::instance('wishlist')->count()
+            'code' => 200,
+            'message' => 'Product added to ',
+            'itemInWishlist' =>  Cart::instance('wishlist')->count(),
         ]);
     }
     

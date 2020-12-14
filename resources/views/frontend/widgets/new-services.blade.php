@@ -2,7 +2,7 @@
     <h2 class="title text-center">NEW SERVICES</h2>
     <div class="owl-carousel owl-theme">
         @foreach($topNewServices as $key => $service)
-        <div class="card" style="width: 200px;">
+        <div class="card" style="width: 100%; margin-left: 10px;">
             <img class="card-img-top" src="{{ asset('storage/images/services/' . $service->service_image) }}" alt="Card image cap">
             <div class="card-body">
               <h5 class="card-title">{{ $service->service_name }}</h5>

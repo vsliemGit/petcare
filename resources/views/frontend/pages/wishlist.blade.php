@@ -56,6 +56,7 @@
 
 @section('custom-scripts')
 <script>
+    //Remove item to Wishlist
     $('.wishlist_delete').click(function(){
         let rowId = $(this).data('id');
         let itemId = $(this).data('product-id');
@@ -89,7 +90,7 @@
             realoadCountWishlist(data.itemInWishlist);
         }).error(function(data){
             console.log(data)
-            alert( "error o xoa wishlist" );
+            alert( "Error o xoa wishlist" );
         });
     }
     //Setup CSRF to AJAX

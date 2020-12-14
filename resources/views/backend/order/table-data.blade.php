@@ -45,7 +45,7 @@
           <td><span class="text-ellipsis">{{ $order->transfer->transfer_name }}</span></td>
           <td><span class="text-ellipsis">{{ $order->payment->payment_name }}</span></td>
           <td>
-          <a href="javascript:void(0)"
+          <a href="{{route('order.view_order', ['id' => $order->order_id])}}"
               class="active styling-edit edit-item" ui-toggle-class="">
               <i class="fa fa-eye text-success text-active"></i></a>
           <a href="javascript:void(0)"
@@ -58,7 +58,7 @@
       @endforeach
       @php
         while($i < 5){
-          echo "<tr><td><label class='i-checks m-b-none'><input type='checkbox' name='post[]''><i></i></label></td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td></tr>";
+          echo "<tr><td></td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td></tr>";
           $i++;
         }
       @endphp

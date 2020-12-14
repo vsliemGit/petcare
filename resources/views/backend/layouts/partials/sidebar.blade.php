@@ -61,6 +61,16 @@
                 </li>
                 <li class="sub-menu">
                     <a href="javascript:;">
+                        <i class="fa fa-shopping-cart"></i>
+                        <span>Promotions</span>
+                    </a>
+                    <ul class="sub">
+                        <li></i><a href="{{Route('coupon.index')}}">Coupons</a></li>
+                        <li></i><a href="{{Route('coupon.create')}}">Add coupon</a></li>
+                    </ul>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
                         <i class="fa fa-user"></i>
                         <span>Users</span>
                     </a>
