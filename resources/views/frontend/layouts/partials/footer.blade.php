@@ -4,7 +4,7 @@
             <div class="row">
                 <div class="col-sm-2">
                     <div class="companyinfo">
-                        <h2><span>e</span>-petcare</h2>
+                        <a href="{{route('frontend.home')}}"><img height="39px" width="139px;" src="vendor/frontend/images/home/logo6.png" alt="" /></a>
                         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,sed do eiusmod tempor</p>
                     </div>
                 </div>
