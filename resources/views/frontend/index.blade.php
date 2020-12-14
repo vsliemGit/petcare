@@ -33,7 +33,6 @@ Home | PETCARE
                 <!-- New products  -->
                 @include('frontend.widgets.new-products')
                 @include('frontend.widgets.new-services')
-                @include('frontend.widgets.new-products')
                               
                 {{-- <div class="category-tab"><!--category-tab--> --}}
                     {{-- <div class="col-sm-3">
