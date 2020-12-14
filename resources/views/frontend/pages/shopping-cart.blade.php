@@ -91,41 +91,16 @@
                             <label>Estimate Shipping & Taxes</label>
                         </li>
                     </ul>
-                    <ul class="user_info">
-                        <li class="single_field">
-                            <label>Country:</label>
-                            <select>
-                                <option>United States</option>
-                                <option>Bangladesh</option>
-                                <option>UK</option>
-                                <option>India</option>
-                                <option>Pakistan</option>
-                                <option>Ucrane</option>
-                                <option>Canada</option>
-                                <option>Dubai</option>
-                            </select>
-                            
-                        </li>
-                        <li class="single_field">
-                            <label>Region / State:</label>
-                            <select>
-                                <option>Select</option>
-                                <option>Dhaka</option>
-                                <option>London</option>
-                                <option>Dillih</option>
-                                <option>Lahore</option>
-                                <option>Alaska</option>
-                                <option>Canada</option>
-                                <option>Dubai</option>
-                            </select>
-                        
-                        </li>
-                        <li class="single_field zip-field">
-                            <label>Zip Code:</label>
-                            <input type="text">
-                        </li>
-                    </ul>
-                    <a class="btn btn-default update" href="">Get Quotes</a>
+                    <form action="{{route('check_coupon')}}" method="POST">
+                        @csrf
+                        <ul class="user_info">
+                            <li class="single_field zip-field">
+                                <label for="coupon_id">Coupon ID:</label>
+                                <input type="text" id="coupon_id" name="coupon_id">
+                            </li> 
+                        </ul>
+                        <button type="submit" name="use_coupon" class="btn btn-default update" href="">Use Coupon</button>
+                    </form>
                 </div>
             </div>
             <div class="col-sm-6">

@@ -11,7 +11,6 @@ use App\Product;
 
 class CartController extends Controller
 {
-
     public function shoppingCart(){
         $cart_content = Cart::instance('cart')->content();
         return view('frontend.pages.shopping-cart')->with('cart_content', $cart_content);
@@ -20,6 +19,15 @@ class CartController extends Controller
     public function addToCart(Request $request){
         (!isset($request->quantity)) ? $quantity = 1 : $quantity = $request->quantity;
         $product = Product::find($request->product_id);
+        foreach(Cart::instance('cart')->content() as $item)
+        {
+            if($item->id == $product->product_id)
+                return response()->json([
+                    'code' => 500,
+                    'message' => 'Products already in the ',
+                    'itemInCart' =>  Cart::instance('cart')->count(),
+                ]);
+        };
         $data['id'] = $product->product_id;
         $data['name'] = $product->product_name;
         $data['qty'] = $quantity;
@@ -28,11 +36,11 @@ class CartController extends Controller
         $data['options']['image'] = $product->product_image;
         Cart::instance('cart')->add($data);     
         return response()->json([
-            'success' => 'Add Item to Cart successfuly!',
+            'code' => 500,
+            'message' => 'AProduct added to ',
             'itemInCart' =>  Cart::instance('cart')->count()
         ]);
     }
-
 
     public function storeCart(Request $request){
         if($request->ajax()){
@@ -76,5 +84,4 @@ class CartController extends Controller
         }
         return $this->shoppingCart();
     }
-
 }

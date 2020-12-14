@@ -82,10 +82,25 @@ Route::prefix('admin')->group(function () {
         Route::post('/import-excel', 'Backend\BrandController@importExcel')->name('brand.import_excel');
     });
 
-     //OrderController
+    //CouponController
+    Route::prefix('coupon')->group(function(){
+        Route::get('/', 'Backend\PromotionController@indexCoupon')->name('coupon.index');
+        Route::get('/add', 'Backend\PromotionController@createCoupon')->name('coupon.create');
+        Route::post('/store', 'Backend\PromotionController@storeCoupon')->name('coupon.store');
+        Route::get('/edit/{id}', 'Backend\PromotionController@editCoupon')->name('coupon.edit');
+        Route::post('/update', 'Backend\PromotionController@updateCoupon')->name('coupon.update');
+        Route::delete('/delete', 'Backend\PromotionController@destroyCoupon')->name('coupon.destroy');
+        Route::post('/change-status', 'Backend\PromotionController@changeStatusCoupon')->name('coupon.changeStatus');
+        Route::get('/filter-status','Backend\PromotionController@filterStatusCoupon')->name('coupon.filter_status');
+        Route::get('/pdf', 'Backend\PromotionController@createPDFCoupon')->name('coupon.pdf');
+        Route::get('/export-excel', 'Backend\PromotionController@exportExcelCoupon')->name('coupon.export_excel');
+        Route::post('/import-excel', 'Backend\PromotionController@importExcelCoupon')->name('coupon.import_excel');
+    });
+
+    //OrderController
      Route::prefix('order')->group(function(){
         Route::get('/', 'Backend\OrderController@index')->name('order.index');
-        Route::get('/edit/{id}', 'Backend\OrderController@edit')->name('order.edit');
+        Route::get('/view-order/{id}', 'Backend\OrderController@viewOrder')->name('order.view_order');
         Route::post('/update', 'Backend\OrderController@update')->name('order.update');
         Route::delete('/delete', 'Backend\OrderController@destroy')->name('order.destroy');
         Route::post('/change-status', 'Backend\OrderController@changeStatus')->name('order.changeStatus');
@@ -153,6 +168,9 @@ Route::post('/update-to-cart', 'Frontend\CartController@updateToCart')->name('up
 Route::get('/wishlist', 'Frontend\WishlistController@wishlist')->name('wishlist');
 Route::post('/add-to-wishlist', 'Frontend\WishlistController@addToWishlist')->name('add-to-wishlist');
 Route::get('/delete-to-wishlist', 'Frontend\WishlistController@deleteToWishlist')->name('delele-to-wishlist');
+
+//Coupon
+Route::post('/check-coupon', 'Frontend\PromotionController@checkCoupon')->name('check_coupon');
 
 //Checkout
 Route::get('/login-checkout', 'Frontend\FrontendController@loginCheckout')->name('login-checkout');

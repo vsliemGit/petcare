@@ -9,42 +9,30 @@
                     <a href="{{ route('frontend.product_detail', ['id' => $product->product_id ]) }}"><h4 style="color: blue">{{ $product->product_name }}</h4></a>
                     <ul class="list-inline">
                         @for ($i = 1; $i <= 5; $i++)
-                            @php
-                            
-                                if ($i > $rating[$product->product_id]){
-                                    $color = "color: #ccc;";
-                                }                                                       
-                                else {
-                                    $color = "color: #ffcc00;";
-                                }    
-                            @endphp
-                            <li
-                                title="Sản phẩm được đánh giá 4 sao"
-                                class="rating"
-                                style="cursor: pointer;
-                                {{$color}}
+                            @php  $color = ($i > $rating[$product->product_id])  ? "color: #ccc;" : "color: #ffcc00;"   ; @endphp
+                            <li title="Sản phẩm được đánh giá {{ round($rating[$product->product_id]) }} sao"
+                                class="rating" style="cursor: pointer; {{$color}}
                                 font-size: 15px;"
                                 >
                             &#9733
                             </li>  
-                        @endfor                                          
+                        @endfor                                       
                     </ul>
-                    <p>{{$product->brand->brand_name}}</p>  
+                    <p class="message_product_{{$product->product_id}}">{{$product->brand->brand_name}}</p>  
                     <button type="button" class="btn btn-fefault add-to-cart" data-id="{{$product->product_id}}">
                         <i class="fa fa-shopping-cart"></i>
                         Add to cart
-                    </button>
+                    </button>           
                 </div>
             </div>
             <div class="choose">
                 <ul class="nav nav-pills nav-justified">
-                    <li><a href="javascript:void(0)" data-id="{{$product->product_id}}" class="add-to-wishlist"><i class="fa fa-plus-square"></i>Wishlist</a></li>
-                    <li><a href=""
-                        class="quickview"
-                        data-toggle="modal"
-                        data-target="#quickview"
-                        data-product-id="{{$product->product_id}}">
-                        <i class="fa fa-eye"></i>Detail</a></li>
+                    <li><a href="javascript:void(0)" data-id="{{$product->product_id}}" class="add-to-wishlist">
+                        <i class="fa fa-heart-o"></i>Wishlist</a>
+                    </li>
+                    <li><a href="" class="quickview" data-toggle="modal" data-target="#quickview" data-product-id="{{$product->product_id}}">
+                        <i class="fa fa-eye"></i>Detail</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -57,18 +45,24 @@
     //Add product to Cart using ajax
     $('.add-to-cart').click(function(event){
         event.preventDefault();
-        var token = $('meta[name="csrf-token"]').attr('content');
+        $( this ).prop( "disabled", true );
+        let token = $('meta[name="csrf-token"]').attr('content');
+        let product_id =  $(this).data('id');
         $.ajax(
         {
             url: "{{ route('add-to-cart') }}",
             type: "POST",
             data: {
-                product_id : $(this).data('id'),
+                product_id : product_id,
                 _token: token 
             }
         }).done(function(data){
-            realoadCountCart(data.itemInCart);
-            swal('Success!', 'Add item to cart successfully!.', 'success');
+            if(data.code == 200){
+                realoadCountCart(data.itemInCart);
+                $( ".message_product_"+product_id).html('<p style="font-size: 11px;">'+data.message+'<a href="{{ route("shopping_cart") }}">Cart</a>');
+            }else{
+                $( ".message_product_"+product_id).html('<p style="font-size: 11px;">'+data.message+' <a href="{{ route("shopping_cart") }}">Cart</a>');
+            }
         }).fail(function(jqXHR, ajaxOptions, thrownError){
             swal("Error!", "No response from server...", "error");
         });
@@ -77,32 +71,31 @@
     //Add product to Cart using ajax
     $('.add-to-wishlist').click(function(event){
             event.preventDefault();
-            var token = $('meta[name="csrf-token"]').attr('content');
+            $( this ).prop( "disabled", true );
+            let token = $('meta[name="csrf-token"]').attr('content');
+            let product_id =  $(this).data('id');
             $.ajax(
             {
                 url: "{{ route('add-to-wishlist') }}",
                 type: "POST",
                 data: {
-                    product_id : $(this).data('id'),
+                    product_id : product_id,
                     _token: token 
                 }
             }).done(function(data){
-                realoadCountWishlist(data.itemInWishlist);
-                swal('Success!', 'Add item to Wishlist successfully!.', 'success');
+                if(data.code == 200){
+                    realoadCountWishlist(data.itemInWishlist);
+                    $( ".message_product_"+product_id).html('<p style="font-size: 11px;">'+data.message+'<a href="{{ route("wishlist") }}">Wishlist</a>');
+                }else{
+                    $( ".message_product_"+product_id).html('<p style="font-size: 11px;">'+data.message+' <a href="{{ route("wishlist") }}">Wishlist</a>');
+                }
             }).fail(function(jqXHR, ajaxOptions, thrownError){
                 swal("Error!", "No response from server...", "error");
             });
-        });
-
-    
+    });  
     //Reset modal
-    $('#imageGallery').on('hidden.bs.modal', function(e)
-        { 
-            $(this).removeData();
-        });
+    $('#imageGallery').on('hidden.bs.modal', function(e) { $(this).removeData(); });
 
-    
-    
     //Quickview Product
     $('.quickview').click(function(e){
         e.preventDefault();
@@ -114,7 +107,6 @@
                 product_id : product_id
             }
         }).done(function(data){
-            console.log(data);
             $('#modal_lable').text('Detail '+ data.product_name);
             $('#q_product_name').text(data.product_name);
             $('#q_product_id').text(product_id);
@@ -141,9 +133,10 @@
             $('#q_product_brand').html(data.brand);
             $('#q_product_price').text("$"+new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3}).format(data.product_price));
             $('#q_product_desc').text(data.product_desc);
-        }).fail(function(data){
-            console.log(data);
+        }).fail(function(e){
+            console.log(e);
         });
     });
+
 </script>
     

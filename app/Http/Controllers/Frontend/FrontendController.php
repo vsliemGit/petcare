@@ -59,24 +59,17 @@ class FrontendController extends Controller
     }
 
     public function getRating($id){
-        return   (DB::table('rating')->where('product_id', $id)->avg('rating_star'));
-        $ratinghtml = '';
-        for ($i = 1; $i <= 5; $i++){
-            $color = ($i > round($rating)) ? "color: #ccc;" : "color: #ffcc00;";  
-            $ratinghtml .= '<li title="Sản phẩm được đánh giá '.round($rating).' sao" class="rating" style="cursor: pointer; '.$color.'"> &#9733 </li> ';
-        }
-        return $ratinghtml;
+        return (DB::table('rating')->where('product_id', $id)->avg('rating_star'));
     }
 
     public function quickview(Request $request){
         if($request->ajax()){
             $product = Product::find($request->product_id);
-            $images = DB::table('images')->where('product_id', $request->product_id)->get();
             $brand = DB::table('brands')->where('brand_id', $product->brand_id)->first();
             $rating = DB::table('rating')->where('product_id', $request->product_id)->avg('rating_star');
 
             $listImageOfProduct = '<ul id="imageGallery"><li style="height: 300px;" data-thumb="storage/images/'.$product->product_image .'" data-src="storage/images/'.$product->product_image .'"><img width="100%" src="storage/images/'.$product->product_image .'" /></li>';            
-            foreach($images as $loop => $image){
+            foreach($product->images as $loop => $image){
                 $listImageOfProduct.= '<li style="height: 300px;" data-thumb="storage/images/'.$image->img_name.'" data-src="storage/images/'.$image->img_name.'"><img width="100%" src="storage/images/'.$image->img_name.'" /></li>';
             }
             $listImageOfProduct .= '</ul>';
@@ -84,7 +77,7 @@ class FrontendController extends Controller
             $ratinghtml = '';
             for ($i = 1; $i <= 5; $i++){
                 $color = ($i > round($rating)) ? "color: #ccc;" : "color: #ffcc00;";  
-                $ratinghtml .= '<li title="Sản phẩm được đánh giá 4 sao" class="rating" style="cursor: pointer; '.$color.'"> &#9733 </li> ';
+                $ratinghtml .= '<li title="Sản phẩm được đánh giá '.round($rating).' sao" class="rating" style="cursor: pointer; '.$color.'"> &#9733 </li> ';
             }
                                     
             return response()->json([
@@ -97,12 +90,11 @@ class FrontendController extends Controller
             ]);
         }
         return response()->json([
-            'message' => 'Error when get info product!',
+            'message' => 'Error when get info product!'
         ]);
     }
 
-    function get_ajax_data(Request $request)
-    {
+    function get_ajax_data(Request $request){
         if($request->ajax())
         {
             $allProducts = Product::all();
@@ -210,6 +202,7 @@ class FrontendController extends Controller
     public function contact(){
         return view('frontend.pages.contact');
     }
+
     public function aboutUs(){
         return view('frontend.pages.about-us');
     }

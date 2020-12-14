@@ -5,7 +5,7 @@
             <div class="product-image-wrapper">
                 <div class="single-products">
                     <div class="productinfo text-center">
-                        <img src="{{ asset('storage/images/' . $product->product_image) }}"  style="width: 200px;" alt="" />
+                        <img src="{{ asset('storage/images/' . $product->product_image) }}"  style="width: 100%;" alt="" />
                         <h2>${{ number_format($product->product_price, 2)}} </h2>
                         <a href="{{ route('frontend.product_detail', ['id' => $product->product_id ]) }}"><h4 style="color: blue">{{ $product->product_name }}</h4></a>
                         <ul class="list-inline">
@@ -38,20 +38,21 @@
                             <h2>${{ number_format($product->product_price, 0)}}</h2>
                             <a href="{{ route('frontend.product_detail', ['id' => $product->product_id ]) }}"><h4 >{{ $product->product_name }}</h4></a>
                             <p>{{$product->brand->brand_name}}</p>
-                            <a href="#" data-id="{{ $product->product_id }}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                            <a href="{{ route('frontend.product_detail', ['id' => $product->product_id ]) }}" data-id="{{ $product->product_id }}" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Xem ngay</a>                            
                         </div>
                     </div>
-                    <img src="vendor/frontend/images/home/new.png" class="new" style="width: 50px;" alt="" />
+                    <img src="vendor/frontend/images/home/new.png" class="new" style="width: 42px; height: 42px;" alt="" />
                 </div>
-                <div class="choose">
+                {{-- <div class="choose">
                     <ul class="nav nav-pills nav-justified">
-                        <li><a href="javascript:void(0)" data-id="{{$product->product_id}}" class="add-to-wishlist"><i class="fa fa-star"></i>Add to wishlist</a></li>
-                        <li><a class="quickview"
-                            data-toggle="modal"
-                            data-target="#quickview"
-                            data-product-id="{{$product->product_id}}"><i class="fa fa-eye"></i>Quick view</a></li>
+                        <li><a href="javascript:void(0)" data-id="{{$product->product_id}}" class="add-to-wishlist">
+                            <i class="fa fa-heart-o"></i>Add to wishlist</a>
+                        </li>
+                        <li><a class="quickview" data-toggle="modal" data-target="#quickview" data-product-id="{{$product->product_id}}">
+                            <i class="fa fa-eye"></i>Quick view</a>
+                        </li>
                     </ul>
-                </div>
+                </div> --}}
             </div>  
         @endforeach
     </div>                

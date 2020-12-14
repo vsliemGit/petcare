@@ -16,39 +16,43 @@
             </label>
           </th>
           <th>ID</th>
-          <th>Customer</th>
-          <th>Date shipping</th>
+          <th>Name</th>
+          <th>Code</th>
+          <th>Times</th>
+          <th>Condition</th>
           <th>Status</th>
           <th>Created at</th>
-          <th>Transfer</th>
-          <th>Payment</th>
+          <th>Updated at</th>
           <th style="width:30px;"></th>
       </tr>
       </thead>
       <tbody>
       @php $i = 0;  @endphp
-      @foreach($listOrders as $order)
+      @foreach($listCoupons as $coupon)
       @php $i++;  @endphp
       <tr>
-          <td><label class="i-checks m-b-none"><input type="checkbox" class="sub_chk" data-id="{{ $order->order_id }}"><i></i></label></td>
-          <td class="td-id">{{ $order->order_id }}</td>
-          <td class="td-slug"><span class="text-ellipsis">{{ $order->customer->name }}</span></td>
-          <td class="td-desc"><span class="text-ellipsis">{{ $order->order_date_shipping }}</span></td>
+          <td><label class="i-checks m-b-none"><input type="checkbox" class="sub_chk" data-id="{{ $coupon->coupon_id }}"><i></i></label></td>
+          <td class="td-id">{{ $coupon->coupon_id }}</td>
+          <td class="td-name"><span class="text-ellipsis">{{ $coupon->coupon_name }}</span></td>
+          <td class="td-code"><span class="text-ellipsis">{{ $coupon->coupon_code }}</span></td>
+          <td class="td-code"><span class="text-ellipsis">{{ $coupon->coupon_number }}</span></td>
+          <td class="td-times"><span class="text-ellipsis">{{ $coupon->coupon_times }}</span></td>
+          <td class="td-desc"><span class="text-ellipsis">{{ $coupon->coupon_condition }}</span></td>
           <td class="td-status change-item">
-            <?php if($order->order_status == 1){ ?>
+            <?php if($coupon->coupon_status == 1){ ?>
               <a data-id="1" href="javascript:void(0)"><span data-id="1"class="fa fa-check text-success text-active"></span></a>
                     <?php  }else{ ?>  
               <a data-id="0" href="javascript:void(0)"><span class="fa fa-times text-danger text"></span></a>
             <?php  } ?>
           </td>
-          <td><span class="text-ellipsis">{{ $order->order_created_at }}</span></td>
-          <td><span class="text-ellipsis">{{ $order->transfer->transfer_name }}</span></td>
-          <td><span class="text-ellipsis">{{ $order->payment->payment_name }}</span></td>
+          <td><span class="text-ellipsis">{{ $coupon->coupon_created_at }}</span></td>
+          <td><span class="text-ellipsis">{{ $coupon->coupon_updated_at }}</span></td>
           <td>
-          <a href="{{route('order.view_order', ['id' => $order->order_id])}}"
-              class="active styling-edit edit-item" ui-toggle-class="">
-              <i class="fa fa-eye text-success text-active"></i></a>
           <a href="javascript:void(0)"
+              class="active styling-edit edit-item" ui-toggle-class="">
+              <i class="fa fa-pencil-square-o text-success text-active"></i></a>
+          <a onclick="deleteItemAjax({{$coupon->coupon_id}})"        
+              href="javascript:void(0)"
               id="remove-step-form"
               class="active styling-edit" ui-toggle-class="">
               <i class="fa fa-trash-o" style="color: red;"></i>
@@ -58,7 +62,7 @@
       @endforeach
       @php
         while($i < 5){
-          echo "<tr><td></td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td></tr>";
+          echo "<tr><td><label class='i-checks m-b-none'><input type='checkbox' name='post[]''><i></i></label></td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td></tr>";
           $i++;
         }
       @endphp
@@ -68,10 +72,10 @@
   <footer class="panel-footer">
     <div class="row">
       <div class="col-sm-5 text-center">
-        <small class="text-muted inline m-t-sm m-b-sm">showing {{$listOrders->firstItem()}}-{{$listOrders->lastItem()}} of {{$listOrders->total()}} items</small>
+        <small class="text-muted inline m-t-sm m-b-sm">showing {{$listCoupons->firstItem()}}-{{$listCoupons->lastItem()}} of {{$listCoupons->total()}} items</small>
       </div>
       <div class="col-sm-7 text-right text-center-xs">                
-        {{ $listOrders->links()}}
+        {{ $listCoupons->links()}}
       </div>
     </div></footer>
   

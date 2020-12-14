@@ -1,37 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Backend;
+namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
 use DB;
-use App\Order;
-use App\Customer;
-use App\Payment;
-use App\Transfer;
+use Coupon;
 
-
-class OrderController extends Controller
+class PromotionController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $listOrders = Order::paginate(6);
-        if ($request->ajax()) {
-            return view('backend.order.table-data')->with('listOrders', $listOrders);
-        }
-        return view('backend.order.index')->with('listOrders', $listOrders);
-    }
-
-    public function viewOrder($id){
-        $order = Order::find($id);
-        // return $order;
-        return view('backend.order.view-order', ['order' => $order]);
+        //
     }
 
     /**
@@ -99,4 +84,9 @@ class OrderController extends Controller
     {
         //
     }
+
+    public function checkCoupon(Request $request){
+        return $request->all();
+    }
+
 }
