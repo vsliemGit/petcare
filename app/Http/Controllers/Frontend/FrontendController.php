@@ -59,7 +59,7 @@ class FrontendController extends Controller
     }
 
     public function profile(){
-        if(Auth::check()){
+        if(Auth::guard('customer')->check()){
             $orders = Order::where('customer_id', Auth::guard('customer')->user()->id)->get();
             return view('frontend.pages.profile-customer', ['orders'=> $orders]);
         }
