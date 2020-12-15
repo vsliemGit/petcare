@@ -72,21 +72,9 @@
                             <p>Web ID: {{ $product->product_id }}</p>
                             <ul class="list-inline">
                                 @for ($i = 1; $i <= 5; $i++)
-                                    @php
-                                        if ($i > $rating){
-                                            $color = "color: #ccc;";
-                                        }                                                       
-                                        else {
-                                            $color = "color: #ffcc00;";
-                                        }    
-                                    @endphp
-                                    <li
-                                        title="Sản phẩm được đánh giá {{$rating}} sao"
-                                        class="rating"
-                                        style="cursor: pointer;
-                                        {{$color}}
-                                        font-size: 25px;"
-                                        >
+                                    @php  $color = ($i > $rating)  ? "color: #ccc;" : "color: #ffcc00;"   ; @endphp
+                                    <li title="Sản phẩm được đánh giá {{$rating}} sao"
+                                        class="rating" style="cursor: pointer; {{$color}} font-size: 25px;">
                                     &#9733
                                     </li>  
                                 @endfor                                          
@@ -102,6 +90,7 @@
                                             Add to cart
                                         </button>
                                 </span>
+                                <p class="message_product_{{$product->product_id}}"></p>  
                             </form>
                             <p><b>Availability:</b> In Stock</p>
                             <p><b>Condition:</b> New</p>
@@ -253,7 +242,7 @@
             }
         }
 
-        //lightGallery    
+        //LightGallery    
         $(document).ready(function() {
             $('#imageGallery').lightSlider({
                 gallery:true,
@@ -282,6 +271,7 @@
             loadComment();
         });
         
+        //Load comment
         function loadComment(){
             let product_id = $('#product_id').val();
             $.ajax({
@@ -297,6 +287,7 @@
             });
         }
 
+        //Add comment
         $("#add-comment").submit(function(e){
             e.preventDefault(); // avoid to execute the actual submit of the form.
             var form = $(this);
@@ -318,17 +309,21 @@
 
         $("#add-cart-form").submit(function(e){
             e.preventDefault(); // avoid to execute the actual submit of the form.
-            var form = $(this);
-            var url = form.attr('action');
-            console.log(form.serialize());
+            let form = $(this);
+            let product_id =  $('#product_id').val();
+            let url = form.attr('action');
             $.ajax(
             {
                 url: url,
                 type: "POST",
                 data: form.serialize(),
-            }).done(function(data){
-                realoadCountCart(data.itemInCart);
-                swal('Success!', 'Add item to cart successfully!.', 'success');
+            }).done(function(data){           
+                if(data.code == 200){
+                    realoadCountCart(data.itemInCart);
+                    $( ".message_product_"+product_id).html('<p style="font-size: 15px; font-style: italic; padding-bottom: 10px;">'+data.message+'<a href="{{ route("shopping_cart") }}">Cart</a>');
+                }else{
+                    $( ".message_product_"+product_id).html('<p style="font-size: 15px; font-style: italic; padding-bottom: 10px;">'+data.message+' <a href="{{ route("shopping_cart") }}">Cart</a>');
+                }
             }).fail(function(jqXHR, ajaxOptions, thrownError){
                 swal("Error!", "No response from server...", "error");
             });

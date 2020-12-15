@@ -32,7 +32,15 @@ Home | PETCARE
             <div class="col-sm-9 padding-right">
                 <!-- New products  -->
                 @include('frontend.widgets.new-products')
+                <div class="features_items" id="list-products"><!--features_items-->
+                    <!-- List Products  -->
+                    @include('frontend.widgets.list-products')
+                </div><!--features_items--> 
                 @include('frontend.widgets.new-services')
+                <div class="features_items" id="list-products"><!--features_items-->
+                    <!-- List Products  -->
+                    @include('frontend.widgets.list-products')
+                </div><!--features_items-->
                               
                 {{-- <div class="category-tab"><!--category-tab--> --}}
                     {{-- <div class="col-sm-3">

@@ -59,9 +59,9 @@
         }).done(function(data){
             if(data.code == 200){
                 realoadCountCart(data.itemInCart);
-                $( ".message_product_"+product_id).html('<p style="font-size: 11px;">'+data.message+'<a href="{{ route("shopping_cart") }}">Cart</a>');
+                $( ".message_product_"+product_id).html('<span style="font-size: 13px; font-style: italic;">'+data.message+'<a href="{{ route("shopping_cart") }}">Cart</a></span>');
             }else{
-                $( ".message_product_"+product_id).html('<p style="font-size: 11px;">'+data.message+' <a href="{{ route("shopping_cart") }}">Cart</a>');
+                $( ".message_product_"+product_id).html('<span style="font-size: 13x;" font-style: italic;>'+data.message+' <a href="{{ route("shopping_cart") }}">Cart</a></span>');
             }
         }).fail(function(jqXHR, ajaxOptions, thrownError){
             swal("Error!", "No response from server...", "error");
@@ -85,9 +85,9 @@
             }).done(function(data){
                 if(data.code == 200){
                     realoadCountWishlist(data.itemInWishlist);
-                    $( ".message_product_"+product_id).html('<p style="font-size: 11px;">'+data.message+'<a href="{{ route("wishlist") }}">Wishlist</a>');
+                    $( ".message_product_"+product_id).html('<span style="font-size: 12px; font-style: italic;">'+data.message+'<a href="{{ route("wishlist") }}">Wishlist</a></span>');
                 }else{
-                    $( ".message_product_"+product_id).html('<p style="font-size: 11px;">'+data.message+' <a href="{{ route("wishlist") }}">Wishlist</a>');
+                    $( ".message_product_"+product_id).html('<span style="font-size: 12px; font-style: italic;">'+data.message+' <a href="{{ route("wishlist") }}">Wishlist</a></span>');
                 }
             }).fail(function(jqXHR, ajaxOptions, thrownError){
                 swal("Error!", "No response from server...", "error");

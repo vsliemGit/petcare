@@ -16,4 +16,8 @@ class Service extends Model
     public function images(){
         return $this->belongsToMany('App\Image', 'image_service', 'service_id', 'img_id');
     }
+
+    public function detail(){
+        return $this->belongsTo('App\ServiceDetail', 'service_id', 'service_id');
+    }
 }
