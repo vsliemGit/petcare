@@ -58,6 +58,38 @@ class FrontendController extends Controller
             ->with('listProducts', $listProducts);
     }
 
+    public function profile(){
+        if(Auth::check()){
+            $orders = Order::where('customer_id', Auth::guard('customer')->user()->id)->get();
+            return view('frontend.pages.profile-customer', ['orders'=> $orders]);
+        }
+        return view('frontend.pages.login-checkout');     
+    }
+
+    public function viewOrder(Request $request){
+        $order = Order::find($request->id);
+
+        $table_detail_order = "<hr><table class='table'><thead>";
+        $table_detail_order  .= "<th scope='col'>Mã sản phẩm</th>";
+        $table_detail_order  .= "<th scope='col'>Hình ảnh</th>";
+        $table_detail_order  .= "<th scope='col'>Tên SP</th>";
+        $table_detail_order  .= "<th scope='col'>Giá</th>";
+        $table_detail_order  .= "<th scope='col'>Số Lượng</th>";
+        $table_detail_order  .= "<th style='width:30px;'></th></tr></thead><tbody>";
+
+        foreach($order->detail as $item){
+            $table_detail_order  .= "<tr>";
+            $table_detail_order  .= "<td class='td-id'><span class='text-ellipsis'>#".$item->product_id."</span></td>";
+            $table_detail_order  .= "<td><img width='70px' height='70px' src='storage/images/".$item->product_image."' class='img-list' /></td>";
+            $table_detail_order  .= "<td class='td-name'><span class='text-ellipsis'>".$item->product_name."</span></td>";
+            $table_detail_order  .= "<td class='td-price'><span class='text-ellipsis'>".$item->product_price."</span></td>";
+            $table_detail_order  .= "<td class='td-quantity'><span class='text-ellipsis'>". $item->pivot->order_detail_quantity."</span></td>";
+            $table_detail_order  .= "</tr>";
+        }
+        $table_detail_order .= "</tbody></table>";
+        return $table_detail_order;
+    }
+
     public function getRating($id){
         return (DB::table('rating')->where('product_id', $id)->avg('rating_star'));
     }

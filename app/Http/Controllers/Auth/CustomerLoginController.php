@@ -76,5 +76,4 @@ class CustomerLoginController extends Controller
         Auth::logout();
         return back();
     }
-
 }

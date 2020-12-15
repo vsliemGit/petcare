@@ -192,6 +192,9 @@ Route::post('/customer/login', 'Auth\CustomerLoginController@login')->name('cust
 Route::post('/customer/logout', 'Auth\CustomerLoginController@logout')->name('customer.logout');
 Route::post('/customer/register', 'Auth\CustomerRegisterController@register')->name('customer.register');
 
+//Profile
+Route::get('/customer/profile', 'Frontend\FrontendController@profile')->name('customer.profile');
+Route::get('/customer/view-order', 'Frontend\FrontendController@viewOrder')->name('customer.order.view_order');
 
 //Paypal
 Route::get('/payments/paypal-status', [

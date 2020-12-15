@@ -58,6 +58,34 @@
                 </div>
                 <div class="col-sm-8">
                     <div class="shop-menu pull-right">
+                        <style>
+                            .dropbtn {                           
+                                cursor: pointer;
+                            }
+                            .dropdown {
+                                position: relative;
+                                display: inline-block;
+                            }
+                            .dropdown-content {
+                                display: none;
+                                position: absolute;
+                                min-width: 160px;
+                                box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+                                z-index: 1;
+                            }
+                            .dropdown-content a {
+                                color: black;
+                                padding: 12px 16px;
+                                text-decoration: none;
+                                display: block;
+                                margin-left: 10px;
+                            }
+                            .dropdown-content a:hover {background-color: #f1f1f1}
+
+                            .dropdown:hover .dropdown-content {
+                                display: block;
+                            } 
+                        </style>
                         <ul class="nav navbar-nav">
                             <li><a href="#"><i class="fa fa-user"></i> {{ __('header.account') }}</a></li>
                             <li><a href="{{ route('wishlist') }}"><i class="fa fa-star"></i><span class='badge badge-warning' id='lblWishlistCount'> 
@@ -73,19 +101,24 @@
                             @if(!Auth::guard('customer')->check())
                                 <li><a href="{{ route('login-checkout') }}"><i class="fa fa-lock"></i> {{ __('header.login') }}</a></li>
                             @else
+
                                 <li class="dropdown">
-                                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    <a class="dropbtn" href="#">
                                         <i class="fa fa-user"></i>{{Auth::guard('customer')->user()->name}}
                                     </a>
-
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <a class="dropdown-item" href="{{ route('logout') }}"
-                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                            {{ __('header.logout') }}
+                                    <div class="dropdown-content" aria-labelledby="dropdownMenuLink">
+                                        <a  href="{{route('customer.profile')}}">
+                                            <i class="fa fa-user"></i>
+                                            Trang cá nhân
                                         </a>
-                                        <form id="logout-form" action="{{ route('customer.logout') }}" method="POST" class="d-none">
-                                            @csrf
-                                        </form>
+                                        <a  href="{{ route('logout') }}"
+                                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            <i class="fa fa-sign-out" aria-hidden="true"></i>
+                                            {{ __('header.logout') }}
+                                            <form id="logout-form" action="{{ route('customer.logout') }}" method="POST" class="d-none">
+                                                @csrf
+                                            </form>
+                                        </a>                                       
                                     </div>
                                 </li>
                             @endif
