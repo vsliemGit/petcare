@@ -26,6 +26,12 @@ Route::prefix('admin')->group(function () {
     Route::get('/', 'Backend\BackendController@showHome')->name('home.index')->middleware('auth');
     Route::get('/home', 'Backend\BackendController@showHome')->name('home.index');
 
+    //Dashboard
+    Route::get('/dashboard', 'Backend\BackendController@dashboard')->name('dashboard');
+    Route::post('/filter-by-date', 'Backend\BackendController@filterByDate')->name('filter_by_date');
+    Route::post('/default-data-chart', 'Backend\BackendController@defaultDataChart')->name('default_data_chart');
+    Route::post('/filter-by-option', 'Backend\BackendController@filterByOption')->name('filter_by_option');
+
     //Backend\UserController
     Route::get('/user', 'Backend\UserController@index')->name('user.index');
 

@@ -24,7 +24,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="{{ asset('vendor/backend/js/jquery-2.0.3.min.js') }}"></script>
 <!-- Các custom style dành riêng cho từng view -->
 @yield('custom-css')
-@yield('custom-js')
 </head>
 <body>
 <section id="container">
@@ -45,6 +44,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="{{ asset('vendor/backend/js/jquery.slimscroll.js') }}"></script>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/flot-chart/excanvas.min.js"></script><![endif]-->
 <script src="{{ asset('vendor/backend/js/jquery.scrollTo.js') }}"></script>
+@yield('custom-js')
 <!-- Script -->
    <script type="text/javascript">
       // morris JavaScript
