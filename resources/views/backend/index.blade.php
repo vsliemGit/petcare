@@ -6,8 +6,8 @@ Admin - Dashboard
 @endsection
 @section('custom-css')
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<!-- //Morris CSS -->
+<link href="{{ asset('vendor/backend/css/morris.css') }}" rel="stylesheet">
 <style>
    
 </style>
@@ -70,85 +70,262 @@ Admin - Dashboard
         </div>
        <div class="clearfix"> </div>
     </div>	
-    <div class="agileinfo-grap" style="margin-top: 10px;">
-        <div class="agileits-box">
-            <header class="agileits-box-header clearfix">
-                <h3>Thống kê doanh số</h3>
-                    <div class="toolbar"> 
-                        <form action="" autocomplete="off">
-                            @csrf
-                            <div class="col-md-3">
-                                <p>Từ ngày: <input type="text" name="" id="datepicker" class="form-control"></p>
-                            </div>
-                            <div class="col-md-3">
-                                <p>Đến ngày: <input type="text" name="" id="datepicker2" class="form-control"></p>
-                            </div>
-                            <div class="col-md-2">
-                                <p class="col-md-12">&nbsp;</p>               
-                                <p class="col-md-12" ><input type="button" id="btn_filter_date" class="btn btn-primary btn-sm" value="Lọc kết quả"></p>
-                            </div>
-                            <div class="col-md-3">
-                                <p>Lọc theo: 
-                                    <select name="filter_by_option" id="filter_by_option" class="filter-by-option form-control m-bot15">
-                                        <option value="0" selected disabled hidden></option>
-                                        <option value="1">Hôm nay</option>
-                                        <option value="-1">Ngày trước</option>
-                                        <option value="7">7 ngày qua</option>
-                                        <option value="-30">Tháng trước</option>
-                                        <option value="30">Tháng này</option>
-                                        <option value="365">365 ngày qua</option>
-                                    </select>
-                                </p>
-                            </div>
-                        </form>                      
-                    </div>
-            </header>
-            <div id="myfirstchart" class="agileits-box-body clearfix" style="height: 300px;"></div>
-        </div>        
+    <div class="row">
+        <div class="panel-body">
+            <div class="col-md-12 w3ls-graph">
+                <div class="agileinfo-grap">
+                    <div class="agileits-box">
+                        <header class="agileits-box-header clearfix">
+                            <h3>Thống kê doanh số</h3>
+                                <div class="toolbar"> 
+                                    <form action="" autocomplete="off">
+                                        @csrf
+                                        <div class="col-md-3">
+                                            <p>Từ ngày: <input type="text" name="" id="datepicker" class="form-control"></p>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <p>Đến ngày: <input type="text" name="" id="datepicker2" class="form-control"></p>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <p class="col-md-12">&nbsp;</p>               
+                                            <p class="col-md-12" ><input type="button" id="btn_filter_date" class="btn btn-primary btn-sm" disabled value="Lọc kết quả"></p>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <p>Lọc theo: 
+                                                <select name="filter_by_option" id="filter_by_option" class="filter-by-option form-control m-bot15">
+                                                    <option value="0" selected disabled hidden></option>
+                                                    <option value="1">Hôm nay</option>
+                                                    <option value="-1">Ngày trước</option>
+                                                    <option value="7">7 ngày qua</option>
+                                                    <option value="-30">Tháng trước</option>
+                                                    <option value="30">Tháng này</option>
+                                                    <option value="365">365 ngày qua</option>
+                                                </select>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <p>Chọn loại bản đồ: 
+                                                <select name="change_type_chart" id="change_type_chart" class="filter-by-option form-control m-bot15">
+                                                    <option value="0" selected disabled hidden></option>
+                                                    <option value="1">Default</option>
+                                                    <option value="2">Area Chart</option>
+                                                    <option value="3">Bar Chart</option>
+                                                </select>
+                                            </p>
+                                        </div>
+                                       
+                                    </form>                      
+                                </div>
+                        </header>
+                        <div id="myfirstchart" class="agileits-box-body clearfix" style="height: 50%;"></div>
+                    </div>        
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="agileinfo-grap" style="margin-top: 10px;">
-        <div class="agileits-box">
-            <header class="agileits-box-header clearfix">
-                <h3>Thống kê doanh số</h3>
-                    <div class="toolbar"> 
-                        <form action="" autocomplete="off">
-                            @csrf
-                            <div class="col-md-3">
-                                <p>Từ ngày: <input type="text" name="" id="datepicker" class="form-control"></p>
+    <div class="agil-info-calendar">
+        <div class="col-md-5 agile-calendar"+>
+            <div class="calendar-widget">
+                <div class="panel-heading ui-sortable-handle">
+                    <span class="panel-icon">
+                      <i class="fa fa-bar-chart-o"></i>
+                    </span>
+                    <span class="panel-title">Loại sản phẩm</span>
+                </div>
+                <!-- grids -->
+                    <div class="agile-calendar-grid">
+                        <div class="page">
+                            
+                            <div class="w3l-calendar-left">
+                                <div class="calendar-heading">
+                                    
+                                </div>
+                                <div id="donut-example" class="morris-donut-inverse"></div>
                             </div>
-                            <div class="col-md-3">
-                                <p>Đến ngày: <input type="text" name="" id="datepicker2" class="form-control"></p>
-                            </div>
-                            <div class="col-md-2">
-                                <p class="col-md-12">&nbsp;</p>               
-                                <p class="col-md-12" ><input type="button" id="btn_filter_date" class="btn btn-primary btn-sm" value="Lọc kết quả"></p>
-                            </div>
-                            <div class="col-md-3">
-                                <p>Lọc theo: 
-                                    <select name="filter_by_option" id="filter_by_option" class="filter-by-option form-control m-bot15">
-                                        <option value="0" selected disabled hidden></option>
-                                        <option value="1">Hôm nay</option>
-                                        <option value="-1">Ngày trước</option>
-                                        <option value="7">7 ngày qua</option>
-                                        <option value="-30">Tháng trước</option>
-                                        <option value="30">Tháng này</option>
-                                        <option value="365">365 ngày qua</option>
-                                    </select>
-                                </p>
-                            </div>
-                        </form>                      
+                            
+                            <div class="clearfix"> </div>
+                        </div>
                     </div>
+            </div>
+        </div> 
+        <div class="col-md-7 w3agile-notifications">
+            <header class="panel-heading">
+                Notification 
             </header>
-            <div id="linechart_material" style="margin-top: 20px; height: 500px; padding: 20px;"></div>
-        </div>        
+			{{-- <div class="col-md-12 stats-info stats-last widget-shadow"> --}}
+                <div class="stats-last-agile">
+                    <table class="table stats-table ">
+                        <thead>
+                            <tr>
+                                <th>S.NO</th>
+                                <th>PRODUCT CATEROGY</th>
+                                <th>STATUS</th>
+                                <th>PROGRESS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Lorem ipsum</td>
+                                <td><span class="label label-success">In progress</span></td>
+                                <td><h5>85% <i class="fa fa-level-up"></i></h5></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Aliquam</td>
+                                <td><span class="label label-warning">New</span></td>
+                                <td><h5>44% <i class="fa fa-level-up"></i></h5></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>Lorem ipsum</td>
+                                <td><span class="label label-danger">Overdue</span></td>
+                                <td><h5 class="down">40% <i class="fa fa-level-down"></i></h5></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">4</th>
+                                <td>Aliquam</td>
+                                <td><span class="label label-info">Out of stock</span></td>
+                                <td><h5>100% <i class="fa fa-level-up"></i></h5></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">5</th>
+                                <td>Lorem ipsum</td>
+                                <td><span class="label label-success">In progress</span></td>
+                                <td><h5 class="down">10% <i class="fa fa-level-down"></i></h5></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">6</th>
+                                <td>Aliquam</td>
+                                <td><span class="label label-warning">New</span></td>
+                                <td><h5>38% <i class="fa fa-level-up"></i></h5></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">6</th>
+                                <td>Aliquam</td>
+                                <td><span class="label label-warning">New</span></td>
+                                <td><h5>38% <i class="fa fa-level-up"></i></h5></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">6</th>
+                                <td>Aliquam</td>
+                                <td><span class="label label-warning">New</span></td>
+                                <td><h5>38% <i class="fa fa-level-up"></i></h5></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            {{-- </div> --}}
+			<div class="clearfix"> </div>
+        </div>
+        <div class="clearfix"></div>
     </div>
-    
+    <div class="agil-info-calendar">
+        <div class="col-md-7 w3agile-notifications">
+            <header class="panel-heading">
+                Notification 
+            </header>
+			{{-- <div class="col-md-12 stats-info stats-last widget-shadow"> --}}
+                <div class="stats-last-agile">
+                    <table class="table stats-table ">
+                        <thead>
+                            <tr>
+                                <th>S.NO</th>
+                                <th>PRODUCT CATEROGY</th>
+                                <th>STATUS</th>
+                                <th>PROGRESS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Lorem ipsum</td>
+                                <td><span class="label label-success">In progress</span></td>
+                                <td><h5>85% <i class="fa fa-level-up"></i></h5></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Aliquam</td>
+                                <td><span class="label label-warning">New</span></td>
+                                <td><h5>44% <i class="fa fa-level-up"></i></h5></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>Lorem ipsum</td>
+                                <td><span class="label label-danger">Overdue</span></td>
+                                <td><h5 class="down">40% <i class="fa fa-level-down"></i></h5></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">4</th>
+                                <td>Aliquam</td>
+                                <td><span class="label label-info">Out of stock</span></td>
+                                <td><h5>100% <i class="fa fa-level-up"></i></h5></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">5</th>
+                                <td>Lorem ipsum</td>
+                                <td><span class="label label-success">In progress</span></td>
+                                <td><h5 class="down">10% <i class="fa fa-level-down"></i></h5></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">6</th>
+                                <td>Aliquam</td>
+                                <td><span class="label label-warning">New</span></td>
+                                <td><h5>38% <i class="fa fa-level-up"></i></h5></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">6</th>
+                                <td>Aliquam</td>
+                                <td><span class="label label-warning">New</span></td>
+                                <td><h5>38% <i class="fa fa-level-up"></i></h5></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">6</th>
+                                <td>Aliquam</td>
+                                <td><span class="label label-warning">New</span></td>
+                                <td><h5>38% <i class="fa fa-level-up"></i></h5></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            {{-- </div> --}}
+			<div class="clearfix"> </div>
+		</div> 
+        <div class="col-md-5 agile-calendar"+>
+            <div class="calendar-widget">
+                <div class="panel-heading ui-sortable-handle">
+                    <span class="panel-icon">
+                      <i class="fa fa-bar-chart-o"></i>
+                    </span>
+                    <span class="panel-title">Loại sản phẩm</span>
+                </div>
+                <!-- grids -->
+                    <div class="agile-calendar-grid">
+                        <div class="page">
+                            
+                            <div class="w3l-calendar-left">
+                                <div class="calendar-heading">
+                                    
+                                </div>
+                                <div id="stacked" ></div>
+                            </div>
+                            
+                            <div class="clearfix"> </div>
+                        </div>
+                    </div>
+            </div>
+        </div> 
+    </div>
+       
+
 </section>
+ <!-- footer -->
+ @include('backend.layouts.partials.footer')
 @endsection 
 @section('custom-js')
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+<script src="{{ asset('vendor/backend/js/raphael-min.js') }}"></script>
+<script src="{{ asset('vendor/backend/js/morris.js') }}"></script>
 <script>
     //Setup CSRF to AJAX
     $.ajaxSetup({
@@ -156,9 +333,111 @@ Admin - Dashboard
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
     });
-    //Custom datepicker
-    var chart = new Morris.Line({
-            element: 'myfirstchart',
+    //Line Chart
+    var chart = getLineChart('myfirstchart');
+    chart30sOrder();
+    //Donut Chart
+    var colorDanger = "#FF1744";
+    Morris.Donut({
+        element: 'donut-example',
+        resize: true,
+        colors: ['#E0F7FA','#B2EBF2','#80DEEA','#4DD0E1','#26C6DA','#00BCD4','#00ACC1','#0097A7','#00838F','#006064'],
+        data: [
+            {label:"Dato Ej.1", value:123, color:colorDanger},
+            {label:"Dato Ej.2", value:369},
+            {label:"Dato Ej.3", value:246},
+            {label:"Dato Ej.4", value:159},
+            {label:"Dato Ej.5", value:357}
+        ]
+    });
+
+    $(document).ready(function(){
+        //Custom datepicker
+        $( "#datepicker" ).datepicker({
+            prevText: "Tháng trước",
+            nextText: "Tháng sau",
+            dateFormat: "yy-mm-dd",
+            dayNamesMin: ['T2','T3', 'T4','T5','T6','T7','CN'],
+            monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10','Tháng 11', 'Tháng 12'],
+            monthNamesShort : ['Thg1', 'Thg2', 'Thg3', 'Thg4', 'Thg5', 'Thg6', 'Thg7', 'Thg8', 'Thg9', 'Thg10','Thg11', 'Thg12'],
+            duration: 'slow',
+            changeMonth: true,
+            changeYear: true
+        });
+
+        $( "#datepicker2" ).datepicker({
+            prevText: "Tháng trước",
+            nextText: "Tháng sau",
+            dateFormat: "yy-mm-dd",
+            dayNamesMin: ['T2','T3', 'T4','T5','T6','T7','CN'],
+            monthNames : ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10','Tháng 11', 'Tháng 12'],
+            monthNamesShort : ['Thg1', 'Thg2', 'Thg3', 'Thg4', 'Thg5', 'Thg6', 'Thg7', 'Thg8', 'Thg9', 'Thg10','Thg11', 'Thg12'],
+            duration: 'slow',
+            changeMonth: true,
+            changeYear: true
+        });
+
+        var data = [
+            { y: '2014', a: 50, b: 90},
+            { y: '2015', a: 65,  b: 75},
+            { y: '2016', a: 50,  b: 50},
+            { y: '2017', a: 75,  b: 60},
+            { y: '2018', a: 80,  b: 65},
+            { y: '2019', a: 90,  b: 70},
+            { y: '2020', a: 100, b: 75},
+            { y: '2021', a: 115, b: 75},
+            { y: '2022', a: 120, b: 85},
+            { y: '2023', a: 145, b: 85},
+            { y: '2024', a: 160, b: 95}
+        ];
+        var chartBar = getBarChart("stacked").setData(data);     
+    });
+
+
+    //Get BarChart
+    function getBarChart(element){
+        config = {
+            xkey: 'y',
+            ykeys: ['a', 'b'],
+            labels: ['Total Income', 'Total Outcome'],
+            fillOpacity: 0.6,
+            hideHover: 'auto',
+            behaveLikeLine: true,
+            resize: true,
+            pointFillColors:['#ffffff'],
+            pointStrokeColors: ['black'],
+            lineColors:['gray','red']
+        };
+        config.element = element;
+        config.stacked = true;
+        return Morris.Bar(config);
+    }
+    //Get BarChart
+    function getBarChart2(element){
+        config = {
+            xkey: 'period',
+            ykeys: ['order', 'sales', 'profit', 'quantity'],
+            labels: ['Đơn hàng', 'Doanh số', 'Lợi nhuận', 'Số lượng'] ,
+            fillOpacity: 0.6,
+            hideHover: 'auto',
+            behaveLikeLine: true,
+            resize: true,
+            pointFillColors:['#ffffff'],
+            pointStrokeColors: ['black'],
+            lineColors:['gray','red']
+        };
+        config.element = element;
+        config.stacked = false;
+        return Morris.Bar(config);
+    }
+
+
+    //Get LineChart
+    function getLineChart(element){
+        config = {
+            xkey: 'period',
+            ykeys: ['order', 'sales', 'profit', 'quantity'],
+            labels: ['Đơn hàng', 'Doanh số', 'Lợi nhuận', 'Số lượng'] ,
             lineCorlors: ['#819C79', '#dc8710', '#ff6541', '#A4aDD3', '#766B56'],
             barColors: ['#2BCEFF', '##C64CE0', '#25DB72', '#94F235', '#DBC128'],
             gridTextColor: ['#FA8F0F'],
@@ -167,103 +446,30 @@ Admin - Dashboard
             fillOpacity: 0.6,
             hideHover: 'auto',
             parseTime: false,
-            resize: true,
-            xkey: 'period',
-            ykeys: ['order', 'sales', 'profit', 'quantity'],
-            labels: ['Đơn hàng', 'Doanh số', 'Lợi nhuận', 'Số lượng']      
-    });
-    $(document).ready(function(){
-        $( "#datepicker" ).datepicker({
-            prevText: "Tháng trước",
-            nextText: "Tháng sau",
-            dateFormat: "yy-mm-dd",
-            dayNamesMin: ['T2','T3', 'T4','T5','T6','T7','CN'],
-            monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10','Tháng 11', 'Tháng 12'],
-            duration: 'slow'
-        });
-
-        $( "#datepicker2" ).datepicker({
-            prevText: "Tháng trước",
-            nextText: "Tháng sau",
-            dateFormat: "yy-mm-dd",
-            dayNamesMin: ['T2','T3', 'T4','T5','T6','T7','CN'],
-            monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10','Tháng 11', 'Tháng 12'],
-            duration: 'slow'
-        });
-
-        chart30sOrder();
-        lineChartGoogleLoad();
-        // coreChartGoogleLoad();
-          
-    });
-
-    function lineChartGoogleLoad(){
-        google.charts.load('current', {'packages':['line']});
-        google.charts.setOnLoadCallback(drawChart);
-        
-        function drawChart() {
-
-            var data = new google.visualization.DataTable();
-            data.addColumn('number', 'Day');
-            data.addColumn('number', 'Guardians of the Galaxy');
-            data.addColumn('number', 'The Avengers');
-            data.addColumn('number', 'Transformers: Age of Extinction');
-
-            data.addRows([
-                [1,  37.8, 80.8, 41.8],
-                [2,  30.9, 69.5, 32.4],
-                [3,  25.4,   57, 25.7],
-                [4,  11.7, 18.8, 10.5],
-                [5,  11.9, 17.6, 10.4],
-                [6,   8.8, 13.6,  7.7],
-                [7,   7.6, 12.3,  9.6],
-                [8,  12.3, 29.2, 10.6],
-                [9,  16.9, 42.9, 14.8],
-                [10, 12.8, 30.9, 11.6],
-                [11,  5.3,  7.9,  4.7],
-                [12,  6.6,  8.4,  5.2],
-                [13,  4.8,  6.3,  3.6],
-                [14,  4.2,  6.2,  3.4]
-            ]);
-
-            var options = {
-            chart: {
-                title: 'Box Office Earnings in First Two Weeks of Opening',
-                subtitle: 'in millions of dollars (USD)'
-            },
-            width: 'auto',
-            height: 500
-            };
-
-            var chart = new google.charts.Line(document.getElementById('linechart_material'));
-
-            chart.draw(data, google.charts.Line.convertOptions(options));
-        } 
+            resize: true
+        };
+        config.element = element;
+        return Morris.Line(config);
     }
 
-    function coreChartGoogleLoad(){
-      google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Year', 'Sales', 'Expenses'],
-          ['2004',  1000,      400],
-          ['2005',  1170,      460],
-          ['2006',  660,       1120],
-          ['2007',  1030,      540]
-        ]);
-
-        var options = {
-          title: 'Company Performance',
-          curveType: 'function',
-          legend: { position: 'bottom' }
+    //Get AreaChart
+    function getAreaChart(element){
+        config = {
+            xkey: 'period',
+            ykeys: ['order', 'sales', 'profit', 'quantity'],
+            labels: ['Đơn hàng', 'Doanh số', 'Lợi nhuận', 'Số lượng'] ,
+            lineCorlors: ['#819C79', '#dc8710', '#ff6541', '#A4aDD3', '#766B56'],
+            barColors: ['#2BCEFF', '##C64CE0', '#25DB72', '#94F235', '#DBC128'],
+            gridTextColor: ['#FA8F0F'],
+            pointFillColors: ['#ffffff'],
+            pointStrokeColors: ['black'],
+            fillOpacity: 0.6,
+            hideHover: 'auto',
+            parseTime: false,
+            resize: true
         };
-
-        var chart = new google.visualization.LineChart(document.getElementById('linechart_material'));
-
-        chart.draw(data, options);
-      }
+        config.element = element;
+        return Morris.Area(config);
     }
 
          
@@ -273,6 +479,7 @@ Admin - Dashboard
             url: "{{route('default_data_chart')}}",
             method: 'POST' ,
             dataType: 'JSON',
+            // async: false,
             data: {},
             success:function(data){
                 if(data.length>0)
@@ -282,11 +489,28 @@ Admin - Dashboard
                     chart.setData([]);
                 }
             }
-        });
+        });       
     }
+
+    //Enable Button filter
+    $('#datepicker2').change(function() {
+        var date = $(this).val();
+        var sDate = $('#datepicker').val();
+        if (Date.parse(date) < Date.parse(sDate) || sDate=="") {
+            if(Date.parse(date) < Date.parse(sDate)){
+                alert('End Date invalid!');
+            }
+            $('#datepicker2').datepicker('setDate', null);
+            $("#btn_filter_date").prop('disabled', true);
+            return;
+        }
+        $("#btn_filter_date").prop('disabled', false);
+
+    });
 
     //Button filter by date
     $('#btn_filter_date').click(function(){
+        let dataChart;
         let from_date = $('#datepicker').val();
         let to_date = $('#datepicker2').val();
         $.ajax({
@@ -327,6 +551,32 @@ Admin - Dashboard
                 }
             }
         });
+    });
+
+    //Filter by option
+    $('#change_type_chart').change(function(){
+        let option = $(this).val();
+        switch(option) {
+        case "1":
+            $("#myfirstchart").empty();
+            chart = getLineChart('myfirstchart');
+            chart30sOrder();
+            break;   
+        case "2":
+            $("#myfirstchart").empty();
+            chart = getAreaChart('myfirstchart');
+            chart30sOrder();
+            break; 
+        case "3":
+            $("#myfirstchart").empty();
+            chart = getBarChart2('myfirstchart');
+            chart30sOrder();
+            break; 
+        default:
+            $("#myfirstchart").empty();
+            chart = getLineChart('myfirstchart');
+            chart30sOrder();
+        }
     });
 </script>
 @endsection  

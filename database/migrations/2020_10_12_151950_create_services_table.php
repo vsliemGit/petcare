@@ -20,6 +20,7 @@ class CreateServicesTable extends Migration
            $table->string('service_image', 200);
            $table->float('service_price')->nullable()->default(123.45);
            $table->text('service_desc')->nullable();
+           $table->unsignedBigInteger('service_views')->default(0);
            $table->tinyInteger('service_status')->default(0);
            $table->timestamp('service_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
            $table->timestamp('service_updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
