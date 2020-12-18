@@ -7,12 +7,9 @@ Admin - Dashboard
 @section('custom-css')
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <style>
-    p.title_thongke {
-        text-align: center;
-        font-size: 20px;
-        font-weight: bold;
-    }
+   
 </style>
 @endsection
 {{-- Thay thế nội dung vào Placeholder `main-content` của view `backend.layouts.index` --}}
@@ -88,7 +85,7 @@ Admin - Dashboard
                             </div>
                             <div class="col-md-2">
                                 <p class="col-md-12">&nbsp;</p>               
-                                <p class="col-md-12" ><input type="button" id="btn_filter_date" class="btn btn-primary btn-sm" value="Lọc theo ngày"></p>
+                                <p class="col-md-12" ><input type="button" id="btn_filter_date" class="btn btn-primary btn-sm" value="Lọc kết quả"></p>
                             </div>
                             <div class="col-md-3">
                                 <p>Lọc theo: 
@@ -107,8 +104,43 @@ Admin - Dashboard
                     </div>
             </header>
             <div id="myfirstchart" class="agileits-box-body clearfix" style="height: 300px;"></div>
-        </div>
-        
+        </div>        
+    </div>
+    <div class="agileinfo-grap" style="margin-top: 10px;">
+        <div class="agileits-box">
+            <header class="agileits-box-header clearfix">
+                <h3>Thống kê doanh số</h3>
+                    <div class="toolbar"> 
+                        <form action="" autocomplete="off">
+                            @csrf
+                            <div class="col-md-3">
+                                <p>Từ ngày: <input type="text" name="" id="datepicker" class="form-control"></p>
+                            </div>
+                            <div class="col-md-3">
+                                <p>Đến ngày: <input type="text" name="" id="datepicker2" class="form-control"></p>
+                            </div>
+                            <div class="col-md-2">
+                                <p class="col-md-12">&nbsp;</p>               
+                                <p class="col-md-12" ><input type="button" id="btn_filter_date" class="btn btn-primary btn-sm" value="Lọc kết quả"></p>
+                            </div>
+                            <div class="col-md-3">
+                                <p>Lọc theo: 
+                                    <select name="filter_by_option" id="filter_by_option" class="filter-by-option form-control m-bot15">
+                                        <option value="0" selected disabled hidden></option>
+                                        <option value="1">Hôm nay</option>
+                                        <option value="-1">Ngày trước</option>
+                                        <option value="7">7 ngày qua</option>
+                                        <option value="-30">Tháng trước</option>
+                                        <option value="30">Tháng này</option>
+                                        <option value="365">365 ngày qua</option>
+                                    </select>
+                                </p>
+                            </div>
+                        </form>                      
+                    </div>
+            </header>
+            <div id="linechart_material" style="margin-top: 20px; height: 500px; padding: 20px;"></div>
+        </div>        
     </div>
     
 </section>
@@ -159,9 +191,82 @@ Admin - Dashboard
             duration: 'slow'
         });
 
-        chart30sOrder();      
+        chart30sOrder();
+        lineChartGoogleLoad();
+        // coreChartGoogleLoad();
+          
     });
-           
+
+    function lineChartGoogleLoad(){
+        google.charts.load('current', {'packages':['line']});
+        google.charts.setOnLoadCallback(drawChart);
+        
+        function drawChart() {
+
+            var data = new google.visualization.DataTable();
+            data.addColumn('number', 'Day');
+            data.addColumn('number', 'Guardians of the Galaxy');
+            data.addColumn('number', 'The Avengers');
+            data.addColumn('number', 'Transformers: Age of Extinction');
+
+            data.addRows([
+                [1,  37.8, 80.8, 41.8],
+                [2,  30.9, 69.5, 32.4],
+                [3,  25.4,   57, 25.7],
+                [4,  11.7, 18.8, 10.5],
+                [5,  11.9, 17.6, 10.4],
+                [6,   8.8, 13.6,  7.7],
+                [7,   7.6, 12.3,  9.6],
+                [8,  12.3, 29.2, 10.6],
+                [9,  16.9, 42.9, 14.8],
+                [10, 12.8, 30.9, 11.6],
+                [11,  5.3,  7.9,  4.7],
+                [12,  6.6,  8.4,  5.2],
+                [13,  4.8,  6.3,  3.6],
+                [14,  4.2,  6.2,  3.4]
+            ]);
+
+            var options = {
+            chart: {
+                title: 'Box Office Earnings in First Two Weeks of Opening',
+                subtitle: 'in millions of dollars (USD)'
+            },
+            width: 'auto',
+            height: 500
+            };
+
+            var chart = new google.charts.Line(document.getElementById('linechart_material'));
+
+            chart.draw(data, google.charts.Line.convertOptions(options));
+        } 
+    }
+
+    function coreChartGoogleLoad(){
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Year', 'Sales', 'Expenses'],
+          ['2004',  1000,      400],
+          ['2005',  1170,      460],
+          ['2006',  660,       1120],
+          ['2007',  1030,      540]
+        ]);
+
+        var options = {
+          title: 'Company Performance',
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('linechart_material'));
+
+        chart.draw(data, options);
+      }
+    }
+
+         
     //30 days
     function chart30sOrder(){
         $.ajax({

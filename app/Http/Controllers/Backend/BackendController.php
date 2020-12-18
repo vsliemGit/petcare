@@ -6,11 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Statistic;
 use Carbon\Carbon;
+use Auth;
+use Illuminate\Support\Facades\Cache;
 
 class BackendController extends Controller
 {
     //Show home page backend
     public function showHome(){
+       
         return view('backend.layouts.index');
     }
 
@@ -25,7 +28,19 @@ class BackendController extends Controller
     }
 
     //Dashboard
-    public function dashboard(){
+    public function dashboard(Request $request){
+        // $users = array();
+        // if(Auth::check()){
+        //     foreach(Auth::user()->get() as $user){
+        //         if($user->isOnline()){
+        //             // if (Cache::has('user-is-online-' . $user->id)){
+        //             //     $users[] = $user;
+        //             // } 
+        //             $users[] = $user; 
+        //         }
+        //     }
+        // }
+        // return dd($users);
         return view('backend.index');
     }
 

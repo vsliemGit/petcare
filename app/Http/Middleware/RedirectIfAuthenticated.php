@@ -21,12 +21,12 @@ class RedirectIfAuthenticated
         switch($guard){
             case 'customer':
                 if (Auth::guard($guard)->check()) {
-                return redirect('/');
-             }
+                    return redirect('/');
+                }
                 break;
-                default:
+            default:
                 if (Auth::guard($guard)->check()) {
-                    return redirect()->route('backend.index');
+                    return redirect()->route('home.index');
                 }
                 break;
         }
