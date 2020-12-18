@@ -16,7 +16,7 @@ class CreateStatisticsTable extends Migration
     {
         Schema::create('statistics', function (Blueprint $table) {
             $table->increments('id_statistical');
-            $table->date('order_date')->default(Carbon::now());
+            $table->date('order_date')->default(Carbon::now()->format('Y-m-d'));
             $table->string('sales', 30);
             $table->string('profit', 30);            
             $table->integer('quantity')->default(0);

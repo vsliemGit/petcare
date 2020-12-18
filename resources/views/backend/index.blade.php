@@ -200,18 +200,6 @@ Admin - Dashboard
                                 <td><span class="label label-warning">New</span></td>
                                 <td><h5>38% <i class="fa fa-level-up"></i></h5></td>
                             </tr>
-                            <tr>
-                                <th scope="row">6</th>
-                                <td>Aliquam</td>
-                                <td><span class="label label-warning">New</span></td>
-                                <td><h5>38% <i class="fa fa-level-up"></i></h5></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">6</th>
-                                <td>Aliquam</td>
-                                <td><span class="label label-warning">New</span></td>
-                                <td><h5>38% <i class="fa fa-level-up"></i></h5></td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -266,18 +254,6 @@ Admin - Dashboard
                                 <td>Lorem ipsum</td>
                                 <td><span class="label label-success">In progress</span></td>
                                 <td><h5 class="down">10% <i class="fa fa-level-down"></i></h5></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">6</th>
-                                <td>Aliquam</td>
-                                <td><span class="label label-warning">New</span></td>
-                                <td><h5>38% <i class="fa fa-level-up"></i></h5></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">6</th>
-                                <td>Aliquam</td>
-                                <td><span class="label label-warning">New</span></td>
-                                <td><h5>38% <i class="fa fa-level-up"></i></h5></td>
                             </tr>
                             <tr>
                                 <th scope="row">6</th>

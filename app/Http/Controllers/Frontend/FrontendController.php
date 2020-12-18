@@ -271,20 +271,35 @@ class FrontendController extends Controller
                 'order_notes' => $request->message
             ]);
 
+            $order = DB::table('orders')->find($order_id);
+            $date = $order->order_created_at->format('Y-m-d');
+            
             DB::table('customers')
               ->where('id', Auth::guard('customer')->user()->id)
-              ->update(['address' => $request->to_address]);
-
+              ->update(['address' => $request->to_address]);        
+            
             $cart_content = Cart::instance('cart')->content();
+            // $sales = 0;
+            // $profit = 0;
+            // $quantity = 0;
+            // $total_order = 0;
+
             foreach($cart_content as $product){
                 $orderDetail = DB::table('order_details')->insert([
                     'product_id' => $product->id,
                     'order_id' => $order_id,
                     'order_detail_quantity' => $product->qty
                 ]);
+                // //Calculating sales and profit
+                // Cart::instance
                 Cart::instance('cart')->remove($product->rowId);
-            }   
+                
 
+            }
+            // $add = DB::table('statistics')->updateOrInsert(
+            //     ['order_date' => '2020-12-18'],
+            //     ['sales' => '1', 'profit'=> '1', 'quantity' => 1, 'total_order' => 1]);
+            
         }catch(ValidationException $e) {
             return response()->json(array(
                 'code'  => 500,

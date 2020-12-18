@@ -121,11 +121,4 @@ class BackendController extends Controller
         }
         echo $data = json_encode($chart_data);
     }
-    
-
-    public function orderDate(Request $request){
-        $order_date = $_GET['date'];
-        $order = Order::where('order_created_at', $order_date)->orderBy('order_created_at', 'DESC')->get();
-        return view('admin.order-date', ['order', $order]);
-    }
 }
