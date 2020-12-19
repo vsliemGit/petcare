@@ -5,9 +5,12 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Statistic;
+use App\Product;
+use App\Service;
 use Carbon\Carbon;
 use Auth;
 use DB;
+
 use Illuminate\Support\Facades\Cache;
 
 class BackendController extends Controller
@@ -20,8 +23,15 @@ class BackendController extends Controller
         $now =  Carbon::now('Asia/Ho_Chi_Minh')->toDateString(); 
         $dau_thang_nay = Carbon::now('Asia/Ho_Chi_Minh')->startOfMonth()->toDateString();
         $sales_this_month = Statistic::whereBetween('order_date', [$dau_thang_nay,  $now])->sum('sales');
-        return view('backend.index', ['count_orders'=> $count_orders, 'count_customers' => $count_customers,
-             'sales_this_month' => $sales_this_month, 'count_visitors' => $count_visitors]);
+        $san_pham_xem_nhieu = Product::orderBy('product_views', 'desc')->limit(6)->get();
+        $dich_vu_xem_nhieu = Service::orderBy('service_views', 'desc')->limit(6)->get();
+        $tong_sl_sp = DB::table('products')->sum('product_quantity');
+        $sl_sp = [];
+
+        return view('backend.index', 
+            ['count_orders'=> $count_orders, 'count_customers' => $count_customers,
+             'sales_this_month' => $sales_this_month, 'count_visitors' => $count_visitors,
+             'san_pham_xem_nhieu'=> $san_pham_xem_nhieu, 'dich_vu_xem_nhieu' => $dich_vu_xem_nhieu]);
     }
 
     //Show register form
@@ -40,19 +50,9 @@ class BackendController extends Controller
         $count_customers = DB::table('customers')->get()->count();
         $now =  Carbon::now('Asia/Ho_Chi_Minh')->toDateString(); 
         $dau_thang_nay = Carbon::now('Asia/Ho_Chi_Minh')->startOfMonth()->toDateString();
-        $sales_this_month = Statistic::whereBetween('order_date', [$dau_thang_nay,  $now])->sum('sales');;
-        // $users = array();
-        // if(Auth::check()){
-        //     foreach(Auth::user()->get() as $user){
-        //         if($user->isOnline()){
-        //             // if (Cache::has('user-is-online-' . $user->id)){
-        //             //     $users[] = $user;
-        //             // } 
-        //             $users[] = $user; 
-        //         }
-        //     }
-        // }
-        // return dd($users);
+        $sales_this_month = Statistic::whereBetween('order_date', [$dau_thang_nay,  $now])->sum('sales');
+        $san_pham_xem_nhieu = DB::table('products')->oderBy('product_views', 'DESC')->get(6);
+        return $san_pham_xem_nhieu;
         return view('backend.index', ['count_order'=> $count_orders, 'count_customers' => $count_customers, 'sales_this_month' => $sales_this_month]);
     }
 

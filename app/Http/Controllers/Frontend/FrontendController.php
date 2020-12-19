@@ -177,6 +177,7 @@ class FrontendController extends Controller
 
     public function productDetail($id){
         $product = Product::find($id);
+        $product->increment('product_views');
         $listBrands = Brand::all();
         $listProductCategories = DB::table('product_categories')
             ->orderBy('pro_category_created_at', 'desc')->get();

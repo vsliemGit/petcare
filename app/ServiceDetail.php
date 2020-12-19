@@ -15,4 +15,8 @@ class ServiceDetail extends Model
 
     const CREATED_AT = 'service_detail_created_at';
     const UPDATED_AT = 'service_detail_updated_at';
+
+    public function service(){
+        return $this->belongsTo('App\Service', 'service_id', 'service_id');
+    }
 }

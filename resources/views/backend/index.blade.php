@@ -154,7 +154,7 @@ Admin - Dashboard
         </div> 
         <div class="col-md-7 w3agile-notifications">  {{-- Statistic 3 --}}
             <header class="panel-heading">
-                Notification 
+                Sản phẩm xem nhiều
             </header>
 			{{-- <div class="col-md-12 stats-info stats-last widget-shadow"> --}}
                 <div class="stats-last-agile">
@@ -162,29 +162,22 @@ Admin - Dashboard
                         <thead>
                           <tr>
                             <th scope="col">#</th>
-                            <th scope="col">First</th>
-                            <th scope="col">Last</th>
-                            <th scope="col">Handle</th>
+                            <th scope="col">Tên SP</th>
+                            <th scope="col">Giá SP</th>
+                            <th scope="col">Loại SP</th>
+                            <th scope="col">Thương hiệu</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">3</th>
-                            <td colspan="2">Larry the Bird</td>
-                            <td>@twitter</td>
-                          </tr>
+                          @foreach ($san_pham_xem_nhieu as $sp)
+                            <tr>
+                                <th scope="row">{{$sp->product_id}}</th>
+                                <td><a href="{{ route('frontend.product_detail', ['id' => $sp->product_id ]) }}">{{$sp->product_name}}</a></td>
+                                <td>{{$sp->product_price}}</td>
+                                <td>{{$sp->category->pro_category_name}}</td>
+                                <td>{{$sp->brand->brand_name}}</td>
+                            </tr>
+                          @endforeach
                         </tbody>
                       </table>
                 </div>

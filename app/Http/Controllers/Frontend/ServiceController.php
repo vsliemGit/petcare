@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use App\Brand;
+use App\ServiceDetail;
 use DB;
 
 class ServiceController extends Controller
@@ -26,10 +27,12 @@ class ServiceController extends Controller
     
 
     public function service_single($id){
-        $listBrands = Brand::all();
+        $listBrands = Brand::all();      
         $listProductCategories = DB::table('product_categories')
             ->orderBy('pro_category_created_at', 'desc')->get();
         $service_detail = DB::table('service_details')->where('service_id', $id)->first();
+        ServiceDetail::find($id)->service()->increment('service_views');;
+
         return view('frontend.pages.service-detail')
         ->with('listProductCategories', $listProductCategories)
         ->with('service_detail', $service_detail)
