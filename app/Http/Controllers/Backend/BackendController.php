@@ -16,10 +16,12 @@ class BackendController extends Controller
     public function showHome(){
         $count_orders = DB::table('orders')->get()->count();
         $count_customers = DB::table('customers')->get()->count();
+        $count_visitors = DB::table('visitors')->get()->count();
         $now =  Carbon::now('Asia/Ho_Chi_Minh')->toDateString(); 
         $dau_thang_nay = Carbon::now('Asia/Ho_Chi_Minh')->startOfMonth()->toDateString();
         $sales_this_month = Statistic::whereBetween('order_date', [$dau_thang_nay,  $now])->sum('sales');
-        return view('backend.index', ['count_orders'=> $count_orders, 'count_customers' => $count_customers, 'sales_this_month' => $sales_this_month]);
+        return view('backend.index', ['count_orders'=> $count_orders, 'count_customers' => $count_customers,
+             'sales_this_month' => $sales_this_month, 'count_visitors' => $count_visitors]);
     }
 
     //Show register form

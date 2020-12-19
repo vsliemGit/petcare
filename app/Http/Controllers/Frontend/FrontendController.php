@@ -17,11 +17,44 @@ use App\Service;
 use App\Order;
 use Carbon\Carbon;
 use App\Statistic;
+use App\Visitor;
 
 class FrontendController extends Controller
-{
-   
-    public function index(){
+{   
+    public function index(Request $request){
+        //Store visitor       
+        $visitor = Visitor::where('visitor_ip', $request->ip())->orderBy('visitor_created_at', 'DESC')->first();
+        // return dd($visitor);
+        if($visitor == null){
+            if(!Auth::guard('customer')->check()){
+                Visitor::create([
+                    'visitor_ip' => $request->ip()
+                ]);
+            }else{
+                Visitor::create([
+                    'visitor_ip' => $request->ip(),
+                    'customer_id' => Auth::guard('customer')->user()->id
+                ]);
+            }
+        }else{
+            $nowTime  = Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d');
+            $last_time_visit = Carbon::parse($visitor->visitor_created_at)->format('Y-m-d');
+            $visited_to_day = ($nowTime == $last_time_visit);
+            if(!$visited_to_day){
+                if(!Auth::guard('customer')->check()){
+                    Visitor::create([
+                        'visitor_ip' => $request->ip()
+                    ]);
+                }else{
+                    Visitor::create([
+                        'visitor_ip' => $request->ip(),
+                        'customer_id' => Auth::guard('customer')->user()->id
+                    ]);
+                }
+            }
+        }
+    
+
         $topThreeNewProducts = Product::orderBy('product_created_at')->take(10)->get();
         $topNewServices = Service::orderBy('service_created_at')->take(10)->get();
         $listBrands = Brand::all();

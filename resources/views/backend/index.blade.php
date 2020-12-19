@@ -16,20 +16,20 @@ Admin - Dashboard
 @section('main-content')
 <section class="wrapper">
     <div class="market-updates">
-        <div class="col-md-3 market-update-gd">
+        <div class="col-md-3 market-update-gd"> {{-- visitors --}}
             <div class="market-update-block clr-block-2">
                 <div class="col-md-4 market-update-right">
                     <i class="fa fa-eye"> </i>
                 </div>
-                 <div class="col-md-8 market-update-left">
-                 <h4>Visitors</h4>
-                <h3>13,500</h3>
-                <p>Tổng truy cặp</p>
-              </div>
+                <div class="col-md-8 market-update-left">
+                    <h4>Visitors</h4>
+                    <h3>{{$count_visitors}}</h3>
+                    <p>Tổng truy cặp</p>
+                </div>
               <div class="clearfix"> </div>
             </div>
         </div>
-        <div class="col-md-3 market-update-gd">
+        <div class="col-md-3 market-update-gd">  {{-- customers --}}
             <div class="market-update-block clr-block-1">
                 <div class="col-md-4 market-update-right">
                     <i class="fa fa-users" ></i>
@@ -44,7 +44,7 @@ Admin - Dashboard
               <div class="clearfix"> </div>
             </div>
         </div>
-        <div class="col-md-3 market-update-gd">
+        <div class="col-md-3 market-update-gd"> {{-- Sales --}}
             <div class="market-update-block clr-block-3">
                 <div class="col-md-4 market-update-right">
                     <i class="fa fa-usd"></i>
@@ -57,7 +57,7 @@ Admin - Dashboard
               <div class="clearfix"> </div>
             </div>
         </div>
-        <div class="col-md-3 market-update-gd">
+        <div class="col-md-3 market-update-gd"> {{-- Ordes --}}
             <div class="market-update-block clr-block-4">
                 <div class="col-md-4 market-update-right">
                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
@@ -74,7 +74,7 @@ Admin - Dashboard
         </div>
        <div class="clearfix"> </div>
     </div>	
-    <div class="row">
+    <div class="row"> {{-- Statistic chart main --}}
         <div class="panel-body">
             <div class="col-md-12 w3ls-graph">
                 <div class="agileinfo-grap">
@@ -127,8 +127,8 @@ Admin - Dashboard
             </div>
         </div>
     </div>
-    <div class="agil-info-calendar">
-        <div class="col-md-5 agile-calendar"+>
+    <div class="agil-info-calendar"> {{-- Statistic 2 --}}
+        <div class="col-md-5 agile-calendar"> {{-- Loai san pham--}}
             <div class="calendar-widget">
                 <div class="panel-heading ui-sortable-handle">
                     <span class="panel-icon">
@@ -152,67 +152,48 @@ Admin - Dashboard
                     </div>
             </div>
         </div> 
-        <div class="col-md-7 w3agile-notifications">
+        <div class="col-md-7 w3agile-notifications">  {{-- Statistic 3 --}}
             <header class="panel-heading">
                 Notification 
             </header>
 			{{-- <div class="col-md-12 stats-info stats-last widget-shadow"> --}}
                 <div class="stats-last-agile">
-                    <table class="table stats-table ">
+                    <table class="table table-sm table-dark">
                         <thead>
-                            <tr>
-                                <th>S.NO</th>
-                                <th>PRODUCT CATEROGY</th>
-                                <th>STATUS</th>
-                                <th>PROGRESS</th>
-                            </tr>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">First</th>
+                            <th scope="col">Last</th>
+                            <th scope="col">Handle</th>
+                          </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Lorem ipsum</td>
-                                <td><span class="label label-success">In progress</span></td>
-                                <td><h5>85% <i class="fa fa-level-up"></i></h5></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Aliquam</td>
-                                <td><span class="label label-warning">New</span></td>
-                                <td><h5>44% <i class="fa fa-level-up"></i></h5></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Lorem ipsum</td>
-                                <td><span class="label label-danger">Overdue</span></td>
-                                <td><h5 class="down">40% <i class="fa fa-level-down"></i></h5></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">4</th>
-                                <td>Aliquam</td>
-                                <td><span class="label label-info">Out of stock</span></td>
-                                <td><h5>100% <i class="fa fa-level-up"></i></h5></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">5</th>
-                                <td>Lorem ipsum</td>
-                                <td><span class="label label-success">In progress</span></td>
-                                <td><h5 class="down">10% <i class="fa fa-level-down"></i></h5></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">6</th>
-                                <td>Aliquam</td>
-                                <td><span class="label label-warning">New</span></td>
-                                <td><h5>38% <i class="fa fa-level-up"></i></h5></td>
-                            </tr>
+                          <tr>
+                            <th scope="row">1</th>
+                            <td>Mark</td>
+                            <td>Otto</td>
+                            <td>@mdo</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">2</th>
+                            <td>Jacob</td>
+                            <td>Thornton</td>
+                            <td>@fat</td>
+                          </tr>
+                          <tr>
+                            <th scope="row">3</th>
+                            <td colspan="2">Larry the Bird</td>
+                            <td>@twitter</td>
+                          </tr>
                         </tbody>
-                    </table>
+                      </table>
                 </div>
             {{-- </div> --}}
 			<div class="clearfix"> </div>
         </div>
         <div class="clearfix"></div>
     </div>
-    <div class="agil-info-calendar">
+    <div class="agil-info-calendar"> {{-- Statistic 3 --}}
         <div class="col-md-7 w3agile-notifications">
             <header class="panel-heading">
                 Notification 
@@ -373,7 +354,6 @@ Admin - Dashboard
         var chartBar = getBarChart("stacked").setData(data);     
     });
 
-
     //Get BarChart
     function getBarChart(element){
         config = {
@@ -410,7 +390,6 @@ Admin - Dashboard
         config.stacked = false;
         return Morris.Bar(config);
     }
-
 
     //Get LineChart
     function getLineChart(element){
