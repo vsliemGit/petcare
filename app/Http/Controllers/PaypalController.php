@@ -10,6 +10,8 @@ use DB;
 use Config;
 use Cart;
 use Auth;
+use Carbon\Carbon;
+use App\Statistic;
 
 use PayPal\Api\Amount;
 use PayPal\Api\Details;
@@ -166,6 +168,20 @@ class PaypalController extends Controller
                         'order_adress' => $request->to_address,
                         'order_notes' => "thanh toan paypal"
                     ]);
+
+                    $order = DB::table('orders')->where('order_id', $order_id)->first();
+                    $date =  Carbon::parse($order->order_created_at)->format('Y-m-d');
+                    $statistic = Statistic::where('order_date',  $date)->first();
+                    if($statistic ==  null){
+                        $id_statistic = DB::table('statistics')->insertGetId(
+                            [   'order_date' =>  $date,
+                                'sales' => 0,
+                                'profit'=>0
+                            ]);
+                        $statistic = Statistic::where('id_statistical',  $id_statistic)->first();
+                    }
+
+
                     Cart::instance('cart');
                     $cart_content = Cart::content();
                     foreach($cart_content as $product){
@@ -174,8 +190,16 @@ class PaypalController extends Controller
                             'order_id' => $order_id,
                             'order_detail_quantity' => $product->qty
                         ]);
+                        //Calculating sales and profit
+                        DB::table('statistics')->updateOrInsert(
+                            ['order_date' => $date],
+                            [   'sales' => $statistic->sales += ($product->qty * $product->price),
+                                'profit'=> $statistic->profit += ($product->price - $product->product_basis_price),
+                                'quantity' => $statistic->quantity += $product->qty
+                            ]);
                         Cart::instance('cart')->remove($product->rowId);
-                    } 
+                    }
+                    Statistic::where('order_date', $date)->increment('total_order');
                     return Redirect::route('frontend.home');
                 }
             }

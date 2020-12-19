@@ -261,7 +261,7 @@
                 setTimeout(function() { 
                     window.open(data.redirectUrl,  "_self", "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes");
                 }, 3000);
-            }).fail(function(jqXHR, ajaxOptions, thrownError){
+            }).fail(function(data){
                 swal("Error!", data.message , "error");
             });
     });

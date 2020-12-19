@@ -15,6 +15,8 @@ use App\Brand;
 use App\Product;
 use App\Service;
 use App\Order;
+use Carbon\Carbon;
+use App\Statistic;
 
 class FrontendController extends Controller
 {
@@ -271,18 +273,23 @@ class FrontendController extends Controller
                 'order_notes' => $request->message
             ]);
 
-            $order = DB::table('orders')->find($order_id);
-            $date = $order->order_created_at->format('Y-m-d');
+            $order = DB::table('orders')->where('order_id', $order_id)->first();
+            $date =  Carbon::parse($order->order_created_at)->format('Y-m-d');
             
             DB::table('customers')
               ->where('id', Auth::guard('customer')->user()->id)
               ->update(['address' => $request->to_address]);        
             
             $cart_content = Cart::instance('cart')->content();
-            // $sales = 0;
-            // $profit = 0;
-            // $quantity = 0;
-            // $total_order = 0;
+            $statistic = Statistic::where('order_date',  $date)->first();
+            if($statistic ==  null){
+                $id_statistic = DB::table('statistics')->insertGetId(
+                    [   'order_date' =>  $date,
+                        'sales' => 0,
+                        'profit'=>0
+                    ]);
+                $statistic = Statistic::where('id_statistical',  $id_statistic)->first();
+            }
 
             foreach($cart_content as $product){
                 $orderDetail = DB::table('order_details')->insert([
@@ -290,15 +297,17 @@ class FrontendController extends Controller
                     'order_id' => $order_id,
                     'order_detail_quantity' => $product->qty
                 ]);
-                // //Calculating sales and profit
-                // Cart::instance
-                Cart::instance('cart')->remove($product->rowId);
-                
-
+                //Calculating sales and profit
+                DB::table('statistics')->updateOrInsert(
+                    ['order_date' => $date],
+                    [   'sales' => $statistic->sales += ($product->qty * $product->price),
+                        'profit'=> $statistic->profit += ($product->price - $product->product_basis_price),
+                        'quantity' => $statistic->quantity += $product->qty
+                    ]);
+                // Cart::instance('cart')->remove($product->rowId);         
             }
-            // $add = DB::table('statistics')->updateOrInsert(
-            //     ['order_date' => '2020-12-18'],
-            //     ['sales' => '1', 'profit'=> '1', 'quantity' => 1, 'total_order' => 1]);
+            Statistic::where('order_date', $date)->increment('total_order');
+        
             
         }catch(ValidationException $e) {
             return response()->json(array(
