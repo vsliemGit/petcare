@@ -13,6 +13,12 @@ Admin - Service detail
 @section('custom-js')
 <!-- Các js dành cho thư viện CKEditor -->
 <script src="{{ asset('vendor/backend/ckeditor/ckeditor.js') }}"></script>
+<script>
+    CKEDITOR.replace( 'service_content', {
+            filebrowserUploadUrl: "{{route('ckeditor.upload', ['_token' => csrf_token() ])}}",
+            filebrowserUploadMethod: 'form'
+        });
+    </script>
 @endsection
 {{-- Thay thế nội dung vào Placeholder `main-content` của view `backend.layouts.index` --}}
 @section('main-content')
@@ -89,10 +95,11 @@ Admin - Service detail
 <script>
     // Replace the <textarea id="editor1"> with a CKEditor 4
     // instance, using default configuration.
-    CKEDITOR.replace( 'service_content', {
-        filebrowserUploadUrl: "{{route('ckeditor.upload', ['_token' => csrf_token() ])}}",
-        filebrowserUploadMethod: 'form'
-    });
+    // CKEDITOR.replace( 'service_content', {
+    //     filebrowserUploadUrl: "{{route('ckeditor.upload', ['_token' => csrf_token() ])}}",
+    //     filebrowserUploadMethod: 'form'
+    // });
+    
     // with plugin options
     $("#service_detail_image").fileinput({
             theme: 'fas',
