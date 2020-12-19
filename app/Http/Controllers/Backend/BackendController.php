@@ -7,14 +7,19 @@ use Illuminate\Http\Request;
 use App\Statistic;
 use Carbon\Carbon;
 use Auth;
+use DB;
 use Illuminate\Support\Facades\Cache;
 
 class BackendController extends Controller
 {
     //Show home page backend
     public function showHome(){
-       
-        return view('backend.layouts.index');
+        $count_orders = DB::table('orders')->get()->count();
+        $count_customers = DB::table('customers')->get()->count();
+        $now =  Carbon::now('Asia/Ho_Chi_Minh')->toDateString(); 
+        $dau_thang_nay = Carbon::now('Asia/Ho_Chi_Minh')->startOfMonth()->toDateString();
+        $sales_this_month = Statistic::whereBetween('order_date', [$dau_thang_nay,  $now])->sum('sales');
+        return view('backend.index', ['count_orders'=> $count_orders, 'count_customers' => $count_customers, 'sales_this_month' => $sales_this_month]);
     }
 
     //Show register form
@@ -29,6 +34,11 @@ class BackendController extends Controller
 
     //Dashboard
     public function dashboard(Request $request){
+        $count_orders = DB::table('orders')->get()->count();
+        $count_customers = DB::table('customers')->get()->count();
+        $now =  Carbon::now('Asia/Ho_Chi_Minh')->toDateString(); 
+        $dau_thang_nay = Carbon::now('Asia/Ho_Chi_Minh')->startOfMonth()->toDateString();
+        $sales_this_month = Statistic::whereBetween('order_date', [$dau_thang_nay,  $now])->sum('sales');;
         // $users = array();
         // if(Auth::check()){
         //     foreach(Auth::user()->get() as $user){
@@ -41,7 +51,7 @@ class BackendController extends Controller
         //     }
         // }
         // return dd($users);
-        return view('backend.index');
+        return view('backend.index', ['count_order'=> $count_orders, 'count_customers' => $count_customers, 'sales_this_month' => $sales_this_month]);
     }
 
     //Filter by date

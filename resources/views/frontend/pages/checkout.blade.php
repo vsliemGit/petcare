@@ -214,7 +214,7 @@
                                             Order Now</button>
                                         {{-- <form action="{{route('payments.purchase')}}" method="post"> --}}
                                             
-                                            <button id="checkout_paypal"class="btn btn-default check_out"
+                                            <button id="checkout_paypal" class="btn btn-default check_out"
                                             {{ ( Cart::content()->count() < 1) ? "disabled" : "" }}>
                                             Order With Paypal</button>
                                         {{-- </form> --}}
@@ -233,6 +233,10 @@
 
 @section('custom-scripts')
 <script>
+    //Script load page
+    $(document).ready(function(){
+        $("#checkout_paypal").hide();
+    })
     //Setup CSRF to AJAX
     $.ajaxSetup({
             headers: {
@@ -264,6 +268,26 @@
             }).fail(function(data){
                 swal("Error!", data.message , "error");
             });
+    });
+
+    //Show/Hide button checkout method
+    $('input[type=radio][name=payment]').change(function () {
+        if (this.value == 1) {
+            if($("#checkout").is(":hidden")){
+                $("#checkout").show();
+            }
+            if($("#checkout").is(":visible")){
+                $("#checkout_paypal").hide();
+            }
+        }
+        else if (this.value == 2) {
+            if($("#checkout_paypal").is(":hidden")){
+                $("#checkout_paypal").show();
+            }
+            if($("#checkout").is(":visible")){
+                $("#checkout").hide();
+            }
+        }
     });
 </script>
 @endsection

@@ -35,10 +35,12 @@ Admin - Dashboard
                     <i class="fa fa-users" ></i>
                 </div>
                 <div class="col-md-8 market-update-left">
-                <h4>User</h4>
-                    <h3>1,250</h3>
-                    <p>User online</p>
+                <a href="{{route('customer.index')}}">
+                    <h4>Customer</h4>
+                    <h3>{{$count_customers}}</h3>
+                    <p>Tổng khách hàng</p>
                 </div>
+                </a>
               <div class="clearfix"> </div>
             </div>
         </div>
@@ -49,8 +51,8 @@ Admin - Dashboard
                 </div>
                 <div class="col-md-8 market-update-left">
                     <h4>Sales</h4>
-                    <h3>1,500</h3>
-                    <p>Other hand, we denounce</p>
+                    <h4>{{number_format($sales_this_month)}}</h4>
+                    <p>Doanh thu trong tháng</p>
                 </div>
               <div class="clearfix"> </div>
             </div>
@@ -60,11 +62,13 @@ Admin - Dashboard
                 <div class="col-md-4 market-update-right">
                     <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                 </div>
-                <div class="col-md-8 market-update-left">
-                    <h4>Orders</h4>
-                    <h3>1,500</h3>
-                    <p>Other hand, we denounce</p>
-                </div>
+                <a href="{{route('order.index')}}">
+                    <div class="col-md-8 market-update-left">
+                        <h4>Orders</h4>
+                        <h3>{{$count_orders}}</h3>
+                        <p>Tổng đơn hàng</p>
+                    </div>
+                </a>
               <div class="clearfix"> </div>
             </div>
         </div>
@@ -81,7 +85,7 @@ Admin - Dashboard
                                     <form action="" autocomplete="off">
                                         @csrf
                                         <div class="col-md-3">
-                                            <p>Từ ngày: <input type="text" name="" id="datepicker" class="form-control"></p>
+                                            <p>Từ ngày: <input type="text" name="" id="datepicker" class="form-control" ></p>
                                         </div>
                                         <div class="col-md-3">
                                             <p>Đến ngày: <input type="text" name="" id="datepicker2" class="form-control"></p>
@@ -93,7 +97,7 @@ Admin - Dashboard
                                         <div class="col-md-2">
                                             <p>Lọc theo: 
                                                 <select name="filter_by_option" id="filter_by_option" class="filter-by-option form-control m-bot15">
-                                                    <option value="0" selected disabled hidden></option>
+                                                    <option value="0" selected disabled hidden>--Chọn--</option>
                                                     <option value="1">Hôm nay</option>
                                                     <option value="-1">Ngày trước</option>
                                                     <option value="7">7 ngày qua</option>
@@ -106,7 +110,7 @@ Admin - Dashboard
                                         <div class="col-md-2">
                                             <p>Chọn loại bản đồ: 
                                                 <select name="change_type_chart" id="change_type_chart" class="filter-by-option form-control m-bot15">
-                                                    <option value="0" selected disabled hidden></option>
+                                                    <option value="0" selected disabled hidden>--Chọn--</option>
                                                     <option value="1">Default</option>
                                                     <option value="2">Area Chart</option>
                                                     <option value="3">Bar Chart</option>
@@ -305,9 +309,9 @@ Admin - Dashboard
 <script>
     //Setup CSRF to AJAX
     $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
     });
     //Line Chart
     var chart = getLineChart('myfirstchart');
