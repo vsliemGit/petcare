@@ -11,9 +11,7 @@ return [
     'home' => 'Home',
     'shop' => 'Shop',
     'products' => 'Products',
-    'blog' => 'Blog',
-    'blog_list' => 'Blog list',
-    'blog_single' => 'Blog single',
+    'services' => 'Services',
     'contact' => 'Contact',
     'about_us' => 'About us',
 

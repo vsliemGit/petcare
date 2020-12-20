@@ -42,13 +42,8 @@ About us | PETCARE
                     <a  class="btn btn-primary" href="{{route('servies.service_single', ['id' => $service->service_detail_id])}}">Đặt lịch ngay</a>
                 </div>
                 @endforeach
-                <div class="pagination-area">
-                    <ul class="pagination">
-                        <li><a href="" class="active">1</a></li>
-                        <li><a href="">2</a></li>
-                        <li><a href="">3</a></li>
-                        <li><a href=""><i class="fa fa-angle-double-right"></i></a></li>
-                    </ul>
+                <div class="pagination col-sm-12 col-lg-12" style="margin-top: 20px;">
+                    {{ $listServices->links() }}
                 </div>
             </div>
         </div>    

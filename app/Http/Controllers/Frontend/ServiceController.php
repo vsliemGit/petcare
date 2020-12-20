@@ -18,7 +18,7 @@ class ServiceController extends Controller
         $listServices = DB::table('services')
             ->join('service_details', 'services.service_id', '=', 'service_details.service_id')
             ->select('services.service_name','services.service_desc','service_details.service_detail_id','service_details.service_detail_image')
-            ->where('service_detail_status', 1)->get();
+            ->where('service_detail_status', 1)->paginate(5);
         return view('frontend.pages.services')
             ->with('listProductCategories', $listProductCategories)
             ->with('listBrands', $listBrands)

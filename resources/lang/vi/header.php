@@ -11,9 +11,7 @@ return [
     'home' => 'Trang chủ',
     'shop' => 'Shop',
     'products' => 'Sản phẩm',
-    'blog' => 'Bài viết',
-    'blog_list' => 'Danh sách bài viết',
-    'blog_single' => 'Một bài viết',
+    'services' => 'Bài viết',
     'contact' => 'Liên hệ',
     'about_us' => 'Về chúng tôi',
 
