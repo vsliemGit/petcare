@@ -32,54 +32,13 @@
     <!-- Các custom script dành riêng cho từng view -->
 	@yield('custom-css')
     <style>
-        .badge {
-            padding-left: 9px;
-            padding-right: 9px;
-            -webkit-border-radius: 9px;
-            -moz-border-radius: 9px;
-            border-radius: 9px;
-        }
-
-        .label-warning[href],
-        .badge-warning[href] {
-        background-color: #c67605;
-        }
-
-        #lblCartCount {
-            font-size: 10px;
-            background: #ff0000;
-            color: #fff;
-            padding: 0 3px;
-            vertical-align: top;
-            margin-left: -5px; 
-        }
-        #lblWishlistCount {
-            font-size: 10px;
-            background: #ff0000;
-            color: #fff;
-            padding: 0 3px;
-            vertical-align: top;
-            margin-left: -10px; 
-        }
     </style>
     <script src="vendor/frontend/js/jquery.js"></script>
 </head><!--/head-->
 
 <body>
-    <div class="flash-message">
-        @foreach (['danger', 'warning', 'success', 'info'] as $msg)
-          @if(Session::has('alert-' . $msg))
-          <p id="flash-message" class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a  href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
-          @php
-          Session::forget('alert-' . $msg) 
-        @endphp
-          @endif    
-        @endforeach
-        
-    </div>
     <!--Header-->
-    @include('frontend.layouts.partials.header')
-
+    @include('frontend.layouts.partials.header')   
 	<!-- Content -->
     @yield('main-content')
      
@@ -106,6 +65,32 @@
         function realoadCountWishlist($value){
             $('#lblWishlistCount').text($value) ;
         }
+        //Search ajax:
+        $('#keywords_search').keyup(function(){
+            var key = $(this).val();
+            if(key != '' && key.length < 50){
+                $.ajax({
+                    url : "{{route('frontend.search_auto_complete')}}",
+                    method: "POST",
+                    data: {
+                        key_words : key
+                    },
+                    success: function(data){
+                        $('#result_search_ajax').fadeIn();
+                        $('#result_search_ajax').html(data);
+                    }
+                });
+            }else{
+                $('#result_search_ajax').fadeOut();
+            }
+        });
+
+        //Click item in result search ajax:
+        $(document).on('click', '.li_item_search', function(){
+            $('#keywords_search').val($(this).find('.product_name').text());
+            $('#result_search_ajax').fadeOut();
+        })
+
     </script>
 </body>
 </html>

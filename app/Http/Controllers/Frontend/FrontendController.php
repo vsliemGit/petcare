@@ -26,7 +26,6 @@ class FrontendController extends Controller
     public function index(Request $request){
         //Store visitor       
         $visitor = Visitor::where('visitor_ip', $request->ip())->orderBy('visitor_created_at', 'DESC')->first();
-        // return dd($visitor);
         if($visitor == null){
             if(!Auth::guard('customer')->check()){
                 Visitor::create([
@@ -55,7 +54,6 @@ class FrontendController extends Controller
                 }
             }
         }
-    
 
         $topThreeNewProducts = Product::orderBy('product_created_at')->take(10)->get();
         $topNewServices = Service::orderBy('service_created_at')->take(10)->get();
@@ -93,6 +91,64 @@ class FrontendController extends Controller
             ->with('listProductCategories', $listProductCategories)
             ->with('rating', $rating)
             ->with('listProducts', $listProducts);
+    }
+
+    public function resultSearch(){
+        $listBrands = Brand::all();
+        $listProductCategories = DB::table('product_categories')
+            ->orderBy('pro_category_created_at', 'desc')->get();
+        return view('frontend.pages.result-search', ['listBrands' => $listBrands, 'listProductCategories' => $listProductCategories]);
+    }
+
+    public function search(Request $request){
+        $listBrands = Brand::all();
+        $listProductCategories = DB::table('product_categories') ->orderBy('pro_category_created_at', 'desc')->get();
+        $key_words = $request->keywords_search;
+        
+        $product_founds = Product::where('product_status', 1)->where('product_name', 'like', '%'.$key_words."%")->get();
+        $rating = [];
+        foreach($product_founds as $key => $product){
+            $rating[$product->product_id] = $this->getRating($product->product_id);
+        }
+        $service_founds = DB::table('services')
+            ->join('service_details', 'services.service_id', '=', 'service_details.service_id')
+            ->select('services.service_name','services.service_desc','service_details.service_detail_id','service_details.service_detail_image')
+            ->where('service_detail_status', 1)->where('service_name', 'like', '%'.$key_words."%")->get();
+        
+        return view('frontend.pages.result-search', 
+            ['listBrands' => $listBrands, 'listProductCategories' => $listProductCategories,
+             'product_founds' => $product_founds, 'rating' => $rating,
+              'service_founds' => $service_founds]);
+    }
+
+    public function searchAutoComplete(Request $request){
+        $key_words = $request->key_words;
+        $product_founds = Product::where('product_status', 1)->where('product_name', 'like', '%'.$key_words."%")->limit(6)->get();
+        
+        // $ouput =  "<ul class='dropdown-menu' style='display: block; width: 100%; position: absolute; z-index: 99;'>";
+        // foreach($product_founds as $product){
+        //     $ouput .= "<li class='li_item_search'>";
+        //     $ouput .= "<img style='width: 40px; height: 60px;' src='storage/images/". $product->product_image."' alt=''/>";
+        //     $ouput .=  "<p style=''>".$product->product_name."</p>";
+        //     $ouput .=  "<p style=''> mieu ta san pham</p>";
+        //     $ouput .= "</li>";
+        // }
+        // $ouput .= "<ul/>";
+        $ouput =  "<ul class='dropdown-menu' style='display: block; width: 100%; position: absolute; z-index: 99; margin-left: 15px;'>";
+        foreach($product_founds as $product){
+            $ouput .= "<li class='li_item_search' style='border-bottom: 1px solid #ececf9;'>";
+            $ouput .= "<img style='width: 15%; float: left; padding: 5px; border: 1px solid #ececf9;' src='storage/images/". $product->product_image."' alt=''/>";
+            $ouput .=  "<b class='product_name'>".$product->product_name."</b>";
+            $ouput .=  "<p style='display: -webkit-box;  max-width: 80%; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;'> ".$product->product_desc."</p>";
+            $ouput .= "</li>";
+        }
+        $ouput .= "<ul/>";
+        // $service_founds = DB::table('services')
+        //     ->join('service_details', 'services.service_id', '=', 'service_details.service_id')
+        //     ->select('services.service_name','services.service_desc','service_details.service_detail_id','service_details.service_detail_image')
+        //     ->where('service_detail_status', 1)->where('service_name', 'like', '%'.$key_words."%")->get();
+        
+        return  $ouput;
     }
 
     public function profile(){

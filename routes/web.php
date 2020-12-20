@@ -156,6 +156,8 @@ Route::get('/home', 'Frontend\FrontendController@index')->name('frontend.home');
 Route::get('/products', 'Frontend\FrontendController@products')->name('frontend.products');
 Route::get('/quickview', 'Frontend\FrontendController@quickview')->name('frontend.quickview');
 Route::get('/product-detail/{id}', 'Frontend\FrontendController@productDetail')->name('frontend.product_detail');
+Route::post('/search', 'Frontend\FrontendController@search')->name('frontend.search');
+Route::post('/search-auto-complete', 'Frontend\FrontendController@searchAutoComplete')->name('frontend.search_auto_complete');
 Route::get('/contact', 'Frontend\FrontendController@contact')->name('frontend.contact');
 Route::get('/about-us', 'Frontend\FrontendController@aboutUs')->name('frontend.about_us');
 Route::get('/show-order-service', 'Frontend\FrontendController@showOrderService')->name('frontend.show_order_service')->middleware('customer');

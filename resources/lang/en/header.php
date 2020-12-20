@@ -14,5 +14,7 @@ return [
     'services' => 'Services',
     'contact' => 'Contact',
     'about_us' => 'About us',
-
+    'search' => 'Search',
+    'input_key' => 'Input keyword',
+    'title_result_search' => 'Result Search',
 ];

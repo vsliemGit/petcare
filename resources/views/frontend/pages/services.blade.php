@@ -14,7 +14,6 @@ About us | PETCARE
             <!--Left-sidebar-->
             @include('frontend.widgets.left-sidebar')
         </div>
-
         <div class="col-sm-9">
             <div class="blog-post-area">
                 <h2 class="title text-center">Services</h2>

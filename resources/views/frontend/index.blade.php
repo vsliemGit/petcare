@@ -23,12 +23,21 @@ Home | PETCARE
 
 <section>
     <div class="container">
+        <div class="flash-message">
+            @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+              @if(Session::has('alert-' . $msg))
+              <p id="flash-message" class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a  href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
+              @php
+              Session::forget('alert-' . $msg) 
+            @endphp
+              @endif    
+            @endforeach   
+        </div>
         <div class="row">
             <div class="col-sm-3">
                 <!--Left-sidebar-->
                 @include('frontend.widgets.left-sidebar')
-            </div>
-            
+            </div>         
             <div class="col-sm-9 padding-right">
                 <!-- New products  -->
                 @include('frontend.widgets.new-products')
@@ -143,41 +152,6 @@ Home | PETCARE
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
-        });
-
-        $('.add-to-cart').click(function(e){
-            e.preventDefault();
-            $.ajax(
-            {
-                url: "{{ route('add-to-cart') }}",
-                method: "POST",
-                data: {
-                    product_id : $(this).data('id')
-                }
-            }).done(function(data){
-                realoadCountCart(data.itemInCart);
-                swal('Success!', 'Add item to cart successfully!.', 'success');
-            }).fail(function(jqXHR, ajaxOptions, thrownError){
-                swal("Error!", "No response from server...", "error");
-            });
-        });
-
-        //Add product to Cart using ajax
-        $('.add-to-wishlist').click(function(event){
-            event.preventDefault();
-            $.ajax(
-            {
-                url: "{{ route('add-to-wishlist') }}",
-                type: "POST",
-                data: {
-                    product_id : $(this).data('id')
-                }
-            }).done(function(data){
-                realoadCountWishlist(data.itemInWishlist);
-                swal('Success!', 'Add item to Wishlist successfully!.', 'success');
-            }).fail(function(jqXHR, ajaxOptions, thrownError){
-                swal("Error!", "No response from server...", "error");
-            });
         });
     </script>
 @endsection

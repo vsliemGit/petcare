@@ -132,8 +132,8 @@
 
     <div class="header-bottom"><!--header-bottom-->
         <div class="container">
-            <div class="row">
-                <div class="col-sm-9">
+            <div class="col-sm-12">
+                <div class="col-sm-8">
                     <div class="navbar-header">
                         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                             <span class="sr-only">Toggle navigation</span>
@@ -159,11 +159,20 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-sm-3">
-                    <div class="search_box pull-right">
-                        <input type="text" placeholder="Search"/>
-                    </div>
+                <div class="col-sm-4 search_box pull-right">
+                    <form action="{{route('frontend.search')}}" method="POST">
+                        @csrf
+                        <input type="text" id="keywords_search" style="width: 70%;" name="keywords_search" autocomplete="off" placeholder="{{__('header.input_key')}}"/>  
+                        <input type="submit" style="margin-top:0; color:#666; width: auto;" name="btn_search" class="btn btn-primary btn-sm" value="{{__('header.search')}}">
+                    </form>
+                </div>              
+            </div>
+            <div class="col-sm-12">
+                <div class="col-sm-8">            
                 </div>
+                <div class="col-sm-4" id="result_search_ajax">
+                    
+                </div>              
             </div>
         </div>
     </div><!--/header-bottom-->

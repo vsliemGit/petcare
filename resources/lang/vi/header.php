@@ -14,5 +14,8 @@ return [
     'services' => 'Dịch vụ',
     'contact' => 'Liên hệ',
     'about_us' => 'Về chúng tôi',
+    'search' => 'Tìm kiếm',
+    'input_key' => 'Nhập từ khóa',
+    'title_result_search' => 'Kết quả tìm kiếm',
 
 ];
