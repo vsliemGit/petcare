@@ -11,14 +11,7 @@
               <li class="active">Shopping Cart</li>
             </ol>
         </div>
-        <div class="table-responsive cart_info" id="tablene">
-           @php
-            // $cart_content = Cart::instance('cart')->content();
-            //    echo "<pre>";
-            //   print_r($cart_content);
-            //   echo "</pre>";
-           @endphp  
-                
+        <div class="table-responsive cart_info" id="tablene">              
             <table class="table table-condensed">
                 <thead>
                     <tr class="cart_menu">
@@ -141,8 +134,12 @@
         var rowId = $(this).data('id');
         var itemId = $(this).data('product-id');
         $.get("{{ route('delele-to-cart') }}", {rowId: rowId}, function(data){
-            realoadCountCart(data.itemInCart);
-            $('#subtotal').text("$"+data.subtotal+" VNĐ");
+            if(data.code == 200){
+                realoadCountCart(data.itemInCart);
+                $('#subtotal').text("$"+data.subtotal+" VNĐ");
+            }else{
+                swal(data.type+'!', data.message , data.type);
+            }
         }).done(function() {
             document.getElementById('product_'+ itemId).remove();
         })
@@ -170,10 +167,12 @@
                 type: "POST",
                 data: form.serialize(),
             }).done(function(data){
-                realoadCountCart(data.itemInCart);
-                $('#subtotal').text("$"+data.subtotal+" VNĐ");
-                pSubtotal.text("$"+data.pSubtotal+" VNĐ");
-                swal('Success!', 'Update item to cart successfully!.', 'success');
+                if(data.code==200){
+                    realoadCountCart(data.itemInCart);
+                    $('#subtotal').text("$"+data.subtotal+" VNĐ");
+                    pSubtotal.text("$"+data.pSubtotal+" VNĐ");
+                }
+                swal( data.type+'!', data.message , data.type);
             }).fail(function(jqXHR, ajaxOptions, thrownError){
                 swal("Error!", "No response from server...", "error");
         });

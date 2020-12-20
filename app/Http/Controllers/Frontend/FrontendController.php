@@ -75,7 +75,7 @@ class FrontendController extends Controller
     }
 
     public function products(Request $request){
-        $listProducts = Product::paginate(8);
+        $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->paginate(8);
         $listBrands = Brand::all();
         $allProducts = Product::all();
         $topThreeNewProducts = Product::orderBy('product_created_at')->take(10)->get();
@@ -296,7 +296,7 @@ class FrontendController extends Controller
         return view('frontend.pages.order-finish');
     }
 
-    public function order(Request $request){
+    public function order(Request $request){       
         try{
 
             $order_id =  DB::table('orders')->insertGetId([

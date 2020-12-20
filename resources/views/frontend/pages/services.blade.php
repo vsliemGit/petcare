@@ -36,7 +36,7 @@ About us | PETCARE
                         </span> 
                     </div>
                     <a href="">
-                        <img src="storage\images\services\service_details/{{$service->service_detail_image}}" alt="">
+                        <img src="storage\images\services\service_details\{{$service->service_detail_image}}" alt="">
                     </a>
                     <p>{{$service->service_desc}}</p>
                     <a  class="btn btn-primary" href="{{route('servies.service_single', ['id' => $service->service_detail_id])}}">Đặt lịch ngay</a>
