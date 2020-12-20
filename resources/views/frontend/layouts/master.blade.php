@@ -66,6 +66,12 @@
             $('#lblWishlistCount').text($value) ;
         }
         //Search ajax:
+        //Setup CSRF to AJAX
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
         $('#keywords_search').keyup(function(){
             var key = $(this).val();
             if(key != '' && key.length < 50){

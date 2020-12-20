@@ -123,32 +123,50 @@ class FrontendController extends Controller
 
     public function searchAutoComplete(Request $request){
         $key_words = $request->key_words;
-        $product_founds = Product::where('product_status', 1)->where('product_name', 'like', '%'.$key_words."%")->limit(6)->get();
-        
-        // $ouput =  "<ul class='dropdown-menu' style='display: block; width: 100%; position: absolute; z-index: 99;'>";
-        // foreach($product_founds as $product){
-        //     $ouput .= "<li class='li_item_search'>";
-        //     $ouput .= "<img style='width: 40px; height: 60px;' src='storage/images/". $product->product_image."' alt=''/>";
-        //     $ouput .=  "<p style=''>".$product->product_name."</p>";
-        //     $ouput .=  "<p style=''> mieu ta san pham</p>";
-        //     $ouput .= "</li>";
-        // }
-        // $ouput .= "<ul/>";
+        $product_founds = Product::where('product_status', 1)->where('product_name', 'like', '%'.$key_words."%")->limit(5)->get();
+       
+        $output = "";
         $ouput =  "<ul class='dropdown-menu' style='display: block; width: 100%; position: absolute; z-index: 99; margin-left: 15px;'>";
-        foreach($product_founds as $product){
-            $ouput .= "<li class='li_item_search' style='border-bottom: 1px solid #ececf9;'>";
-            $ouput .= "<img style='width: 15%; float: left; padding: 5px; border: 1px solid #ececf9;' src='storage/images/". $product->product_image."' alt=''/>";
-            $ouput .=  "<b class='product_name'>".$product->product_name."</b>";
-            $ouput .=  "<p style='display: -webkit-box;  max-width: 80%; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;'> ".$product->product_desc."</p>";
-            $ouput .= "</li>";
+
+        if($product_founds->count()>0){
+            $count_product_founds = Product::where('product_status', 1)->where('product_name', 'like', '%'.$key_words."%")->get()->count();
+            $count_product_founds_show = Product::where('product_status', 1)->where('product_name', 'like', '%'.$key_words."%")->limit(5)->get()->count();
+            $ouput .= "<li class='li_item_search' style='border-bottom: 1px solid #ececf9;'><i>Hiển thị ".$count_product_founds_show."/".$count_product_founds." sản phẩm được tìm thấy.<i/></li>";
+            foreach($product_founds as $product){
+                $ouput .= "<li class='li_item_search' style='border-bottom: 1px solid #ececf9;'>";
+                $ouput .= "<img style='width: 15%; float: left; padding: 5px; border: 1px solid #ececf9; margin-right: 5px;' src='storage/images/". $product->product_image."' alt=''/>";
+                $ouput .=  "<b class='product_name' style='max-width: 80%;'>".$product->product_name."</b>";
+                $ouput .=  "<p style='display: -webkit-box;  max-width: 80%; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;'> ".$product->product_desc."</p>";
+                $ouput .= "</li>";
+            }
+        }
+        $service_founds = DB::table('services')
+            ->join('service_details', 'services.service_id', '=', 'service_details.service_id')
+            ->select('services.service_name','services.service_desc','service_details.service_detail_id','service_details.service_detail_image')
+            ->where('service_detail_status', 1)->where('service_name', 'like', '%'.$key_words."%")->get();
+        $count_service_founds = DB::table('services')
+            ->join('service_details', 'services.service_id', '=', 'service_details.service_id')
+            ->where('service_detail_status', 1)->where('service_name', 'like', '%'.$key_words."%")->get()->count();
+        $count_service_founds_show = DB::table('services')
+            ->join('service_details', 'services.service_id', '=', 'service_details.service_id')
+            ->where('service_detail_status', 1)->where('service_name', 'like', '%'.$key_words."%")->limit(5)->get()->count();
+
+        if($service_founds->count()>0){
+            $ouput .= "<li class='li_item_search' style='border-bottom: 1px solid #ececf9;'><i>Hiển thị ".$count_service_founds_show."/". $count_service_founds." dịch vụ được tìm thấy.<i/></li>";
+            foreach($service_founds as $service){           
+                $ouput .= "<li class='li_item_search' style='border-bottom: 1px solid #ececf9;'>";
+                $ouput .= "<img style='width: 15%; hight: 20%; float: left; padding: 5px; border: 1px solid #ececf9; margin-right: 5px;' src='storage/images/services/". $service->service_detail_image."' alt=''/>";
+                $ouput .=  "<b class='product_name' style='max-width: 80%;'>".$service->service_name."</b>";
+                $ouput .=  "<p style='display: -webkit-box;  max-width: 80%; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;'> ".$service->service_desc."</p>";
+                $ouput .= "</li>";
+            }     
+        }
+        if( $product_founds->count()<1 &&  $service_founds->count()<1){
+            $ouput .= "<li class='li_item_search' style='border-bottom: 1px solid #ececf9;'><i>Không tìm thấy sản phẩm phù hợp!<i/></li>";
         }
         $ouput .= "<ul/>";
-        // $service_founds = DB::table('services')
-        //     ->join('service_details', 'services.service_id', '=', 'service_details.service_id')
-        //     ->select('services.service_name','services.service_desc','service_details.service_detail_id','service_details.service_detail_image')
-        //     ->where('service_detail_status', 1)->where('service_name', 'like', '%'.$key_words."%")->get();
-        
-        return  $ouput;
+
+        return  $ouput ;
     }
 
     public function profile(){

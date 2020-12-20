@@ -97,8 +97,8 @@ About us | PETCARE
                         </div>
                     </div>
                     @endif
-                    @if (($product_founds->count()<0))
-                        <h4>Không tìm thấy kết quả tìm kiếm phù hợp</h4>
+                    @if ($product_founds->count()<1 &&  $service_founds->count()<1)
+                        <h4><i>Không tìm thấy kết quả tìm kiếm phù hợp!</i></h4>
                     @endif
                 </div>
             </div>
