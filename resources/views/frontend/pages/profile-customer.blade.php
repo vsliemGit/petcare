@@ -51,8 +51,8 @@ Profile | PETCARE
             <div class="col-sm-9">
                 <ul class="nav nav-tabs">
                     <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
-                    <li><a data-toggle="tab" href="#messages">Đơn đặt hàng</a></li>
-                    <li><a data-toggle="tab" href="#settings">Lịch hẹn</a></li>
+                    <li><a data-toggle="tab" href="#orders">Đơn đặt hàng</a></li>
+                    <li><a data-toggle="tab" href="#services">Lịch hẹn</a></li>
                 </ul>             
                 <div class="tab-content">
                     <div class="tab-pane active" id="home">
@@ -116,7 +116,7 @@ Profile | PETCARE
                         </form>
                     <hr>       
                     </div><!--/tab-pane-->
-                    <div class="tab-pane" id="messages">                                 
+                    <div class="tab-pane" id="orders">                                 
                     <hr>
                     <table class="table">
                         <thead>
@@ -162,13 +162,53 @@ Profile | PETCARE
                         </tbody>
                       </table>
                       <div id="detail_order">
-
                       </div>
-               
                     </div><!--/tab-pane-->
-                    <div class="tab-pane" id="settings">
+                    <div class="tab-pane" id="services">
                     <hr>
-                        <h2>TAB3</h2>
+                    <hr>
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Ngày hẹn</th>
+                            <th scope="col">Giờ hẹn</th>
+                            <th scope="col">Trạng thái</th>
+                            <th style="width:30px;"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @if($order_services->count()>0)
+                              @foreach ($order_services as $key => $service)
+                              <tr>
+                                <th scope="row"><b>#{{$key+1}}</b></th>
+                                <td>{{$service->order_service_date_begin}}</td>
+                                <td>{{$service->order_service_time}}</td>
+                                <td>
+                                    <i>
+                                        <?php if($service->order_service_status == 0){ ?>
+                                        <i>Đang chờ duyệt</i>
+                                              <?php  }else{ ?>  
+                                        <i>Đã duyệt</i>
+                                         <?php  } ?>
+                                    </i>
+                                </td>
+                                <td>
+                                    <a href="javascript:void(0)" data-id="{{$service->order_service_id}}"
+                                        class="active styling-edit view-item" ui-toggle-class="">
+                                        <i class="fa fa-eye text-success text-active"></i>
+                                    </a>
+                                </td>
+                              </tr>  
+                              @endforeach
+                          @else
+                            <h2>Bạn không có lịch hẹn nào!</h2>
+                          @endif
+                        </tbody>
+                      </table>
+                      <div id="detail_order_service">
+
+                        </div>
                     </div>                 
                     </div><!--/tab-pane-->
                 </div><!--/tab-content-->
@@ -210,9 +250,26 @@ Profile | PETCARE
                 console.log(e);
             });
 
-    })
+    });
 
+     //Load list service
+     $('.view-item').click(function(e){
+        let order_service_id = $(this).data('id');
+        $.ajax(
+            {
+                url: "{{route('customer.order.view_order_service')}}",
+                type: "GET",
+                data: {
+                    id : order_service_id
+                }
+            }).done(function(data){   
+                $('#detail_order_service').html(data);
+               console.log(data);
+            }).error(function(e){
+                console.log(e);
+            });
 
+    });
 });
 </script>
 @endsection

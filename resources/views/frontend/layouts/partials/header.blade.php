@@ -148,14 +148,14 @@
                             <li class="dropdown"><a href="#">{{__('header.shop')}}<i class="fa fa-angle-down"></i></a>
                                 <ul role="menu" class="sub-menu">
                                     <li><a href="{{ route('frontend.products') }}">{{__('header.products')}}</a></li>
-                                    <li><a href="checkout.html">{{__('header.checkout')}}</a></li> 
+                                    <li><a href="{{ route('wishlist') }}">{{ __('header.wishlist') }}</a></li> 
                                     <li><a href="{{ route('shopping_cart') }}">{{__('header.cart')}}</a></li> 
-                                    <li><a href="{{ route('login-checkout') }}">{{__('header.login')}}</a></li> 
+                                    <li><a href="{{ route('login-checkout') }}">{{__('header.checkout')}}</a></li> 
                                 </ul>
                             </li>
                             <li><a href="{{ route('servies.index') }}">{{__('header.services')}}</a></li>
                             <li><a href="{{ route('frontend.contact')}}">{{__('header.contact')}}</a></li>
-                            <li><a href="{{ route('frontend.about_us')}}">{{__('header.about_us')}}</a></li>
+                            <li><a href="{{ route('checkout') }}">{{__('header.checkout')}}</a></li>
                         </ul>
                     </div>
                 </div>

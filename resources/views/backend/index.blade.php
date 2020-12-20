@@ -423,8 +423,7 @@ Admin - Dashboard
         config.element = element;
         return Morris.Area(config);
     }
-
-         
+       
     //30 days
     function chart30sOrder(){
         $.ajax({

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 use DB;
+use Session;
 use Cart;
 use Auth;
 use App\Rating;
@@ -14,6 +15,7 @@ use App\Customer;
 use App\Brand;
 use App\Product;
 use App\Service;
+use App\OrderService;
 use App\Order;
 use Carbon\Carbon;
 use App\Statistic;
@@ -96,7 +98,8 @@ class FrontendController extends Controller
     public function profile(){
         if(Auth::guard('customer')->check()){
             $orders = Order::where('customer_id', Auth::guard('customer')->user()->id)->get();
-            return view('frontend.pages.profile-customer', ['orders'=> $orders]);
+            $order_services = OrderService::where('customer_id', Auth::guard('customer')->user()->id)->get();
+            return view('frontend.pages.profile-customer', ['orders'=> $orders, 'order_services'=> $order_services]);
         }
         return view('frontend.pages.login-checkout');     
     }
@@ -123,6 +126,28 @@ class FrontendController extends Controller
         }
         $table_detail_order .= "</tbody></table>";
         return $table_detail_order;
+    }
+
+    public function viewOrderService(Request $request){
+        $order_service = OrderService::find($request->id);
+
+        $table_detail_order_service = "<hr><table class='table'><thead>";
+        $table_detail_order_service  .= "<th scope='col'>Mã DV</th>";
+        $table_detail_order_service  .= "<th scope='col'>Hình ảnh</th>";
+        $table_detail_order_service  .= "<th scope='col'>Tên DV</th>";
+        $table_detail_order_service  .= "<th scope='col'>Mô tả</th>";
+        $table_detail_order_service  .= "<th style='width:30px;'></th></tr></thead><tbody>";
+
+        foreach($order_service->detail as $item){
+            $table_detail_order_service  .= "<tr>";
+            $table_detail_order_service  .= "<td class='td-id'><span class='text-ellipsis'>#".$item->service_id."</span></td>";
+            $table_detail_order_service  .= "<td><img width='70px' height='70px' src='storage/images/services/".$item->service_image."' class='img-list' /></td>";
+            $table_detail_order_service  .= "<td class='td-name'><span class='text-ellipsis'>".$item->service_name."</span></td>";
+            $table_detail_order_service  .= "<td class='td-price'><span class='text-ellipsis' style='display: -webkit-box;  max-width: 400px; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;'>".$item->service_desc."</span></td>";
+            $table_detail_order_service  .= "</tr>";
+        }
+        $table_detail_order_service .= "</tbody></table>";
+        return $table_detail_order_service;
     }
 
     public function getRating($id){
@@ -280,9 +305,6 @@ class FrontendController extends Controller
     }
 
     public function checkout(){
-        // if(Auth::check()){
-        //     return view('frontend.pages.login-checkout');
-        // }
         $cart_content = Cart::instance('cart')->content();
         $listPaymentsMethod = DB::table('payments')->get();
         $listTransfersMethod = DB::table('transfers')->get();
@@ -341,7 +363,6 @@ class FrontendController extends Controller
                 // Cart::instance('cart')->remove($product->rowId);         
             }
             Statistic::where('order_date', $date)->increment('total_order');
-        
             
         }catch(ValidationException $e) {
             return response()->json(array(
@@ -355,5 +376,35 @@ class FrontendController extends Controller
             'message' => 'Tạo đơn hàng thành công!',
             'redirectUrl' => route('orderFinish')
         ));
+    }
+
+    public function showOrderService(){
+        $listServices = DB::table('services')
+            ->join('service_details', 'services.service_id', '=', 'service_details.service_id')
+            ->select('services.*','service_details.*')
+            ->where('service_detail_status', 1)->get();
+        return view('frontend.pages.order-service', ['listServices' => $listServices]);
+    }
+
+    public function orderService(Request $request){
+        try{
+            $order_id = DB::table('order_services')->insertGetId([
+                'order_service_time' => $request->time,
+                'customer_id' => $request->customer_id,
+                'order_service_date_begin' => $request->date
+            ]);
+            
+           foreach($request->service as $service_id){
+                $order_service_detail = DB::table('order_service_details')->insert([
+                    'service_id' => $service_id,
+                    'order_service_id' => $order_id
+                ]);
+            }      
+        }catch(Exception $e) {
+            Session::flash('alert-warning', $e);
+            return redirect()->route("frontend.show-order-service");
+        } 
+        Session::flash('alert-info', 'Order service successfully!');
+        return view('frontend.pages.order-service-finish');
     }
 }

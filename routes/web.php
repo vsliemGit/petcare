@@ -14,17 +14,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 /*-----------------Backend -------------*/
-Route::prefix('admin')->group(function () {
-    //Error
-    Route::get('/error', function () {
-        return view('Error.404');
-    })->name('backend.error.404');
-    Route::get('/login', 'Backend\BackendController@login')->name('backend.login');
-    Route::get('/register', 'Backend\BackendController@register')->name('backend.register');
+//Error
+Route::get('admin/error', function () {
+    return view('Error.404');
+})->name('backend.error.404');
+Route::get('admin/login', 'Backend\BackendController@login')->name('backend.login');
+Route::get('admin/register', 'Backend\BackendController@register')->name('backend.register');
 
+Route::prefix('admin')->middleware('auth')->group(function () {
     //BackendController
     Route::get('/', 'Backend\BackendController@showHome')->name('home.index')->middleware('auth');
-    Route::get('/home', 'Backend\BackendController@showHome')->name('home.index');
+    Route::get('/home', 'Backend\BackendController@showHome')->name('home.index')->middleware('auth');
 
     //Dashboard
     Route::get('/dashboard', 'Backend\BackendController@dashboard')->name('dashboard');
@@ -158,6 +158,7 @@ Route::get('/quickview', 'Frontend\FrontendController@quickview')->name('fronten
 Route::get('/product-detail/{id}', 'Frontend\FrontendController@productDetail')->name('frontend.product_detail');
 Route::get('/contact', 'Frontend\FrontendController@contact')->name('frontend.contact');
 Route::get('/about-us', 'Frontend\FrontendController@aboutUs')->name('frontend.about_us');
+Route::get('/show-order-service', 'Frontend\FrontendController@showOrderService')->name('frontend.show_order_service')->middleware('customer');
 
 //Commment
 Route::post('/load-comment', 'Frontend\FrontendController@loadComment')->name('load_comment');
@@ -187,6 +188,7 @@ Route::get('/order-finish', 'Frontend\FrontendController@orderFinish')->name('or
 //Servies
 Route::get('/services', 'Frontend\ServiceController@index')->name('servies.index');
 Route::get('/services/service_single/{id}', 'Frontend\ServiceController@service_single')->name('servies.service_single');
+Route::post('/service/order', 'Frontend\FrontendController@orderService')->name('frontend.order_service')->middleware('customer');
 
 //Auth
 Auth::routes();
@@ -201,6 +203,7 @@ Route::post('/customer/register', 'Auth\CustomerRegisterController@register')->n
 //Profile
 Route::get('/customer/profile', 'Frontend\FrontendController@profile')->name('customer.profile');
 Route::get('/customer/view-order', 'Frontend\FrontendController@viewOrder')->name('customer.order.view_order');
+Route::get('/customer/view-order-service', 'Frontend\FrontendController@viewOrderService')->name('customer.order.view_order_service');
 
 //Paypal
 Route::get('/payments/paypal-status', [

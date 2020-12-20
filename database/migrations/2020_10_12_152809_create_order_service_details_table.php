@@ -17,7 +17,7 @@ class CreateOrderServiceDetailsTable extends Migration
             $table->engine = 'InnoDB';
             $table->unsignedInteger('service_id');
             $table->unsignedInteger('order_service_id');
-            $table->integer('order_detail_quantity')->unsigned()->default(0);
+            $table->integer('order_detail_quantity')->unsigned()->default(1);
 
             $table->primary(['order_service_id', 'service_id']);
 

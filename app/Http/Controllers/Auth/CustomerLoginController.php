@@ -55,7 +55,7 @@ class CustomerLoginController extends Controller
         {
             Cart::instance('cart')->restore(strval(Auth::guard('customer')->user()->id));
             Cart::instance('wishlist')->restore(Auth::guard('customer')->user()->username);
-            return redirect()->intended(route('frontend.home'));
+            return redirect()->intended('frontend.home');
         }
 
         // if unsuccessful

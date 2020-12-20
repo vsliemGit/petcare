@@ -40,6 +40,6 @@
     <script src="{{ asset('vendor/backend/js/scripts.js') }}"></script>
     <script src="{{ asset('vendor/backend/js/jquery.nicescroll.js') }}"></script>
     <script src="{{ asset('vendor/backend/js/jquery.slimscroll.js') }}"></script>
-    <script src="js/jquery.scrollTo.js"></script>
+    <script src="{{ asset('vendor/backend/js/jquery.scrollTo.js') }}"></script>
 </body>
 </html>

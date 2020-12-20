@@ -183,59 +183,10 @@ Service Single | PETCARE
         </div> --}}
         <div class="col-sm-9">
             <div>{!! $service_detail->service_detail_content !!}</div>
-        </div>
-        <style>
-            table, th, td {
-                 border: 1px solid #FE980F;
-            }
-            form {
-                width: 100%;
-            }
-        </style>
-        <div class="col-sm-9">        
-            <form action="">
-                <table>
-                    <tr>
-                        <td colspan="2" style="text-align: center"><label>ĐẶT LỊCH HẸN</label></td>
-                    </tr>
-                    <tr>
-                        <td>Họ tên</td>
-                        <td><input type="text" name="" id=""></td>
-                    </tr>
-                    <tr>
-                        <td>Số điện thoại</td>
-                        <td><input type="text" name="" id=""></td>
-                    </tr>
-                    <tr>
-                        <td>Dịch vụ khám</td>
-                        <td><input type="text" name="" id=""></td>
-                    </tr>
-                    <tr>
-                        <td>Ngày hẹn</td>
-                        <td><input type="date" name="" id=""></td>
-                    </tr>
-                    <tr>
-                        <td>Chọn giờ đến</td>
-                        <td>
-                            <select name="time" class="wpcf7-form-control wpcf7-select input" aria-invalid="false">
-                                <option value="Chọn giờ đến">Chọn giờ đến</option>
-                                <option value="8h">8h</option>
-                                <option value="9h">9h</option>
-                                <option value="10h">10h</option>
-                                <option value="11h">11h</option>
-                                <option value="12h">12h</option>
-                                <option value="13h">13h</option>
-                                <option value="14h">14h</option>
-                                <option value="15h">15h</option>
-                                <option value="16h">16h</option>
-                                <option value="17h">17h</option>
-                            </select>
-                        </td>
-                    </tr>
-                </table>
-            </form>
-        </div>
-        
+            <div class="col-sm-12" style="margin-bottom: 20px; ">
+                <a class="btn btn-primary"  style="width: 300px;" href="{{route('frontend.show_order_service')}}">Đặt lịch ngay</a>
+            </div>
+        </div>      
     </div>     
 </div>
 @endsection

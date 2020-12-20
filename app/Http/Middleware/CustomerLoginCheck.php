@@ -3,8 +3,9 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Auth;
 
-class CustomerAuthenticate
+class CustomerLoginCheck
 {
     /**
      * Handle an incoming request.
@@ -13,11 +14,11 @@ class CustomerAuthenticate
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $guard="customer")
+    public function handle($request, Closure $next)
     {
-        if(!auth()->guard($guard)->check()) {
-            return redirect()->guest('login-checkout');
+        if(Auth::guard('customer')->check()){
+            return $next($request);
         }
-        return $next($request);
+        else return redirect()->route('login-checkout');
     }
 }

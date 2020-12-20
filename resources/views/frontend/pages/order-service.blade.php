@@ -3,7 +3,7 @@
 
 {{-- Thay thế nội dung vào Placeholder `title` của view `frontend.layouts.index` --}}
 @section('title')
-About us | PETCARE
+Order Service | PETCARE
 @endsection
 
 @section('custom-css')
@@ -15,6 +15,6 @@ About us | PETCARE
 {{-- Content of index --}}
 @section('main-content')
 <div id="contact-page" class="container">  
-    {{-- @include('frontend.widgets.order-services') --}}
+    @include('frontend.widgets.order-services')
 </div><!--/#contact-page-->
 @endsection

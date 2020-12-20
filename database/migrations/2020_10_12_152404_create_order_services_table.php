@@ -16,15 +16,15 @@ class CreateOrderServicesTable extends Migration
         Schema::create('order_services', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->increments('order_service_id');
-            $table->string('order_service_adress', 100);
+            $table->string('order_service_time', 20);
             $table->tinyInteger('order_service_status')->default(0);
-            $table->timestamp('order_service_date_begin')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->date('order_service_date_begin');
             $table->timestamp('order_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('order_updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
-            // $table->unsignedInteger('customer_id');
+            $table->unsignedInteger('customer_id');
             
-            // $table->foreign('customer_id')->references('customer_id')
-            //     ->on('customers')->onDelete('cascade')->onUpdate('cascade');
+            $table->foreign('customer_id')->references('id')
+                ->on('customers')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
