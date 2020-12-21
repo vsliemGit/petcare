@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
         $this->call(TransfersTableSeeder::class);
         $this->call(PaymentsTableSeeder::class);
         $this->call(ServicesTableSeeder::class);
-        $this->call(ServiceDetailsTableSeeder::class);     
+        $this->call(ServiceDetailsTableSeeder::class);
+        $this->call(BannersTableSeeder::class);     
     }
     
 }

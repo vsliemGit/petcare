@@ -131,7 +131,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::post('/import-excel', 'Backend\UserController@importExcel')->name('user.import_excel');
     });
 
-    //CustomerController
+    //BannerController
     Route::prefix('customer')->group(function(){
         Route::get('/', 'Backend\CustomerController@index')->name('customer.index');
         Route::get('/add', 'Backend\CustomerController@create')->name('customer.create');
@@ -144,6 +144,13 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::get('/pdf', 'Backend\CustomerController@createPDF')->name('customer.pdf');
         Route::get('/export-excel', 'Backend\CustomerController@exportExcel')->name('customer.export_excel');
         Route::post('/import-excel', 'Backend\CustomerController@importExcel')->name('customer.import_excel');
+    });
+
+    //BannerControoler
+    Route::prefix('banner')->group(function(){
+        Route::get('/', 'Backend\BannerController@index')->name('banner.index');
+        Route::get('/add', 'Backend\BannerController@create')->name('banner.create');
+        Route::post('/store', 'Backend\BannerController@store')->name('banner.store');
     });
 
 });
@@ -160,7 +167,7 @@ Route::post('/search', 'Frontend\FrontendController@search')->name('frontend.sea
 Route::post('/search-auto-complete', 'Frontend\FrontendController@searchAutoComplete')->name('frontend.search_auto_complete');
 Route::get('/contact', 'Frontend\FrontendController@contact')->name('frontend.contact');
 Route::get('/about-us', 'Frontend\FrontendController@aboutUs')->name('frontend.about_us');
-Route::get('/show-order-service', 'Frontend\FrontendController@showOrderService')->name('frontend.show_order_service')->middleware('customer');
+Route::get('/show-order-service', 'Frontend\FrontendController@showOrderService')->name('frontend.show_order_service')->middleware('banner');
 
 //Commment
 Route::post('/load-comment', 'Frontend\FrontendController@loadComment')->name('load_comment');

@@ -96,6 +96,15 @@
 						<li></i><a href="{{Route('customer.index')}}">List Customers</a></li>
                     </ul>
                 </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa   fa-suitcase"></i>
+                        <span>Banner</span>
+                    </a>
+                    <ul class="sub">
+						<li></i><a href="{{Route('banner.index')}}">Banners</a></li>
+                    </ul>
+                </li>
             </ul>            
         </div>
         <!-- sidebar menu end-->
