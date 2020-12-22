@@ -21,7 +21,7 @@
                             {{-- <div class="col-sm-12">
                                 <img src="storage/images/banner/slider_index_1_1.jpg" class="girl img-responsive" alt="" />
                             </div> --}}
-                            <img src="storage/images/banner/slider_index_1_1.jpg" class="girl img-responsive" alt="" />s
+                            <img src="storage/images/banner/slider_index_1_1.jpg" class="girl img-responsive" alt="" />
                         </div>
                         <div class="item">
                             <div class="col-sm-6">

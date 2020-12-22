@@ -6,6 +6,10 @@
 Contact | PETCARE
 @endsection
 
+@section('custom-css')
+<link type="text/css" rel="stylesheet" href="vendor/frontend/css/style_map.css" />
+@endsection
+
 {{-- Content of index --}}
 @section('main-content')
 <div id="contact-page" class="container">
@@ -14,7 +18,7 @@ Contact | PETCARE
             <div class="col-sm-12">    			   			
                 <h2 class="title text-center">Contact <strong>Us</strong></h2>    			    				    				
                 <div id="gmap" class="contact-map">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3928.9284992104303!2d105.76361291491268!3d10.022759192835574!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xcffd825081bb4df3!2zSG_DoG5nIFbDom4gMjI4!5e0!3m2!1svi!2s!4v1606723180860!5m2!1svi!2s" width="100%" height="450" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe> 
+                    <div id="map"></div>
                 </div>
             </div>			 		
         </div>    	
@@ -75,4 +79,12 @@ Contact | PETCARE
         </div>  
     </div>	
 </div><!--/#contact-page-->
+@endsection
+
+@section('custom-scripts')
+<script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB_XrFQ-4oPgV5Ctw9IbzjZOMUS1_ezagg&callback=initMap&libraries=&v=weekly"
+      defer
+    ></script>>
+<script src="vendor/frontend/js/setting_map.js"></script>
 @endsection
