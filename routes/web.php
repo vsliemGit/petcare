@@ -167,9 +167,12 @@ Route::get('/quickview', 'Frontend\FrontendController@quickview')->name('fronten
 Route::get('/product-detail/{id}', 'Frontend\FrontendController@productDetail')->name('frontend.product_detail');
 Route::post('/search', 'Frontend\FrontendController@search')->name('frontend.search');
 Route::post('/search-auto-complete', 'Frontend\FrontendController@searchAutoComplete')->name('frontend.search_auto_complete');
-Route::get('/contact', 'Frontend\FrontendController@contact')->name('frontend.contact');
 Route::get('/about-us', 'Frontend\FrontendController@aboutUs')->name('frontend.about_us');
 Route::get('/show-order-service', 'Frontend\FrontendController@showOrderService')->name('frontend.show_order_service')->middleware('banner');
+
+//Contact
+Route::get('/contact', 'Frontend\FrontendController@contact')->name('frontend.contact');
+Route::get('/contact/get-stores', 'Frontend\ContactController@getStore')->name('frontend.contact.get_stores');
 
 //Commment
 Route::post('/load-comment', 'Frontend\FrontendController@loadComment')->name('load_comment');

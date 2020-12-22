@@ -20,6 +20,7 @@ use App\Order;
 use Carbon\Carbon;
 use App\Statistic;
 use App\Visitor;
+use App\Store;
 
 class FrontendController extends Controller
 {   
@@ -367,10 +368,15 @@ class FrontendController extends Controller
     }
 
     public function contact(){
-        return view('frontend.pages.contact');
+        $locations = Store::all();
+
+        return view('frontend.pages.contact', compact('locations'));
     }
 
     public function aboutUs(){
+        $stores = Store::all();
+
+        $map_markes = array ();
         return view('frontend.pages.about-us');
     }
 
