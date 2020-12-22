@@ -67,6 +67,8 @@ class FrontendController extends Controller
             ->orderBy('pro_category_created_at', 'desc')->get();
         $listProducts = Product::paginate(8);
         $allProducts = Product::all();
+        $listBanners = Banner::where('banner_status', 1)->get();
+
         foreach($allProducts as $key => $product){
             $rating[$product->product_id] = $this->getRating($product->product_id);
         } 
@@ -76,7 +78,8 @@ class FrontendController extends Controller
             ->with('listBrands', $listBrands)
             ->with('listProductCategories', $listProductCategories)
             ->with('listProducts', $listProducts)
-            ->with('rating', $rating);
+            ->with('rating', $rating)
+            ->with('listBanners', $listBanners);
     }
 
     public function products(Request $request){

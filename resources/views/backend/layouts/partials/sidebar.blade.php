@@ -102,7 +102,8 @@
                         <span>Banner</span>
                     </a>
                     <ul class="sub">
-						<li></i><a href="{{Route('banner.index')}}">Banners</a></li>
+                        <li></i><a href="{{Route('banner.index')}}">List Banners</a></li>
+                        <li></i><a href="{{Route('banner.create')}}">Add Banner</a></li>
                     </ul>
                 </li>
             </ul>            

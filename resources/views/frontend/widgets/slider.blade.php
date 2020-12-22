@@ -10,55 +10,18 @@
                         <li data-target="#slider-carousel" data-slide-to="4"></li>
                     </ol>
                     
-                    <div class="carousel-inner">
-                        <div class="item active">
-                            {{-- <div class="col-sm-6">
-                                <h1><span>E</span>-SHOPPER</h1>
-                                <h2>Free E-Commerce Template</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                                <button type="button" class="btn btn-default get">Get it now</button>
-                            </div> --}}
-                            {{-- <div class="col-sm-12">
-                                <img src="storage/images/banner/slider_index_1_1.jpg" class="girl img-responsive" alt="" />
-                            </div> --}}
-                            {{-- <img src="storage/images/banner/slider_index_1_1.jpg" class="girl img-responsive" alt="" /> --}}
-                        </div>
-                        <div class="item">
-                            <div class="col-sm-6">
-                                <h1><span>E</span>-SHOPPER</h1>
-                                <h2>100% Responsive Design</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                                <button type="button" class="btn btn-default get">Get it now</button>
-                            </div>
-                            <div class="col-sm-6">
-                                <img src="vendor/frontend/images/home/girl2.jpg" class="girl img-responsive" alt="" />
-                                {{-- <img src="vendor/frontend/images/home/pricing.png"  class="pricing" alt="" /> --}}
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="col-sm-6">
-                                <h1><span>E</span>-SHOPPER</h1>
-                                <h2>Free Ecommerce Template</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                                <button type="button" class="btn btn-default get">Get it now</button>
-                            </div>
-                            <div class="col-sm-6">
-                                <img src="vendor/frontend/images/home/girl3.jpg" class="girl img-responsive" alt="" />
-                                {{-- <img src="vendor/frontend/images/home/pricing.png" class="pricing" alt="" /> --}}
-                            </div>
-                        </div>
-                        <div class="item">
-                            <div class="col-sm-6">
-                                <h1><span>E</span>-SHOPPER</h1>
-                                <h2>Free Ecommerce Template</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-                                <button type="button" class="btn btn-default get">Get it now</button>
-                            </div>
-                            <div class="col-sm-6">
-                                <img src="vendor/frontend/images/home/girl4.jpg" class="girl img-responsive" alt="" />
-                                {{-- <img src="vendor/frontend/images/home/pricing.png" class="pricing" alt="" /> --}}
-                            </div>
-                        </div>     
+                    <div class="carousel-inner">                       
+                        @foreach ($listBanners as $banner)
+                            @if($loop->first)
+                                <div class="item active">
+                                    <img style="height: 450px; width: 1140px; margin: 0" src="storage/images/banner/{{$banner->banner_image}}" class="girl img-responsive" alt="" />
+                                </div>
+                            @else
+                                <div class="item">
+                                    <img style="height: 450px; width: 1140px; margin: 0p" src="storage/images/banner/{{$banner->banner_image}}" class="girl img-responsive" alt="" />
+                                </div>
+                            @endif
+                        @endforeach
                     </div>
                     
                     <a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">

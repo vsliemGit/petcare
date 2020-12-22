@@ -7,12 +7,41 @@ use Illuminate\Http\Request;
 use DB;
 use App\Banner;
 use Carbon\Carbon;
+use Session;
 
 class BannerController extends Controller
 {
     public function index(){
         $listBanners = DB::table('banners')->paginate(9);
         return view('backend.banner.index', ['listBanners' => $listBanners]);
+    }
+
+    public function create(){
+        return view('backend.banner.create');
+    }
+
+    public function store(Request $request){
+        $validation = $request->validate([
+            'banner_image' => 'required|file|image|mimes:jpeg,jpg,png,gif,webp|max:2048',
+        ]);
+
+        $newBanner = new Banner();
+        $newBanner->banner_name = $request->banner_name;
+        $newBanner->banner_url = "";
+        $newBanner->banner_status = $request->banner_status;     
+        if($request->hasFile('banner_image'))
+        {
+            $file = $request->banner_image;
+
+            // Lưu tên hình vào column banner_image
+            $newBanner->banner_image = $file->getClientOriginalName();
+            
+            // Chép file vào thư mục "images"
+            $fileSaved = $file->storeAs('public/images/banner/', $file->getClientOriginalName());
+        }
+        $newBanner->save();       
+        Session::flash('alert-info', 'Thêm mới thành công!!!');
+        return redirect()->route('banner.index');
     }
 
     public function changeStatus(Request $request){

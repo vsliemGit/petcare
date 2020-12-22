@@ -1,22 +1,28 @@
 // setting map in here
-var map, infoWindow, destinations = [];
+var map, marker, infoWindow, destinations = [];
 var infoWindow3;
 
 const uluru = { lat: 10.030255967144265, lng: 105.7706231853938 };
 function initMap() {
+
+    //Tao mới đối tượng Map
     var posi = new google.maps.LatLng(16.143123, 107.599573);
     map = new google.maps.Map(document.getElementById("map"), {
         center: posi,
         zoom: 5.8,
     });
+
     //Create maker
-    var marker = new google.maps.Marker({
+    marker = new google.maps.Marker({
         position: posi,
         map: map,
+        animation: google.maps.Animation.BOUNCE,
         title: 'Your location',
     });
 
+    //Lấy vị trí hiện tại
     geolocationControl();
+    infoWindow = new google.maps.InfoWindow();
     function geolocationControl(){
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -25,11 +31,14 @@ function initMap() {
                   lat: position.coords.latitude,
                   lng: position.coords.longitude,
                 };
-                map.setCenter(pos);
+               
                 marker.setPosition(pos);
-                // crateListMarkers();
-                map.setZoom(8);
-                // calculateDistances();
+                infoWindow.open(map);
+                map.setCenter(pos);
+                crateListMarkers();
+                infoWindow.open(map);
+                map.setZoom(14);
+                calculateDistances();
               },
               () => {
                     console.log('Dung api ipinfo.io');
@@ -52,6 +61,7 @@ function initMap() {
         }
     }
 
+    //Lấy danh sách các cửa hàng
     var stores = [];
     $.each( locations, function( index, value ){                    
        stores.push({ lat: parseFloat(value.store_latitude) , lng: parseFloat(value.store_longitude) })
@@ -60,11 +70,10 @@ function initMap() {
     //Bat su kien marker click
     google.maps.event.addDomListener(marker, 'click', () => {
         infoWindow.open(map, marker);
-    })
-
+    });
     map.addListener('click', function(){
         infoWindow.close();
-    })
+    });
 
     //Tao list markets
     // var markers = [
@@ -90,20 +99,21 @@ function initMap() {
     }
     
     infoWindow  = new google.maps.InfoWindow({
-        content: "noi dung infobox",
+        content: "Shop",
         maxwidth: 100,
     });
     
+    //Tạo Icon cho những marker của shop
     var icon = {
         url: "vendor/frontend/images/icon-map/location.png", // url
         scaledSize: new google.maps.Size(40, 40), // scaled size
         origin: new google.maps.Point(0,0), // origin
         anchor: new google.maps.Point(0, 0) // anchor
     };
-
     function crateNewMarker(pos){        
         var newMarker = new google.maps.Marker({
             position: pos,
+            title: 'Shop location',
             animation: google.maps.Animation.DROP,
             map: map,
             icon: icon,
@@ -124,9 +134,9 @@ function initMap() {
     infoWindow3 = new google.maps.InfoWindow();
 
     function calculateAndDisplayRoute(newMarker) {
-        var middle;
+        var middle; //Tạo điểm chính giữa
         directionsRenderer.setMap(map);
-        //dinh tuyen
+        //Định tuyến tuyến đường
         directionsService.route(
           {
             origin: marker.getPosition(),

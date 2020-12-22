@@ -11,7 +11,9 @@ Admin - Banner
 <section class="wrapper">
     <div class="gallery">
 		<h2 class="w3ls_head">Gallery</h2>
-		<button type="button" class="btn btn-primary">Add Banner</button>
+		<form action="{{route('banner.create')}}">
+			<input type="submit" class="btn btn-primary" value="Add Banner" />
+		</form>
 		<div class="gallery-grids">
 				<div class="gallery-top-grids">
 					@foreach ($listBanners as $banner)
