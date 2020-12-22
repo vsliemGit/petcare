@@ -16,7 +16,7 @@
                 <p class="card-text" 
                 style="display: -webkit-box;  max-width: 250px; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
                 {{ $service->service_desc }}</p>
-                <a href="" class="btn btn-primary">Xem ngay</a>
+                <a href="{{route('servies.service_single', ['id' => $service->service_detail_id])}}" class="btn btn-primary">Xem ngay</a>
               </div>
         </div>  
         @endforeach        

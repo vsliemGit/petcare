@@ -18,25 +18,7 @@ Contact | PETCARE
             <div class="col-sm-12">    			   			
                 <h2 class="title text-center">Contact <strong>Us</strong></h2> 
                 <script type="text/javascript">
-
-
-                    var locations = <?php print_r(json_encode($locations)) ?>;
-                
-                
-                    // var mymap = new GMaps({
-                    //   el: '#mymap',
-                    //   lat: 21.170240,
-                    //   lng: 72.831061,
-                    //   zoom:6
-                    // });
-                    
-                
-                //     $.each( locations, function( index, value ){
-                        
-                //         console.log(value.store_longitude);
-                //    });
-                
-                
+                    var locations = <?php print_r(json_encode($locations)) ?>;              
                   </script>  			    				    				
                 <div id="gmap" class="contact-map">
                     <div id="map"></div>
@@ -99,7 +81,7 @@ Contact | PETCARE
             </div>    			
         </div>  
     </div>	
-</div><!--/#contact-page-->
+</div><!--contact-page-->
 @endsection
 
 @section('custom-scripts')

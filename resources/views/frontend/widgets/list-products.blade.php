@@ -44,7 +44,7 @@
 <script>
     //Add product to Cart using ajax
     $('.add-to-cart').click(function(event){
-        event.preventDefault();
+        // event.preventDefault();
         $( this ).prop( "disabled", true );
         let token = $('meta[name="csrf-token"]').attr('content');
         let product_id =  $(this).data('id');

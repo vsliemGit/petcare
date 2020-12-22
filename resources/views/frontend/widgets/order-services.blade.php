@@ -158,22 +158,22 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
 
-  $(document).ready(function(){
-          //Custom datepicker
-          $( "#datepicker" ).datepicker({
-              prevText: "Tháng trước",
-              nextText: "Tháng sau",
-              dateFormat: "yy-mm-dd",
-              dayNamesMin: ['T2','T3', 'T4','T5','T6','T7','CN'],
-              monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10','Tháng 11', 'Tháng 12'],
-              monthNamesShort : ['Thg1', 'Thg2', 'Thg3', 'Thg4', 'Thg5', 'Thg6', 'Thg7', 'Thg8', 'Thg9', 'Thg10','Thg11', 'Thg12'],
-              duration: 'slow',
-              changeMonth: true,
-              changeYear: false,
-              timepicker : false,
-              minDate: 0,
-              maxDate: "+3m"
-          });
+$(document).ready(function(){
+    //Custom datepicker
+    $( "#datepicker" ).datepicker({
+        prevText: "Tháng trước",
+        nextText: "Tháng sau",
+        dateFormat: "yy-mm-dd",
+        dayNamesMin: ['T2','T3', 'T4','T5','T6','T7','CN'],
+        monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10','Tháng 11', 'Tháng 12'],
+        monthNamesShort : ['Thg1', 'Thg2', 'Thg3', 'Thg4', 'Thg5', 'Thg6', 'Thg7', 'Thg8', 'Thg9', 'Thg10','Thg11', 'Thg12'],
+        duration: 'slow',
+        changeMonth: true,
+        changeYear: false,
+        timepicker : false,
+        minDate: 0,
+        maxDate: "+3m"
+    });
   });
   var currentTab = 0; // Current tab is set to be the first tab (0)
   showTab(currentTab); // Display the current tab

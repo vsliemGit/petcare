@@ -5,7 +5,7 @@
                 <div class="col-sm-2">
                     <div class="companyinfo">
                         <a href="{{route('frontend.home')}}"><img height="39px" width="139px;" src="vendor/frontend/images/home/logo6.png" alt="" /></a>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit,sed do eiusmod tempor</p>
+                        <p>{{ __('footer.slogan') }}</p>
                     </div>
                 </div>
                 <div class="col-sm-7">
@@ -84,13 +84,12 @@
             <div class="row">
                 <div class="col-sm-2">
                     <div class="single-widget">
-                        <h2>Service</h2>
+                        <h2>{{ __('footer.service') }}</h2>
                         <ul class="nav nav-pills nav-stacked">
-                            <li><a href="#">Online Help</a></li>
-                            <li><a href="#">Contact Us</a></li>
-                            <li><a href="#">Order Status</a></li>
-                            <li><a href="#">Change Location</a></li>
-                            <li><a href="#">FAQ’s</a></li>
+                            <li><a href="#">{{ __('footer.online_help') }}</a></li>
+                            <li><a href="#">{{ __('footer.contact_us') }}</a></li>
+                            <li><a href="#">{{ __('footer.order_status') }}</a></li>
+                            <li><a href="#">{{ __('footer.faq') }}</a></li>
                         </ul>
                     </div>
                 </div>

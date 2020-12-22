@@ -21,6 +21,7 @@ use Carbon\Carbon;
 use App\Statistic;
 use App\Visitor;
 use App\Store;
+use App\Banner;
 
 class FrontendController extends Controller
 {   
@@ -57,7 +58,10 @@ class FrontendController extends Controller
         }
 
         $topThreeNewProducts = Product::orderBy('product_created_at')->take(10)->get();
-        $topNewServices = Service::orderBy('service_created_at')->take(10)->get();
+        $topNewServices = DB::table('services')
+        ->join('service_details', 'services.service_id', '=', 'service_details.service_id')
+        ->select('services.*','service_details.service_detail_id','service_details.service_detail_image')
+        ->where('service_detail_status', 1)->orderBy('services.service_created_at')->take(10)->get();
         $listBrands = Brand::all();
         $listProductCategories = DB::table('product_categories')
             ->orderBy('pro_category_created_at', 'desc')->get();
@@ -369,14 +373,10 @@ class FrontendController extends Controller
 
     public function contact(){
         $locations = Store::all();
-
         return view('frontend.pages.contact', compact('locations'));
     }
 
     public function aboutUs(){
-        $stores = Store::all();
-
-        $map_markes = array ();
         return view('frontend.pages.about-us');
     }
 

@@ -168,7 +168,7 @@ Route::get('/product-detail/{id}', 'Frontend\FrontendController@productDetail')-
 Route::post('/search', 'Frontend\FrontendController@search')->name('frontend.search');
 Route::post('/search-auto-complete', 'Frontend\FrontendController@searchAutoComplete')->name('frontend.search_auto_complete');
 Route::get('/about-us', 'Frontend\FrontendController@aboutUs')->name('frontend.about_us');
-Route::get('/show-order-service', 'Frontend\FrontendController@showOrderService')->name('frontend.show_order_service')->middleware('banner');
+Route::get('/show-order-service', 'Frontend\FrontendController@showOrderService')->name('frontend.show_order_service')->middleware('customer');
 
 //Contact
 Route::get('/contact', 'Frontend\FrontendController@contact')->name('frontend.contact');

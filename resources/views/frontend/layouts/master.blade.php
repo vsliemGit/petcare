@@ -35,16 +35,13 @@
     </style>
     <script src="vendor/frontend/js/jquery.js"></script>
 </head><!--/head-->
-
 <body>
     <!--Header-->
     @include('frontend.layouts.partials.header')   
 	<!-- Content -->
     @yield('main-content')
-     
     <!--Footer-->
     @include('frontend.layouts.partials.footer')
-	
 	<script src="vendor/frontend/js/bootstrap.min.js"></script>
 	<script src="vendor/frontend/js/jquery.scrollUp.min.js"></script>
 	<script src="vendor/frontend/js/price-range.js"></script>
@@ -59,14 +56,15 @@
     <!-- Các custom script dành riêng cho từng view -->
     @yield('custom-scripts')
     <script>
+        //LoadCountItemInCart
         function realoadCountCart($value){
             $('#lblCartCount').text($value) ;
         }
+        //LoadCountItemInWishlist
         function realoadCountWishlist($value){
             $('#lblWishlistCount').text($value) ;
         }
-        //Search ajax:
-        //Setup CSRF to AJAX
+        //Search ajax:       
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -78,9 +76,7 @@
                 $.ajax({
                     url : "{{route('frontend.search_auto_complete')}}",
                     method: "POST",
-                    data: {
-                        key_words : key
-                    },
+                    data: { key_words : key },
                     success: function(data){
                         $('#result_search_ajax').fadeIn();
                         $('#result_search_ajax').html(data);
@@ -96,7 +92,6 @@
             $('#keywords_search').val($(this).find('.product_name').text());
             $('#result_search_ajax').fadeOut();
         })
-
     </script>
 </body>
 </html>

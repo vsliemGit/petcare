@@ -155,7 +155,7 @@
                             </li>
                             <li><a href="{{ route('servies.index') }}">{{__('header.services')}}</a></li>
                             <li><a href="{{ route('frontend.contact')}}">{{__('header.contact')}}</a></li>
-                            <li><a href="{{ route('checkout') }}">{{__('header.checkout')}}</a></li>
+                            <li><a href="{{ route('frontend.about_us') }}">{{__('header.about_us')}}</a></li>
                         </ul>
                     </div>
                 </div>

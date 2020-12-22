@@ -1,6 +1,5 @@
 {{-- View này sẽ kế thừa giao diện từ `frontend.layouts.master` --}}
 @extends('frontend.layouts.master')
-
 @section('custom-css')
 <style>
     .img-similar {
@@ -35,7 +34,6 @@
     }  
 </style>
 @endsection
-
 {{-- Content of products --}}
 @section('main-content')
 <section id="advertisement">
