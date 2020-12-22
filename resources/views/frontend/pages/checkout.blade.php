@@ -192,20 +192,52 @@
                             <table class="table table-condensed total-result">
                                 <tr>
                                     <td>Cart Sub Total</td>
-                                    <td><span id="subtotal">${{ Cart::subtotal() .' '. 'VNĐ' }}</span></td>
+                                    <td><span id="subtotal"> {{ Cart::subtotal() .' '. 'VNĐ' }}</span></td>
                                 </tr>
                                 <tr>
                                     <td>Exo Tax</td>
-                                    <td>$0 VNĐ</td>
+                                    <td>0 VNĐ</td>
                                 </tr>
                                 <tr class="shipping-cost">
                                     <td>Shipping Cost</td>
                                     <td>Free</td>										
                                 </tr>
-                                <tr>
-                                    <td>Total</td>
-                                    <td><span id="subtotal">${{ Cart::subtotal() .' '. 'VNĐ' }}</span></td>
-                                </tr>
+                                @if(Session::get('coupon'))
+                                    @php 
+                                        $subTotal = (double)filter_var(Cart::subtotal(), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                                        $total_after_coupon = 0; 
+                                    @endphp
+                                    @foreach(Session::get('coupon') as $key => $cou)
+                                        @if($cou['coupon_condition'] == 0)
+                                            <tr>
+                                                <td>Giảm : </td>
+                                                <td>{{$cou['coupon_number']}} %</td>
+                                                @php 
+                                                    $total_coupon = ($subTotal*$cou['coupon_number'])/100;
+                                                    $total_after_coupon = $subTotal - $total_coupon;	
+                                                @endphp
+                                            </tr>		
+                                        @elseif($cou['coupon_condition']==1)
+                                            <tr> 
+                                                <td>Giảm : </td> 
+                                                <td> {{number_format($cou['coupon_number'],0,',','.')}} VNĐ</td>
+                                                @php 
+                                                    $total_coupon = $subTotal - $cou['coupon_number'];
+                                                    $total_after_coupon = ($total_coupon > 0) ? $total_coupon : 0;	
+                                                @endphp
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                    <tr>
+                                        <td>Total</td>
+                                        <td><span id="subtotal">{{number_format( $total_after_coupon ,0,',','.') .' '. 'VNĐ' }}</span></td>
+                                    </tr> 
+                                @else
+                                    <tr>
+                                        <td>Total</td>
+                                        <td><span id="subtotal">${{ Cart::subtotal() .' '. 'VNĐ' }}</span></td>
+                                    </tr>
+                                @endif
                                 <tr>
                                     <td></td>
                                     <td><span>
@@ -266,6 +298,7 @@
                     window.open(data.redirectUrl,  "_self", "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes");
                 }, 3000);
             }).fail(function(data){
+                console.log(data);
                 swal("Error!", data.message , "error");
             });
     });

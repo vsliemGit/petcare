@@ -143,10 +143,10 @@ Admin - List Coupons
       }).then((willDelete) => {
         if (willDelete) {
           var page = window.location.hash.replace('#', '');
-          var url = "{{route('brand.destroy')}}";
+          var url = "{{route('coupon.destroy')}}";
           $.ajax({
             url: url,
-            type: 'DELETE',
+            type: 'POST',
             data: {id: brand_id}
           }).done(function(data){
             swal('Deleted!', 'Your file is deleted...', 'success');
@@ -175,8 +175,8 @@ Admin - List Coupons
           let check = confirm("Are you sure you want to delete this row?");
           if(check == true){
             $.ajax({
-              url : "{{route('brand.destroy')}}",
-              type: "DELETE",
+              url : "{{route('coupon.destroy')}}",
+              type: "POST",
               data : {
                 id : allIdDelete
               }

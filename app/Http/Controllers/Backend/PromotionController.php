@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
+use App\Coupon;
 use Session;
 
 class PromotionController extends Controller
@@ -59,7 +60,7 @@ class PromotionController extends Controller
      */
     public function edit($id)
     {
-        //
+        
     }
 
     /**
@@ -97,11 +98,28 @@ class PromotionController extends Controller
         return view('backend.promotion.coupon.create');
     }
 
+    function randomString()
+    {   
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randstring = '';
+        for ($i = 0; $i < 6; $i++) {
+            $randstring = $characters[Rand(0, strlen($characters))];
+        }
+        return $randstring;
+    }
+
     public function storeCoupon(Request $request){
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randstring = '';
+        for ($i = 0; $i < 6; $i++) {
+            $randstring .= $characters[Rand(0, strlen($characters))];
+        }
+
         DB::table('coupons')->insert([
             'coupon_name' => $request->coupon_name,
-            'coupon_code' => $request->coupon_code,
+            'coupon_code' =>  $randstring,
             'coupon_times' => $request->coupon_times,
+            'coupon_number' => $request->coupon_number,
             'coupon_condition' => $request->coupon_condition    
         ]);
         
@@ -109,4 +127,41 @@ class PromotionController extends Controller
         return redirect()->route('coupon.index');     
 
     }
+
+    public function editCoupon($id){
+        $coupon = Coupon::find($id);
+        return view('backend.promotion.coupon.edit', ['coupon' => $coupon]);
+    }
+    
+    public function updateCoupon(Request $request, $id){
+        $coupon = Coupon::where("coupon_id", $id)->first();
+        $coupon->coupon_name = $request->coupon_name;
+        $coupon->coupon_times = $request->coupon_times;
+        $coupon->coupon_number = $request->coupon_number;
+        $coupon->coupon_condition = $request->coupon_condition ;  
+        $coupon->save();    
+        
+        Session::flash('alert-info', 'Chỉnh sửa thành công!!!');
+        return redirect()->route('coupon.index');     
+    }
+
+    public function destroyCoupon(Request $request){
+        $id = $request->id;
+        if (is_array($id)){
+            Coupon::destroy($id);
+        }
+        else
+        {
+            $coupon = Coupon::where("coupon_id", $id)->first();
+            $coupon->delete();
+        }
+        
+        $listCoupons = DB::table('coupons')->orderBy('coupon_created_at', 'desc')->paginate(5);
+        if($request->ajax()){
+            return view('backend.promotion.coupon.table-data')->with('listCoupons', $listCoupons);
+        }
+        return view('backend.promotion.coupon.index')->with('listCoupons', $listCoupons);   
+
+    }
+   
 }

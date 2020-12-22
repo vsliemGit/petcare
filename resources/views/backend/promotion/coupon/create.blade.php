@@ -32,13 +32,7 @@ Admin - Add Coupon
                                     <div class="col-lg-6">
                                         <input class=" form-control" id="coupon_name" name="coupon_name" minlength="2" type="text" required="">
                                     </div>
-                                </div>
-                                <div class="form-group ">
-                                    <label for="coupon_code" class="control-label col-lg-3">Code <span class="required" style="color:red">*</span></label>
-                                    <div class="col-lg-6">
-                                        <input class="form-control" id="coupon_code" name="coupon_code" minlength="2" type="text" required="">
-                                    </div>
-                                </div>                              
+                                </div>                            
                                 <div class="form-group ">
                                     <label for="coupon_times" class="control-label col-lg-3">Times <span class="required" style="color:red">*</span></label>
                                     <div class="col-lg-6">

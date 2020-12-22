@@ -94,8 +94,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::get('/add', 'Backend\PromotionController@createCoupon')->name('coupon.create');
         Route::post('/store', 'Backend\PromotionController@storeCoupon')->name('coupon.store');
         Route::get('/edit/{id}', 'Backend\PromotionController@editCoupon')->name('coupon.edit');
-        Route::post('/update', 'Backend\PromotionController@updateCoupon')->name('coupon.update');
-        Route::delete('/delete', 'Backend\PromotionController@destroyCoupon')->name('coupon.destroy');
+        Route::post('/update/{id}', 'Backend\PromotionController@updateCoupon')->name('coupon.update');
+        Route::post('/delete', 'Backend\PromotionController@destroyCoupon')->name('coupon.destroy');
         Route::post('/change-status', 'Backend\PromotionController@changeStatusCoupon')->name('coupon.changeStatus');
         Route::get('/filter-status','Backend\PromotionController@filterStatusCoupon')->name('coupon.filter_status');
         Route::get('/pdf', 'Backend\PromotionController@createPDFCoupon')->name('coupon.pdf');
@@ -131,7 +131,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::post('/import-excel', 'Backend\UserController@importExcel')->name('user.import_excel');
     });
 
-    //BannerController
+    //CustomerController
     Route::prefix('customer')->group(function(){
         Route::get('/', 'Backend\CustomerController@index')->name('customer.index');
         Route::get('/add', 'Backend\CustomerController@create')->name('customer.create');
@@ -192,6 +192,7 @@ Route::get('/delete-to-wishlist', 'Frontend\WishlistController@deleteToWishlist'
 
 //Coupon
 Route::post('/check-coupon', 'Frontend\PromotionController@checkCoupon')->name('check_coupon');
+Route::get('/unset-coupon','Frontend\PromotionController@unsetCoupon');
 
 //Checkout
 Route::get('/login-checkout', 'Frontend\FrontendController@loginCheckout')->name('login-checkout');

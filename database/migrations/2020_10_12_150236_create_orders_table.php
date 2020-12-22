@@ -23,6 +23,7 @@ class CreateOrdersTable extends Migration
             $table->timestamp('order_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('order_updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->unsignedInteger('transfer_id');
+            $table->unsignedInteger('coupon_id')->nullable();
             $table->unsignedInteger('payment_id');
             $table->unsignedInteger('customer_id')->nullable();
 
@@ -32,7 +33,8 @@ class CreateOrdersTable extends Migration
                 ->on('payments')->onDelete('cascade')->onUpdate('cascade');
             $table->foreign('customer_id')->references('id')
                 ->on('customers')->onDelete('cascade')->onUpdate('cascade');
-
+            $table->foreign('coupon_id')->references('coupon_id')
+                ->on('coupons')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

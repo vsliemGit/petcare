@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
-use Coupon;
+use App\Coupon;
+use Session;
 
 class PromotionController extends Controller
 {
@@ -86,7 +87,54 @@ class PromotionController extends Controller
     }
 
     public function checkCoupon(Request $request){
-        return $request->all();
+        $data = $request->all();
+        $coupon = Coupon::where('coupon_code', $data['coupon_code'])->first();
+       
+        if($coupon->coupon_status == 0){
+            return redirect()->back()->with('error', 'Mã giảm giá chứa kích hoạt');
+        }
+        if($coupon->coupon_times < 1){
+            return redirect()->back()->with('error', 'Mã giảm giá đã hết lần sử dụng');
+        }
+        if($coupon){
+            $count_coupon = $coupon->count();
+            if($count_coupon>0){
+                $coupon_session = Session::get('coupon');
+                if($coupon_session==true){
+                    $is_avaiable = 0;
+                    if($is_avaiable==0){
+                        $cou[] = array(
+                            'coupon_code' => $coupon->coupon_code,
+                            'coupon_condition' => $coupon->coupon_condition,
+                            'coupon_number' => $coupon->coupon_number,
+
+                        );
+                        Session::put('coupon', $cou);
+                    }
+                }else{
+                    $cou[] = array(
+                            'coupon_code' => $coupon->coupon_code,
+                            'coupon_condition' => $coupon->coupon_condition,
+                            'coupon_number' => $coupon->coupon_number,
+
+                        );
+                    Session::put('coupon',$cou);
+                }
+                Session::save();
+                return redirect()->back()->with('message','Thêm mã giảm giá thành công');
+            }
+
+        }else{
+            return redirect()->back()->with('error','Mã giảm giá không đúng');
+        }
     }
+
+    public function unsetCoupon(){
+		$coupon = Session::get('coupon');
+        if($coupon==true){
+            Session::forget('coupon');
+            return redirect()->back()->with('message','Xóa mã khuyến mãi thành công');
+        }
+	}
 
 }

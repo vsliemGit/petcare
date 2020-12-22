@@ -22,6 +22,7 @@ use App\Statistic;
 use App\Visitor;
 use App\Store;
 use App\Banner;
+use App\Coupon;
 
 class FrontendController extends Controller
 {   
@@ -403,14 +404,45 @@ class FrontendController extends Controller
 
     public function order(Request $request){       
         try{
+            $coupon_session = Session::get('coupon');
+            $coupon_fee = 0;
+            if($coupon_session==true){
+                foreach($coupon_session as $key => $cou){
+                    $coupon_code = $cou['coupon_code'];
+                }
+                $coupon = Coupon::where('coupon_code', $coupon_code)->first();
 
-            $order_id =  DB::table('orders')->insertGetId([
-                'customer_id' => $request->customer_id,
-                'transfer_id' => $request->transfer,
-                'payment_id' => $request->payment,
-                'order_adress' => $request->to_address,
-                'order_notes' => $request->message
-            ]);
+                $subTotal = (double)filter_var(Cart::instance('cart')->subtotal(), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+
+                if($cou['coupon_condition'] == 0){
+                    $total_coupon = ($subTotal * $coupon->coupon_number)/100;
+                    $coupon_fee = $subTotal - $total_coupon;
+                }else{
+                    $total_coupon = $subTotal - $coupon->coupon_number;
+                    $coupon_fee = ($total_coupon > 0) ? $total_coupon : 0;
+                }
+
+                $order_id =  DB::table('orders')->insertGetId([
+                    'customer_id' => $request->customer_id,
+                    'transfer_id' => $request->transfer,
+                    'payment_id' => $request->payment,
+                    'order_adress' =>  $request->to_address,
+                    'order_notes' => $request->message,
+                    'coupon_id' => $coupon->coupon_id
+                ]);
+                Session::forget('coupon');
+                $coupon = Coupon::where('coupon_code', $coupon_code)->decrement('coupon_times');
+                      
+            }else
+            {
+                $order_id =  DB::table('orders')->insertGetId([
+                    'customer_id' => $request->customer_id,
+                    'transfer_id' => $request->transfer,
+                    'payment_id' => $request->payment,
+                    'order_adress' => $request->to_address,
+                    'order_notes' => $request->message
+                ]);
+             }
 
             $order = DB::table('orders')->where('order_id', $order_id)->first();
             $date =  Carbon::parse($order->order_created_at)->format('Y-m-d');
@@ -430,21 +462,27 @@ class FrontendController extends Controller
                 $statistic = Statistic::where('id_statistical',  $id_statistic)->first();
             }
 
+            $fee_profit = 0;
+            $quantity_product = 0;
             foreach($cart_content as $product){
                 $orderDetail = DB::table('order_details')->insert([
                     'product_id' => $product->id,
                     'order_id' => $order_id,
                     'order_detail_quantity' => $product->qty
                 ]);
-                //Calculating sales and profit
-                DB::table('statistics')->updateOrInsert(
-                    ['order_date' => $date],
-                    [   'sales' => $statistic->sales += ($product->qty * $product->price),
-                        'profit'=> $statistic->profit += ($product->price - $product->product_basis_price),
-                        'quantity' => $statistic->quantity += $product->qty
-                    ]);
+                $product_basic_price = DB::table('products')->where('product_id', $product->id)->select('product_basis_price')->first()->product_basis_price;;
+                $fee_profit += ($product->price - $product_basic_price );
+                $quantity_product += $product->qty;
+
                 Cart::instance('cart')->remove($product->rowId);         
             }
+            DB::table('statistics')->updateOrInsert(
+                ['order_date' => $date],
+                [   'sales' =>  $coupon_fee,
+                    'profit'=> $fee_profit,
+                    'quantity' => $statistic->quantity += $quantity_product
+                ]);
+
             Statistic::where('order_date', $date)->increment('total_order');
             
         }catch(ValidationException $e) {

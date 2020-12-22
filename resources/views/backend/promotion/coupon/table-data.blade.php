@@ -18,6 +18,7 @@
           <th>ID</th>
           <th>Name</th>
           <th>Code</th>
+          <th>Number</th>
           <th>Times</th>
           <th>Condition</th>
           <th>Status</th>
@@ -35,9 +36,15 @@
           <td class="td-id">{{ $coupon->coupon_id }}</td>
           <td class="td-name"><span class="text-ellipsis">{{ $coupon->coupon_name }}</span></td>
           <td class="td-code"><span class="text-ellipsis">{{ $coupon->coupon_code }}</span></td>
-          <td class="td-code"><span class="text-ellipsis">{{ $coupon->coupon_number }}</span></td>
+          <td class="td-number"><span class="text-ellipsis">{{ $coupon->coupon_number }}</span></td>
           <td class="td-times"><span class="text-ellipsis">{{ $coupon->coupon_times }}</span></td>
-          <td class="td-desc"><span class="text-ellipsis">{{ $coupon->coupon_condition }}</span></td>
+          <td class="td-status change-item">
+            <?php if($coupon->coupon_condition == 1){ ?>
+              <span class="td-name"><span class="text-ellipsis"><i>Giảm theo VNĐ</i></span></span>
+                    <?php  }else{ ?>  
+              <span class="td-name"><span class="text-ellipsis"><i>Giảm theo % </i></span></span>
+            <?php  } ?>
+          </td>
           <td class="td-status change-item">
             <?php if($coupon->coupon_status == 1){ ?>
               <a data-id="1" href="javascript:void(0)"><span data-id="1"class="fa fa-check text-success text-active"></span></a>
@@ -48,7 +55,7 @@
           <td><span class="text-ellipsis">{{ $coupon->coupon_created_at }}</span></td>
           <td><span class="text-ellipsis">{{ $coupon->coupon_updated_at }}</span></td>
           <td>
-          <a href="javascript:void(0)"
+          <a href="{{route('coupon.edit', ['id' => $coupon->coupon_id])}}"
               class="active styling-edit edit-item" ui-toggle-class="">
               <i class="fa fa-pencil-square-o text-success text-active"></i></a>
           <a onclick="deleteItemAjax({{$coupon->coupon_id}})"        

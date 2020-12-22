@@ -63,6 +63,15 @@
 </section>
 <section id="do_action">
     <div class="container">
+        @if(session()->has('message'))
+        <div class="alert alert-success">
+            {!! session()->get('message') !!}
+        </div>
+        @elseif(session()->has('error'))
+            <div class="alert alert-danger">
+                {!! session()->get('error') !!}
+            </div>
+        @endif
         <div class="heading">
             <h3>What would you like to do next?</h3>
             <p>Choose if you have a discount code or reward points you want to use or would like to estimate your delivery cost.</p>
@@ -89,20 +98,62 @@
                         <ul class="user_info">
                             <li class="single_field zip-field">
                                 <label for="coupon_id">Coupon ID:</label>
-                                <input type="text" id="coupon_id" name="coupon_id">
+                                <input type="text" id="coupon_code" name="coupon_code">
                             </li> 
                         </ul>
                         <button type="submit" name="use_coupon" class="btn btn-default update" href="">Use Coupon</button>
                     </form>
+                    <td>
+                        @if(Session::get('coupon'))
+                          <a class="btn btn-default check_out" href="{{url('/unset-coupon')}}">Xóa mã khuyến mãi</a>
+                        @endif
+                    </td>
                 </div>
             </div>
             <div class="col-sm-6">
                 <div class="total_area">
+                    @if(true)
+						@php
+							$total = 9;
+						@endphp
+							{{-- @foreach(Session::get('cart') as $key => $cart) --}}
+                        @php       
+                            $subtotal = 1;
+                            $total+=$subtotal;
+                        @endphp
+                    @endif
                     <ul>
-                        <li>Cart Sub Total <span id="subtotal">${{ Cart::subtotal() .' '. 'VNĐ' }}</span></li>
-                        <li>Eco Tax <span>$0</span></li>
+                        <li>Cart Sub Total <span id="subtotal"> {{ Cart::subtotal() .' '. 'VNĐ' }}</span></li>
+                        <li>Eco Tax <span>0 VNĐ</span></li>
                         <li>Shipping Cost <span>Free</span></li>
-                        <li>Total <span id="subtotal">${{ Cart::subtotal() .' '. 'VNĐ' }}</span></li>
+                        @if(Session::get('coupon'))
+                            @php 
+                            $subTotal = (double)filter_var(Cart::subtotal(), FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+                            $total_after_coupon = 0; 
+                            @endphp				
+                            @foreach(Session::get('coupon') as $key => $cou)
+                                @if($cou['coupon_condition'] == 0)
+                                    <li>
+                                        Giảm : <span>{{$cou['coupon_number']}} %</span>
+                                        @php 
+                                            $total_coupon = ($subTotal*$cou['coupon_number'])/100;
+                                            $total_after_coupon = $subTotal - $total_coupon;	
+                                        @endphp
+                                    </li>		
+								@elseif($cou['coupon_condition']==1)
+                                   <li> 
+                                       Giảm : <span> {{number_format($cou['coupon_number'],0,',','.')}} VNĐ</span>
+                                        @php 
+                                            $total_coupon = $subTotal - $cou['coupon_number'];
+                                            $total_after_coupon = ($total_coupon > 0) ? $total_coupon : 0;	
+                                        @endphp
+                                    </li>
+                                @endif
+                            @endforeach  
+                        <li>Total <span id="subtotal">{{number_format( $total_after_coupon ,0,',','.') .' '. 'VNĐ' }}</span></li>
+                        @else
+                            <li>Total <span id="subtotal">{{ Cart::subtotal() .' '. 'VNĐ' }}</span></li>
+                        @endif
                     </ul>
                         {{-- <a class="btn btn-default update" href="">Update</a> --}}
                         <a class="btn btn-default check_out" href="{{ route('checkout') }}">Check Out</a>
