@@ -440,7 +440,7 @@ class FrontendController extends Controller
                         'profit'=> $statistic->profit += ($product->price - $product->product_basis_price),
                         'quantity' => $statistic->quantity += $product->qty
                     ]);
-                // Cart::instance('cart')->remove($product->rowId);         
+                Cart::instance('cart')->remove($product->rowId);         
             }
             Statistic::where('order_date', $date)->increment('total_order');
             
