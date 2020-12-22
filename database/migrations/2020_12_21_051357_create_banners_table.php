@@ -18,6 +18,7 @@ class CreateBannersTable extends Migration
             $table->string('banner_name', 200);
             $table->string('banner_image', 200);
             $table->string('banner_url', 250)->nullable();
+            $table->tinyInteger('banner_status')->default(0);
             $table->timestamp('banner_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('banner_updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });

@@ -19,6 +19,7 @@ class CreateCommentsTable extends Migration
             $table->tinyInteger('cmt_status')->default(0);
             $table->string('name_customer', 50)->nullable();
             $table->string('email_customer', 100)->nullable();
+            $table->string('cmt_ip', 24)->nullable();
             $table->timestamp('cmt_created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('cmt_updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->unsignedInteger('product_id');

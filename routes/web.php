@@ -151,6 +151,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::get('/', 'Backend\BannerController@index')->name('banner.index');
         Route::get('/add', 'Backend\BannerController@create')->name('banner.create');
         Route::post('/store', 'Backend\BannerController@store')->name('banner.store');
+        Route::post('/change-status', 'Backend\BannerController@changeStatus')->name('banner.changeStatus');
+        Route::post('/delete', 'Backend\BannerController@destroy')->name('banner.destroy');
     });
 
 });

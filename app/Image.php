@@ -7,14 +7,6 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Image extends Model
 {
-    // public    $timestamps   = false; //created_at, updated_at
-
-    // protected $table        = 'images';
-    // protected $primaryKey   = ['img_id'];
-    // protected $dateFomat = 'Y-m-d H:i:s';
-    // protected $dates = ['img_created_at','img_updated_at'];
-    // public $incrementing = false;
-
     protected $table = 'images';
     protected $primaryKey = 'img_id';
     protected $dates = ['img_created_at','img_updated_at'];
