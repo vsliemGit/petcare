@@ -295,7 +295,8 @@
             }).done(function(data){               
                 swal('Success!', data.message);
                 setTimeout(function() { 
-                    window.open(data.redirectUrl,  "_self", "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes");
+                    // window.open(data.redirectUrl,  "_self", "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes");
+                    window.location.href = "/order-finish";
                 }, 3000);
             }).fail(function(data){
                 console.log(data);

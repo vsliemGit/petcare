@@ -238,3 +238,6 @@ Route::get('setLocale/{locale}', function ($locale) {
     return redirect()->back();
 })->name('app.setLocale');
 
+
+//Send mail
+Route::get('/send-mail', 'MailController@sendMail')->name('send_mail');

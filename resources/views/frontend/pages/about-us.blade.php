@@ -87,7 +87,9 @@ About us | PETCARE
               <p class="title">CEO & Founder</p>
               <p>Some text that describes me lorem ipsum ipsum lorem.</p>
               <p>jane@example.com</p>
-              <p><button class="button-contact" style="width: 200px;">Contact</button></p>
+              <a href="{{route('frontend.contact')}}">
+                  <p><button class="button-contact" >Contact</button></p>
+              </a>
             </div>
           </div>
         </div>
@@ -100,7 +102,9 @@ About us | PETCARE
               <p class="title">Art Director</p>
               <p>Some text that describes me lorem ipsum ipsum lorem.</p>
               <p>mike@example.com</p>
-              <p><button class="button-contact" style="width: 200px;" >Contact</button></p>
+              <a href="{{route('frontend.contact')}}">
+                  <p><button class="button-contact" >Contact</button></p>
+              </a>
             </div>
           </div>
         </div>
@@ -113,7 +117,9 @@ About us | PETCARE
               <p class="title">Designer</p>
               <p>Some text that describes me lorem ipsum ipsum lorem.</p>
               <p>john@example.com</p>
-              <p><button class="button-contact" style="width: 200px;">Contact</button></p>
+              <a href="{{route('frontend.contact')}}">
+                  <p><button class="button-contact" >Contact</button></p>
+              </a>
             </div>
           </div>
         </div>
