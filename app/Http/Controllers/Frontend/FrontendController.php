@@ -398,11 +398,11 @@ class FrontendController extends Controller
             ->with('cart_content', $cart_content);
     }
 
-    public function orderFinish(){
+    public function orderFinish(Request $request){
         return view('frontend.pages.order-finish');
     }
 
-    public function order(Request $request){       
+    public function order(Request $request){  
         try{
             $coupon_session = Session::get('coupon');
             $coupon_fee = 0;
@@ -426,7 +426,10 @@ class FrontendController extends Controller
                     'customer_id' => $request->customer_id,
                     'transfer_id' => $request->transfer,
                     'payment_id' => $request->payment,
-                    'order_adress' =>  $request->to_address,
+                    'order_adress' => $request->to_address,
+                    'to_name' =>  $request->to_name,
+                    'to_email' =>  $request->to_email,
+                    'to_phone'=>  $request->to_phone,
                     'order_notes' => $request->message,
                     'coupon_id' => $coupon->coupon_id
                 ]);
@@ -439,6 +442,9 @@ class FrontendController extends Controller
                     'customer_id' => $request->customer_id,
                     'transfer_id' => $request->transfer,
                     'payment_id' => $request->payment,
+                    'to_name' =>  $request->to_name,
+                    'to_email' =>  $request->to_email,
+                    'to_phone'=>  $request->to_phone,
                     'order_adress' => $request->to_address,
                     'order_notes' => $request->message
                 ]);
@@ -450,7 +456,7 @@ class FrontendController extends Controller
             DB::table('customers')
               ->where('id', Auth::guard('customer')->user()->id)
               ->update(['address' => $request->to_address]);        
-            
+            $customer = DB::table('customers')->where('id', Auth::guard('customer')->user()->id)->first();
             $cart_content = Cart::instance('cart')->content();
             $statistic = Statistic::where('order_date',  $date)->first();
             if($statistic ==  null){
@@ -464,6 +470,7 @@ class FrontendController extends Controller
 
             $fee_profit = 0;
             $quantity_product = 0;
+            $orderDetail = null;
             foreach($cart_content as $product){
                 $orderDetail = DB::table('order_details')->insert([
                     'product_id' => $product->id,
@@ -474,7 +481,7 @@ class FrontendController extends Controller
                 $fee_profit += ($product->price - $product_basic_price );
                 $quantity_product += $product->qty;
 
-                Cart::instance('cart')->remove($product->rowId);         
+                // Cart::instance('cart')->remove($product->rowId);         
             }
             DB::table('statistics')->updateOrInsert(
                 ['order_date' => $date],
@@ -492,11 +499,14 @@ class FrontendController extends Controller
                 'redirectUrl' => route('frontend.home')
             ));
         }      
-        return response()->json(array(
-            'code'  => 200,
-            'message' => 'Tạo đơn hàng thành công!',
-            'redirectUrl' => route('orderFinish')
-        ));
+        $params = [
+            'cart_content' => $cart_content,
+            'order' => $order,
+            'customer' => $customer,
+            'message' => "Thêm đơn hàng thành công!"
+        ];
+        Session::put('params', $params);
+        return redirect()->route('orderFinish');
     }
 
     public function showOrderService(){

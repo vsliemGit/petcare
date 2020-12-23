@@ -71,7 +71,7 @@
                     <div class="bill-to">
                         <p>Bill To</p>
                         <div class="form-one">                         
-                            <form id="form_bill_info" method="post">
+                            <form id="form_bill_info" action="{{route('order')}}"method="post">
                                 @csrf
                                 <input type="hidden" name="customer_id" value="{{Auth::guard('customer')->user()->id}}" >
                                 <span for="to_name">To Name: </span>
@@ -284,24 +284,7 @@
     //Checkout
     $("#checkout").click(function(e){
         e.preventDefault();
-        let form = $('#form_bill_info');
-        let url = "{{route('order')}}";
-        $.ajax(
-            {
-                url: url,
-                type: "POST",
-                dataType : 'json',
-                data: form.serialize()
-            }).done(function(data){               
-                swal('Success!', data.message);
-                setTimeout(function() { 
-                    // window.open(data.redirectUrl,  "_self", "directories=no,titlebar=no,toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes");
-                    window.location.href = "/order-finish";
-                }, 3000);
-            }).fail(function(data){
-                console.log(data);
-                swal("Error!", data.message , "error");
-            });
+        $('#form_bill_info').submit();
     });
 
     //Show/Hide button checkout method

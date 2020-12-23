@@ -17,6 +17,9 @@ class CreateOrdersTable extends Migration
             $table->engine = 'InnoDB';
             $table->increments('order_id');
             $table->string('order_adress', 100);
+            $table->string('to_name', 100)->nullable();
+            $table->string('to_email', 100)->nullable();
+            $table->string('to_phone', 11)->nullable();
             $table->tinyInteger('order_status')->default(0);
             $table->text('order_notes')->nullable();
             $table->timestamp('order_date_shipping')->default(DB::raw('CURRENT_TIMESTAMP'));
