@@ -56,6 +56,11 @@
               class="active styling-edit" ui-toggle-class="">
               <i class="fa fa-trash-o" style="color: red;"></i>
           </a>
+          <a href="{{ route('product.detail', ['id' => $product->product_id])}} "
+            id="remove-step-form"
+            class="active styling-edit" ui-toggle-class="">
+            <i class="fa fa-building-o"></i>
+          </a>
           </td>
       </tr>
       @endforeach

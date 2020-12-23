@@ -200,7 +200,7 @@
             @else
                 <li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                        <img alt="" src=" {{ asset('vendor/backend/images/2.png') }}">
+                        <img alt="" src="{{ asset('storage/images/avatars/'.Auth::user()->avatar.'') }}">
                         <span class="username">{{ Auth::user()->name }}</span>
                         <b class="caret"></b>
                     </a>

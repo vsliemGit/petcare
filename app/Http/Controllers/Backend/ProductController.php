@@ -164,4 +164,22 @@ class ProductController extends Controller
         }
         return view('backend.product.index')->with('listProducts', $listProducts);
     }
+
+    public function detail($id)
+    {
+        $product = DB::table('products')->where('product_id', $id)->first();
+        $service_detail = DB::table('product_details')->where('product_id', $id)->first();
+        return view('backend.product.product-detail', ['product' => $product, 'data' => $service_detail]);
+
+    }
+
+    public function updateDetail(Request $request, $id)
+    {
+        $detail = DB::table('product_details')->where('product_detail_id', $id);
+        $detail->update([
+            'product_detail_content' => $request->product_content
+        ]);      
+        Session::flash('alert-info', 'Cập nhật thành công!!!');
+        return redirect()->route('product.index');
+    }
 }

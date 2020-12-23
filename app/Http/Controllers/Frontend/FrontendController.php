@@ -69,7 +69,7 @@ class FrontendController extends Controller
         $listProducts = Product::paginate(8);
         $allProducts = Product::all();
         $listBanners = Banner::where('banner_status', 1)->get();
-
+        $rating = [];
         foreach($allProducts as $key => $product){
             $rating[$product->product_id] = $this->getRating($product->product_id);
         } 
@@ -90,7 +90,7 @@ class FrontendController extends Controller
         $topThreeNewProducts = Product::orderBy('product_created_at')->take(10)->get();
         $listProductCategories = DB::table('product_categories')
             ->orderBy('pro_category_created_at', 'desc')->get();
-
+        $rating = [];
         foreach($allProducts as $key => $product){
             $rating[$product->product_id] = $this->getRating($product->product_id);
         }
@@ -301,16 +301,16 @@ class FrontendController extends Controller
 
     public function loadComment(Request $request){
         if($request->ajax()){
-            $comments = DB::table('comments')->where('product_id', $request->product_id)->get();
+            $comments = DB::table('comments')->where('product_id', $request->product_id)->get();      
             $output = "";
             $name = "";
-            foreach($comments as $key => $comment){
-                $name = ($comment->name_customer === null) ?
-                Customer::find($comment->customer_id)->name
-                :  $comment->name_customer;   
+            $image = "customer.png";                
+            foreach($comments as $key => $comment){          
+                $name = ($comment->name_customer === null) ? Customer::find($comment->customer_id)->name :  $comment->name_customer; 
+                $image = ($comment->name_customer === null) ? Customer::find($comment->customer_id)->avatar :  "customer.png";    
                 $output .= '
                 <div class="comment">
-                    <img src="/storage/images/icon/admin-comment.png" alt="admin-avatar" class="img img-responsive img-thumbnail">
+                    <img src="storage/images/avatars/'.$image.'" alt="admin-avatar" class="img img-responsive img-thumbnail">
                     <p style="color: blue;"><i class="fa fa-user"></i> '.$name.'</p>
                     <p>'.$comment->cmt_content.'</p>
                     <span class="time-right">'.$comment->cmt_created_at.'</span>

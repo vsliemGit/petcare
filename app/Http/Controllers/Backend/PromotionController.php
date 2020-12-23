@@ -138,7 +138,8 @@ class PromotionController extends Controller
         $coupon->coupon_name = $request->coupon_name;
         $coupon->coupon_times = $request->coupon_times;
         $coupon->coupon_number = $request->coupon_number;
-        $coupon->coupon_condition = $request->coupon_condition ;  
+        $coupon->coupon_condition = $request->coupon_condition;
+        $coupon->coupon_status = $request->coupon_status;  
         $coupon->save();    
         
         Session::flash('alert-info', 'Chỉnh sửa thành công!!!');

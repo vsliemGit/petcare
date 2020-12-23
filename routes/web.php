@@ -43,6 +43,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::get('/edit/{id}', 'Backend\ProductController@edit')->name('product.edit'); 
         Route::post('/update/{id}', 'Backend\ProductController@update')->name('product.update');
         Route::delete('/delete', 'Backend\ProductController@destroy')->name('product.destroy');
+        Route::get('/detail/{id}', 'Backend\ProductController@detail')->name('product.detail');
+        Route::post('/detail/update/{id}', 'Backend\ProductController@updateDetail')->name('product.detail_update');
     });
 
     //ServiceController

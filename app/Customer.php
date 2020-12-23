@@ -18,7 +18,7 @@ class Customer extends Authenticatable implements InstanceIdentifier
 
     protected $guarded = ['id'];
     protected $fillable = [
-      'username', 'name', 'email', 'password', 'phone'
+      'username', 'name', 'email', 'password', 'phone', 'avatar'
     ];
 
     protected $hidden = [

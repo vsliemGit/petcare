@@ -43,7 +43,6 @@ Admin - Add Coupon
                                     <label for="coupon_condition" class="control-label col-lg-3">Condition</label>
                                     <div class="col-lg-6">
                                         <select class="form-control m-bot15"  name="coupon_condition" id="coupon_condition">
-                                            <option value="" selected hidden>----Chọn----</option>
                                             <option value="0" {{ old('coupon_condition', $coupon->coupon_condition) == 0 ? "selected" : "" }}>Giảm theo phần trăm(%)</option>
                                             <option value="1" {{ old('coupon_condition', $coupon->coupon_condition) == 1 ? "selected" : "" }}>Giảm theo tiền</option>
                                         </select>
@@ -59,7 +58,6 @@ Admin - Add Coupon
                                     <label class="col-sm-3 control-label col-lg-3" for="coupon_status">Trạng thái: </label>
                                     <div class="col-lg-6">
                                         <select class="form-control m-bot15" name="coupon_status">
-                                            <option value="" selected disabled hidden>----Chọn----</option>
                                             <option value="1">Khả dụng</option>
                                             <option value="0">Khóa</option>
                                         </select>

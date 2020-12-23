@@ -14,20 +14,32 @@ class ProductsTableSeeder extends Seeder
         $listProducts = [];
         $faker    = Faker\Factory::create('vi_VN');
 
-        for($i=1; $i<31; $i++){
-            array_push($listProducts, [
-                'product_name' => "San pham $i",
-                'product_slug' => "san_pham_$i",
-                'product_image' => $faker->numberBetween(1, 10) . ".jpg",
-                'product_basis_price' => $faker->numberBetween(10000, 99000),
-                'product_price' => $faker->numberBetween(10000, 99000),
-                'product_quantity' => $faker->numberBetween(1000, 10000),
+        $listProducts= [ 
+            [
+                'product_name' => "JERHIGH Chicken",
+                'product_slug' => "jerhigh_chicken",
+                'product_image' => "nuoc-sot-cho-cho-vi-thit-ga-va-rau-cu-jerhigh-chicken-and-vegetable-in-gravy-400x400.jpg",
+                'product_basis_price' => 30000,
+                'product_price' => 22000,
+                'product_quantity' => $faker->numberBetween(1, 100),
                 'product_status' =>  1,
-                'product_desc' => "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.",
-                'pro_category_id' => $faker->numberBetween(1, 10),
-                'brand_id' => $faker->numberBetween(1, 10)
-            ]);
-        }
+                'product_desc' => "Nước sốt cho chó vị thịt gà và rau củ JERHIGH  Chicken and Vegetable in Gravy dành cho tất cả các giống chó.",
+                'pro_category_id' =>10,
+                'brand_id' => 1
+            ],
+            [
+                'product_name' => "Smartheart - Pate vị gà và gan cho chó lớn 130gr",
+                'product_slug' => "smartheart_pate_vi_ga_va_gan_cho_cho_lon_130gr",
+                'product_image' => "2206_PateSmartheartvgchochln130gr.png",
+                'product_basis_price' => 19000,
+                'product_price' => 20000,
+                'product_quantity' => $faker->numberBetween(10, 100),
+                'product_status' =>  1,
+                'product_desc' => "Sản phẩm giàu dinh dưỡng,  giúp thúc đẩy sự phát triển toàn diện cho chó con và bổ sung các dưỡng chất cần thiết cho chó ",
+                'pro_category_id' => 10,
+                'brand_id' => 2
+            ]
+        ];
         DB::table('products')->insert($listProducts);
         
     }

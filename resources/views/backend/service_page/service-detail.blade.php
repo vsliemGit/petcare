@@ -92,14 +92,7 @@ Admin - Service detail
 <script src="{{ asset('vendor/bootstrap-fileinput/js/locales/fr.js') }}" type="text/javascript"></script>
 <script src="{{ asset('vendor/bootstrap-fileinput/themes/fas/theme.js') }}" type="text/javascript"></script>
 <script src="{{ asset('vendor/bootstrap-fileinput/themes/explorer-fas/theme.js') }}" type="text/javascript"></script>
-<script>
-    // Replace the <textarea id="editor1"> with a CKEditor 4
-    // instance, using default configuration.
-    // CKEDITOR.replace( 'service_content', {
-    //     filebrowserUploadUrl: "{{route('ckeditor.upload', ['_token' => csrf_token() ])}}",
-    //     filebrowserUploadMethod: 'form'
-    // });
-    
+<script>    
     // with plugin options
     $("#service_detail_image").fileinput({
             theme: 'fas',

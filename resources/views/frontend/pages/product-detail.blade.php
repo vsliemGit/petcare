@@ -104,7 +104,7 @@
                     <div class="col-sm-12">
                         <ul class="nav nav-tabs">
                             <li><a href="#details" data-toggle="tab">Details</a></li>
-                            <li><a href="#features" data-toggle="tab">Features</a></li>
+                            <li><a href="#brand" data-toggle="tab">Brand</a></li>
                             <li class="active"><a href="#reviews" data-toggle="tab">Reviews (5)</a></li>
                         </ul>
                     </div>
@@ -114,14 +114,13 @@
                                 <p><b>Description:</b> {{ $product->product_desc }}</p>
                                 <p><b>Quantity in stock:</b> {{ number_format($product->product_quantity) }}</p>
                                 <p><b>Category:</b> {{ $product->category->pro_category_name }}</p>
+                                <div>{!! $product->detail->product_detail_content !!}</div>
                             </div>
                         </div>
                         
-                        <div class="tab-pane fade" id="features" ><!--features-->
+                        <div class="tab-pane fade" id="brand" ><!--features-->
                             <div class="col-sm-12">
-                                <p><b>Description:</b> {{ $product->product_desc }}</p>
-                                <p><b>Quantity in stock:</b> {{ number_format($product->product_quantity) }}</p>
-                                <p><b>Category:</b> {{ $product->category->pro_category_name }}</p>
+                                <div>{!! $product->brand->brand_desc !!}</div>
                             </div>
                         </div>
                         
