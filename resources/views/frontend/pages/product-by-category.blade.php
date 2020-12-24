@@ -1,7 +1,7 @@
 <!-- List Products by Category  -->
 <div class="features_items" id="list-products"><!--features_items-->
     <!-- List Products  -->
-    <h2 class="title text-center">LIST PRODUCTS BY <span id="name_of_category"></span></h2>
+    <h2 class="title text-center">LIST PRODUCTS BY <span id="name_by"></span></h2>
     <div class="row" style="margin-bottom: 20px;">
         <div class="col-md-4">
             <label for="">{{ __('products.fil') }}</label>
@@ -27,7 +27,8 @@
     $(document).ready(function(){
             $('#sort').on('change', function(){
                 var category_id = $("#category_id_choosed").val();
-                $.get( "{{route('sort')}}" , { value :  $('#sort').val(), value_category_id: category_id } , function( data ) {     
+                var brand_id = $("#brand_id_choosed").val();
+                $.get( "{{route('sort')}}" , { value :  $('#sort').val(), value_category_id: category_id, value_brand_id: brand_id  } , function( data ) {     
                     $("#list-product").empty().html(data);
                 });
             }); 

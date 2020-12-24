@@ -246,6 +246,7 @@ Route::get('/send-mail', 'MailController@sendMail')->name('send_mail');
 Route::get('/sort-by', 'Frontend\FrontendController@sort')->name('sort');
 Route::get('/sort-by-price', 'Frontend\FrontendController@sortPrice')->name('sort_price');
 Route::get('/product-by-category', 'Frontend\FrontendController@showByCategory')->name('show_by_category');
+Route::get('/product-by-brand', 'Frontend\FrontendController@showByBrand')->name('show_by_brand');
 
 //ProductCategory
 // Route::get('/producg', 'MailController@sendMail')->name('send_mail');

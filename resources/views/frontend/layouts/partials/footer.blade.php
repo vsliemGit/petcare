@@ -1,7 +1,7 @@
 <footer id="footer"><!--Footer-->
     <div class="footer-top">
         <div class="container">
-            <div class="row">
+            {{-- <div class="row">
                 <div class="col-sm-2">
                     <div class="companyinfo">
                         <a href="{{route('frontend.home')}}"><img height="39px" width="139px;" src="vendor/frontend/images/home/logo6.png" alt="" /></a>
@@ -75,7 +75,7 @@
                         <p>505 S Atlantic Ave Virginia Beach, VA(Virginia)</p>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
     

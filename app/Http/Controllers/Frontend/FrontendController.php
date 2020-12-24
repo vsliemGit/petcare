@@ -103,56 +103,97 @@ class FrontendController extends Controller
             ->with('listProducts', $listProducts);
     }
 
+    // public function sort(Request $request){
+        
+    //     $rating = [];
+    //     switch($request->value){
+    //         case "desc" : {
+    //             if($request->value_category_id != null){
+    //                 $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)
+    //                     ->where('pro_category_id', $request->value_category_id)->orderBy('product_price', "desc")->paginate(8);
+    //             }else{
+    //                 $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "desc")->paginate(8);
+    //             } 
+    //             break;
+    //         }
+    //         case "asc" : {
+    //             if($request->value_category_id != null){
+    //                 $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)
+    //                     ->where('pro_category_id', $request->value_category_id)->orderBy('product_price', "asc")->paginate(8);
+    //             }else{
+    //                 $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "asc")->paginate(8);
+    //             } 
+    //             break;
+    //         }
+    //         case "a_z" : {
+    //             if($request->value_category_id != null){
+    //                 $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)
+    //                     ->where('pro_category_id', $request->value_category_id)->orderBy('product_price', "asc")->paginate(8);
+    //             }else{
+    //                 $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "asc")->paginate(8);
+    //             } 
+    //             break;
+    //         }
+    //         case "z_a" : {
+    //             if($request->value_category_id != null){
+    //                 $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)
+    //                     ->where('pro_category_id', $request->value_category_id)->orderBy('product_price', "desc")->paginate(8);
+    //             }else{
+    //                 $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "desc")->paginate(8);
+    //             } 
+    //             break;
+    //         }
+    //         default:{
+    //             if($request->value_category_id != null){
+    //                 $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)
+    //                     ->where('pro_category_id', $request->value_category_id)->paginate(8);
+    //             }else{
+    //                 $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->paginate(8);
+    //             }
+    //         }      
+    //     }
+       
+    //     foreach($listProducts as $key => $product){
+    //         $rating[$product->product_id] = $this->getRating($product->product_id);
+    //     } 
+
+    //     return  view('frontend.widgets.list-products')
+    //         ->with('listProducts', $listProducts)
+    //         ->with('rating', $rating);
+    // }
+
     public function sort(Request $request){
         
         $rating = [];
+        $query = Product::where('product_quantity', '>', 0)->where('product_status', 1);
+
         switch($request->value){
+            case "asc" :
             case "desc" : {
-                if($request->value_category_id != null){
-                    $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)
-                        ->where('pro_category_id', $request->value_category_id)->orderBy('product_price', "desc")->paginate(8);
-                }else{
-                    $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "desc")->paginate(8);
-                } 
-                break;
-            }
-            case "asc" : {
-                if($request->value_category_id != null){
-                    $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)
-                        ->where('pro_category_id', $request->value_category_id)->orderBy('product_price', "asc")->paginate(8);
-                }else{
-                    $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "asc")->paginate(8);
-                } 
+                $query = $query->orderBy('product_price', $request->value);
                 break;
             }
             case "a_z" : {
-                if($request->value_category_id != null){
-                    $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)
-                        ->where('pro_category_id', $request->value_category_id)->orderBy('product_price', "asc")->paginate(8);
-                }else{
-                    $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "asc")->paginate(8);
-                } 
+                $query = $query->orderBy('product_name', 'asc');
                 break;
             }
             case "z_a" : {
-                if($request->value_category_id != null){
-                    $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)
-                        ->where('pro_category_id', $request->value_category_id)->orderBy('product_price', "desc")->paginate(8);
-                }else{
-                    $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "desc")->paginate(8);
-                } 
+                $query = $query->orderBy('product_name', 'desc');
                 break;
-            }
-            default:{
-                if($request->value_category_id != null){
-                    $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)
-                        ->where('pro_category_id', $request->value_category_id)->paginate(8);
-                }else{
-                    $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->paginate(8);
-                }
-            }      
+            }     
         }
-       
+
+        if($request->value_category_id != "" || $request->value_category_id != null){
+            $query = $query->where('pro_category_id', $request->value_category_id);
+        }
+
+        if($request->value_brand_id != "" || $request->value_brand_id!= null){
+            $query = $query->where('brand_id', $request->value_brand_id);
+        }
+  
+  
+        $listProducts = $query->paginate(8);
+
         foreach($listProducts as $key => $product){
             $rating[$product->product_id] = $this->getRating($product->product_id);
         } 
@@ -161,6 +202,44 @@ class FrontendController extends Controller
             ->with('listProducts', $listProducts)
             ->with('rating', $rating);
     }
+
+    public function sortBrand(Request $request){
+        
+        $rating = [];
+        $query = Product::where('product_quantity', '>', 0)->where('product_status', 1);
+  
+        switch($request->value){
+            case "asc" :
+            case "desc" : {
+                $query = $query->orderBy('product_price', $request->value);
+                break;
+            }
+            case "a_z" : {
+                $query = $query->orderBy('product_name', 'asc');
+                break;
+            }
+            case "z_a" : {
+                $query = $query->orderBy('product_name', 'desc');
+                break;
+            }     
+        }
+
+        if($request->value_brand_id){
+            $query = $query->where('brand_id', $request->value_brand_id);
+        }
+  
+        $listProducts = $query->paginate(8);
+
+        foreach($listProducts as $key => $product){
+            $rating[$product->product_id] = $this->getRating($product->product_id);
+        } 
+
+        return  view('frontend.widgets.list-products')
+            ->with('listProducts', $listProducts)
+            ->with('rating', $rating);
+    }
+
+
 
     public function showByCategory(Request $request){
         $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->where('pro_category_id', $request->category_id)->get();
@@ -183,6 +262,33 @@ class FrontendController extends Controller
             ->with('listProductCategoriesParent', $listProductCategoriesParent)
             ->with('rating', $rating)
             ->with('listProducts', $listProducts);
+    }
+
+    public function showByBrand(Request $request){
+        $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->where('brand_id', $request->brand_id)->get();
+        if($listProducts->count()<1){
+            return "<i>Chưa có sản phẩm thuộc loại này. Chúng tôi sẽ cập nhật trong thời gian sớm nhất. mong quý khách thông cảm!</i>";
+        }
+        $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->where('brand_id', $request->brand_id)->paginate(8);
+        $listBrands = Brand::all();
+        $allProducts = Product::all();
+        $topThreeNewProducts = Product::orderBy('product_created_at')->take(10)->get();
+        $listProductCategoriesParent = ProductCategory::where('parent_id', null)
+            ->orderBy('pro_category_created_at', 'desc')->get();
+        $rating = [];
+        foreach($allProducts as $key => $product){
+            $rating[$product->product_id] = $this->getRating($product->product_id);
+        }
+        return view('frontend.pages.product-by-category')
+            ->with('listBrands', $listBrands)
+            ->with('topThreeNewProducts', $topThreeNewProducts)
+            ->with('listProductCategoriesParent', $listProductCategoriesParent)
+            ->with('rating', $rating)
+            ->with('listProducts', $listProducts);
+    }
+
+    public function filterByPrice($begin, $end){
+        
     }
 
     public function resultSearch(){
@@ -647,4 +753,6 @@ class FrontendController extends Controller
         Session::flash('alert-info', 'Order service successfully!');
         return view('frontend.pages.order-service-finish');
     }
+
+    
 }

@@ -212,12 +212,30 @@ Home | PETCARE
         $(document).ready(function()
         {
             $('.search-products-by-category').on('click', function(){
+                $("#brand_id_choosed").val("");
                 var category_id = $(this).data('category-id');
                 var category_name = $(this).text();
                 $.get( "{{route('show_by_category')}}" , { category_id : category_id } , function( data ) {     
                     $("#main-contain-ajax").empty().html(data);
-                    $("#name_of_category").text(category_name);
+                    $("#name_by").text(category_name);
                     $("#category_id_choosed").val(category_id);
+                }).fail(function(data) {
+                    console.log(data);
+                });
+            }) ;
+        });
+
+        //Get list product by brand
+        $(document).ready(function()
+        {
+            $('.search-products-by-brand').on('click', function(){
+                $("#category_id_choosed").val("");
+                var brand_id = $(this).data('brand-id');
+                var brand_name = $(this).data('brand-name');
+                $.get( "{{route('show_by_brand')}}" , { brand_id : brand_id } , function( data ) {     
+                    $("#main-contain-ajax").empty().html(data);
+                    $("#name_by").text('Brand '+brand_name);
+                    $("#brand_id_choosed").val(brand_id);
                 }).fail(function(data) {
                     console.log(data);
                 });

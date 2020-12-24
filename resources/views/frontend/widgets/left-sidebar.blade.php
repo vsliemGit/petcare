@@ -28,13 +28,13 @@
             </div>
         @endforeach        
     </div><!--/category-products-->
-
+    <input type="hidden" id="brand_id_choosed" name="brand_id_choosed">
     <div class="brands_products"><!--brands_products-->
         <h2>Brands</h2>
         <div class="brands-name">
             <ul class="nav nav-pills nav-stacked">
                 @foreach($listBrands as $brand)
-                    <li><a href="#"> <span class="pull-right">({{ $brand->products->count() }})</span>{{ $brand->brand_name }}</a></li>
+                    <li class="search-products-by-brand" data-brand-name="{{$brand->brand_name}}" data-brand-id="{{$brand->brand_id}}" ><a href="javascript:void(0)" > <span class="pull-right">({{ $brand->products->count() }})</span>{{ $brand->brand_name }}</a></li>
                 @endforeach
             </ul>
         </div>
