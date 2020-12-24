@@ -50,38 +50,9 @@
             </div>
             <!-- New products  -->
                 @include('frontend.widgets.new-products')
-            <div class="features_items"><!--features_items-->
+            <div class="features_items" id="list-products"><!--features_items-->
                 <!-- List Products  -->
-                <h2 class="title text-center">LIST PRODUCTS</h2>
-                <div class="row" style="margin-bottom: 20px;">
-                    <div class="col-md-4">
-                        <label for="">{{ __('products.fil') }}</label>
-                        <form action="">
-                            @csrf
-                            <select name="sort" id="sort" class="form-control">
-                                <option value="none">{{__('products.none')}}</option>
-                                <option value="desc">{{__('products.price_desc')}}</option>
-                                <option value="asc ">{{__('products.price_asc')}}</option>
-                                <option value="a_z ">{{__('products.name_asc')}}</option>
-                                <option value="z_a ">{{__('products.name_desc')}}</option>
-                            </select>
-                        </form>
-                    </div>
-                    <div class="col-md-4">
-                        <label for="">{{ __('products.sort_price') }}</label>
-                        <form action="">
-                            @csrf
-                            <select name="sort-price" id="sort-price" class="form-control">
-                                <option value="none">{{__('products.price_default')}}</option>
-                                <option value="desc">{{__('products.price_desc')}}</option>
-                                <option value="asc ">{{__('products.price_asc')}}</option>
-                            </select>
-                        </form>
-                    </div>
-                </div>
-                <div id="list-products">
-                    @include('frontend.widgets.list-products')
-                </div>
+                @include('frontend.widgets.list-products')
             </div><!--features_items-->           
         </div>     
     </div>
@@ -196,13 +167,9 @@
         });
 
         function getData(page){
-            var sortType = $("#sort").val();
             $.ajax({
                 url: 'get_ajax_data?page='+page,
-                method: 'GET',
-                data: {
-                    sort_type : sortType
-                }               
+                method: 'GET',                
             }).done(function(data){
                 $("#list-products").html(data);
                 location.hash = page;

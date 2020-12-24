@@ -18,4 +18,12 @@ class ProductCategory extends Model
     public function products(){
         return $this->hasMany('App\Product', 'pro_category_id', 'pro_category_id');
     }
+    
+    public function parent(){
+        return $this->belongsTo('App\ProductCategory', 'parent_id', 'pro_category_id');
+    }
+
+    public function child(){
+        return $this->hasMany('App\ProductCategory', 'parent_id', 'pro_category_id');
+    }
 }

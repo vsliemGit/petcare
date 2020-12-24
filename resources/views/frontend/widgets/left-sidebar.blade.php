@@ -1,11 +1,28 @@
 <div class="left-sidebar">
     <h2>Category</h2>
     <div class="panel-group category-products" id="accordian"><!--category-productsr-->
-        @foreach ($listProductCategories as $productCategories)
+        @foreach ($listProductCategoriesParent as $productCategoriesParent)
             <div class="panel panel-default">
                 <div class="panel-heading">
-                <h4 class="panel-title"><a href="#">{{ $productCategories->pro_category_name }}</a></h4>
+                    <h4 class="panel-title">
+                        {{-- <a href="#">{{ $productCategories->pro_category_name }}</a> --}}
+                        <a data-toggle="collapse" data-parent="#accordian" href="#{{$productCategoriesParent->pro_category_slug}}">
+                            <span class="badge pull-right"><i class="fa fa-plus"></i></span>
+                            {{ $productCategoriesParent->pro_category_name }}
+                        </a>
+                    </h4>
                 </div>
+                @if($productCategoriesParent->child->count()>0)                  
+                    <div id="{{$productCategoriesParent->pro_category_slug}}" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <ul>
+                                @foreach ($productCategoriesParent->child as $productCategoriesChild)
+                                    <li style="text-size: 20px;"><a href="#">{{$productCategoriesChild->pro_category_name}} </a></li>                                  
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>                  
+                @endif
             </div>
         @endforeach        
     </div><!--/category-products-->

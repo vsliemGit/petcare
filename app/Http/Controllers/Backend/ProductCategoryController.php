@@ -22,7 +22,7 @@ class ProductCategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $listProductCategories = DB::table('product_categories')->orderBy('pro_category_created_at', 'desc')->paginate(5);
+        $listProductCategories = ProductCategory::orderBy('pro_category_created_at', 'desc')->paginate(5);
         if ($request->ajax()) {
             return view('backend.product_category.table-data')->with('listProductCategories', $listProductCategories);
         }
@@ -36,7 +36,9 @@ class ProductCategoryController extends Controller
      */
     public function create()
     {
-        return view('backend.product_category.create');
+        $listProductCategoriesParent = ProductCategory::where('parent_id', null)
+            ->orderBy('pro_category_created_at', 'desc')->get();
+        return view('backend.product_category.create', ['listProductCategoriesParent' => $listProductCategoriesParent]);
     }
 
     /**
@@ -54,6 +56,9 @@ class ProductCategoryController extends Controller
         $newProdcutCategory->pro_category_name = $request->pro_category_name;
         $newProdcutCategory->pro_category_slug = $request->pro_category_slug;
         $newProdcutCategory->pro_category_desc = $request->pro_category_desc;
+        if($request->parent){
+            $newProdcutCategory->parent_id = $request->parent_id;
+        }
         $newProdcutCategory->pro_category_status = $request->pro_category_status;
 
         $newProdcutCategory->save();
@@ -74,7 +79,11 @@ class ProductCategoryController extends Controller
     public function edit($id)
     {
         $productCategory = ProductCategory::where("pro_category_id", $id)->first();
-        return view('backend.product_category.edit')->with('productCategory', $productCategory);
+        $listProductCategoriesParent = ProductCategory::where('parent_id', null)
+            ->orderBy('pro_category_created_at', 'desc')->get();
+        return view('backend.product_category.edit')
+                ->with('productCategory', $productCategory)
+                ->with('listProductCategoriesParent', $listProductCategoriesParent);
     }
 
     /**
@@ -92,6 +101,9 @@ class ProductCategoryController extends Controller
         $productCategory->pro_category_slug = $request->pro_category_slug;
         $productCategory->pro_category_desc = $request->pro_category_desc;
         $productCategory->pro_category_status = $request->pro_category_status;
+        if($request->parent){
+            $productCategory->parent_id = $request->parent_id;
+        }
         $productCategory->pro_category_updated_at = Carbon::now();
         $productCategory->save();
         if($request->ajax()){

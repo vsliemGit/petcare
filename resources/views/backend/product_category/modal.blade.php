@@ -15,6 +15,18 @@
                         <input class=" form-control" id="pro_category_name" name="pro_category_name" minlength="2" type="text" required="">
                     </div>
                 </div>
+                {{-- <div class="form-group ">
+                    <label class="col-sm-3 control-label col-lg-3" for="parent_id">Mục cha: </label>
+                    <div class="col-lg-6">
+                        <select class="form-control m-bot15" name="parent_id">
+                            <option value="null">(none)</option>
+                            @foreach ($listProductCategoriesParent as $productCategoriesParent)                                              
+                                <option value="{{$productCategoriesParent->pro_category_id}}">{{$productCategoriesParent->pro_category_name}} 
+                                    {{ old('parent_id', $productCategory->parent_id) == $productCategoriesParent->pro_category_id ? "selected" : "" }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div> --}}
                 <div class="form-group ">
                     <label for="pro_category_slug" class="control-label col-lg-3">Slug <span class="required" style="color:red">*</span></label>
                     <div class="col-lg-6">

@@ -23,6 +23,7 @@ use App\Visitor;
 use App\Store;
 use App\Banner;
 use App\Coupon;
+use App\ProductCategory;
 
 class FrontendController extends Controller
 {   
@@ -64,7 +65,7 @@ class FrontendController extends Controller
         ->select('services.*','service_details.service_detail_id','service_details.service_detail_image')
         ->where('service_detail_status', 1)->orderBy('services.service_created_at')->take(10)->get();
         $listBrands = Brand::all();
-        $listProductCategories = DB::table('product_categories')
+        $listProductCategoriesParent = ProductCategory::where('parent_id', null)
             ->orderBy('pro_category_created_at', 'desc')->get();
         $listProducts = Product::paginate(8);
         $allProducts = Product::all();
@@ -77,7 +78,7 @@ class FrontendController extends Controller
             ->with('topThreeNewProducts', $topThreeNewProducts)
             ->with('topNewServices', $topNewServices)
             ->with('listBrands', $listBrands)
-            ->with('listProductCategories', $listProductCategories)
+            ->with('listProductCategoriesParent', $listProductCategoriesParent)
             ->with('listProducts', $listProducts)
             ->with('rating', $rating)
             ->with('listBanners', $listBanners);
@@ -88,7 +89,7 @@ class FrontendController extends Controller
         $listBrands = Brand::all();
         $allProducts = Product::all();
         $topThreeNewProducts = Product::orderBy('product_created_at')->take(10)->get();
-        $listProductCategories = DB::table('product_categories')
+        $listProductCategoriesParent = ProductCategory::where('parent_id', null)
             ->orderBy('pro_category_created_at', 'desc')->get();
         $rating = [];
         foreach($allProducts as $key => $product){
@@ -97,21 +98,66 @@ class FrontendController extends Controller
         return view('frontend.pages.products')
             ->with('listBrands', $listBrands)
             ->with('topThreeNewProducts', $topThreeNewProducts)
-            ->with('listProductCategories', $listProductCategories)
+            ->with('listProductCategoriesParent', $listProductCategoriesParent)
             ->with('rating', $rating)
             ->with('listProducts', $listProducts);
+    }
+    public function sort(Request $request){
+        
+        $rating = [];
+        switch($request->value){
+            case "desc" : {
+                $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "desc")->paginate(8);
+                foreach($listProducts as $key => $product){
+                    $rating[$product->product_id] = $this->getRating($product->product_id);
+                } 
+                break;
+            }
+            case "asc" : {
+                $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "asc")->paginate(8);
+                foreach($listProducts as $key => $product){
+                    $rating[$product->product_id] = $this->getRating($product->product_id);
+                } 
+                break;
+            }
+            case "a_z" : {
+                $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_name', "asc")->paginate(8);
+                foreach($listProducts as $key => $product){
+                    $rating[$product->product_id] = $this->getRating($product->product_id);
+                } 
+                break;
+            }
+            case "z_a" : {
+                $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_name', "desc")->paginate(8);
+                foreach($listProducts as $key => $product){
+                    $rating[$product->product_id] = $this->getRating($product->product_id);
+                } 
+                break;
+            }
+            default:{
+                $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->paginate(8);
+                foreach($allProducts as $key => $product){
+                    $rating[$product->product_id] = $this->getRating($product->product_id);
+                } 
+            }      
+        }
+
+        return  view('frontend.widgets.list-products')
+            ->with('listProducts', $listProducts)
+            ->with('rating', $rating);
     }
 
     public function resultSearch(){
         $listBrands = Brand::all();
-        $listProductCategories = DB::table('product_categories')
+        $listProductCategoriesParent = ProductCategory::where('parent_id', null)
             ->orderBy('pro_category_created_at', 'desc')->get();
-        return view('frontend.pages.result-search', ['listBrands' => $listBrands, 'listProductCategories' => $listProductCategories]);
+        return view('frontend.pages.result-search', ['listBrands' => $listBrands, 'listProductCategoriesParent' => $listProductCategoriesParent]);
     }
 
     public function search(Request $request){
         $listBrands = Brand::all();
-        $listProductCategories = DB::table('product_categories') ->orderBy('pro_category_created_at', 'desc')->get();
+        $listProductCategoriesParent = ProductCategory::where('parent_id', null)
+            ->orderBy('pro_category_created_at', 'desc')->get();
         $key_words = $request->keywords_search;
         
         $product_founds = Product::where('product_status', 1)->where('product_name', 'like', '%'.$key_words."%")->get();
@@ -125,7 +171,7 @@ class FrontendController extends Controller
             ->where('service_detail_status', 1)->where('service_name', 'like', '%'.$key_words."%")->get();
         
         return view('frontend.pages.result-search', 
-            ['listBrands' => $listBrands, 'listProductCategories' => $listProductCategories,
+            ['listBrands' => $listBrands, 'listProductCategoriesParent' => $listProductCategoriesParent,
              'product_founds' => $product_founds, 'rating' => $rating,
               'service_founds' => $service_founds]);
     }
@@ -269,16 +315,56 @@ class FrontendController extends Controller
         ]);
     }
 
-    function get_ajax_data(Request $request){
+    function get_ajax_data(Request $request){     
         if($request->ajax())
         {
-            $allProducts = Product::all();
-            foreach($allProducts as $key => $product){
+            $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->paginate(8);
+            $rating = [];
+            foreach($listProducts as  $product){
                 $rating[$product->product_id] = $this->getRating($product->product_id);
             } 
-            $data = Product::paginate(8);
+            $sort_type = $request->sort_type;
+            if($sort_type){
+                switch($sort_type){
+                    case "desc" : {
+                        $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "desc")->paginate(8);
+                        foreach($listProducts as $key => $product){
+                            $rating[$product->product_id] = $this->getRating($product->product_id);
+                        } 
+                        break;
+                    }
+                    case "asc" : {
+                        $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "asc")->paginate(8);
+                        foreach($listProducts as $key => $product){
+                            $rating[$product->product_id] = $this->getRating($product->product_id);
+                        } 
+                        break;
+                    }
+                    case "a_z" : {
+                        $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_name', "asc")->paginate(8);
+                        foreach($listProducts as $key => $product){
+                            $rating[$product->product_id] = $this->getRating($product->product_id);
+                        } 
+                        break;
+                    }
+                    case "z_a" : {
+                        $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_name', "desc")->paginate(8);
+                        foreach($listProducts as $key => $product){
+                            $rating[$product->product_id] = $this->getRating($product->product_id);
+                        } 
+                        break;
+                    }
+                    default:{
+                        $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->paginate(8);
+                        foreach($listProducts as $key => $product){
+                            $rating[$product->product_id] = $this->getRating($product->product_id);
+                        } 
+                    }      
+                }
+            }
+             
             return view('frontend.widgets.list-products')
-            ->with('listProducts', $data)
+            ->with('listProducts', $listProducts)
             ->with('rating', $rating);
         }
     }
@@ -287,13 +373,13 @@ class FrontendController extends Controller
         $product = Product::find($id);
         $product->increment('product_views');
         $listBrands = Brand::all();
-        $listProductCategories = DB::table('product_categories')
+        $listProductCategoriesParent = ProductCategory::where('parent_id', null)
             ->orderBy('pro_category_created_at', 'desc')->get();
         $listProductsRelatedToThisItem = Product::find($id)->category->products;
         $rating = Rating::where('product_id', $id)->avg('rating_star');       
         return view('frontend.pages.product-detail')
             ->with('listBrands', $listBrands)
-            ->with('listProductCategories', $listProductCategories)
+            ->with('listProductCategoriesParent', $listProductCategoriesParent)
             ->with('product', $product)
             ->with('rating', round($rating))
             ->with('listProductsRelatedToThisItem', $listProductsRelatedToThisItem);

@@ -25,20 +25,22 @@ function initMap() {
     infoWindow = new google.maps.InfoWindow();
     function geolocationControl(){
         if (navigator.geolocation) {
+            // navigator.geolocation.getCurrentPosition(function () {}, function () {}, {});
+            var geocoder = new google.maps.Geocoder();
             navigator.geolocation.getCurrentPosition(
               (position) => {
                 const pos = {
                   lat: position.coords.latitude,
                   lng: position.coords.longitude,
                 };
-               
+                calculateDistances();
                 marker.setPosition(pos);
                 infoWindow.open(map);
                 map.setCenter(pos);
                 crateListMarkers();
                 infoWindow.open(map);
                 map.setZoom(14);
-                calculateDistances();
+               
               },
               () => {
                     console.log('Dung api ipinfo.io');
@@ -54,12 +56,15 @@ function initMap() {
                         map.setZoom(12);
                         calculateDistances();
                     });    
-                }            
+                },
+                {maximumAge:60000, timeout:5000, enableHighAccuracy:true}           
             );
         }else{
+            timeout:5000;
             alert("Trình duyệt của bạn không cho phép sử dụng Location!");
         }
     }
+
 
     //Lấy danh sách các cửa hàng
     var stores = [];

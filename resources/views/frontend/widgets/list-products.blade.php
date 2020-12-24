@@ -1,5 +1,5 @@
-<h2 class="title text-center">LIST PRODUCTS</h2>
-@foreach($listProducts as $key => $product)
+<div id="list-product">
+    @foreach($listProducts as $key => $product)
     <div class="col-sm-6 col-lg-3">
         <div class="product-image-wrapper cart-product">
             <div class="single-products">
@@ -21,7 +21,7 @@
                     <p class="message_product_{{$product->product_id}}">{{$product->brand->brand_name}}</p>  
                     <button type="button" class="btn btn-fefault add-to-cart" data-id="{{$product->product_id}}">
                         <i class="fa fa-shopping-cart"></i>
-                        Add to cart
+                       {{__('products.add_cart')}}
                     </button>           
                 </div>
             </div>
@@ -41,7 +41,17 @@
 <ul class="pagination col-sm-12 col-lg-12">
     {{ $listProducts->links() }}
 </ul>
+</div>
 <script>
+    //Sort product
+    $(document).ready(function(){
+        $('#sort').on('change', function(){
+            $.get( "{{route('sort')}}" , { value :  $('#sort').val() } , function( data ) {     
+               $("#list-product").empty().html(data);
+            });
+        }); 
+    });
+
     //Add product to Cart using ajax
     $('.add-to-cart').click(function(event){
         // event.preventDefault();
@@ -116,17 +126,17 @@
             $("#listImages").empty();
             $('#listImages').html(data.listImageOfProduct);
             $('#imageGallery').lightSlider({
-            gallery:true,
-            item:1,
-            loop:true,
-            thumbItem:3,
-            slideMargin:0,
-            enableDrag: false,
-            currentPagerPosition:'left',
-            onSliderLoad: function(el) {
-                el.lightGallery({
-                    selector: '#imageGallery .lslide'
-                });
+                gallery:true,
+                item:1,
+                loop:true,
+                thumbItem:3,
+                slideMargin:0,
+                enableDrag: false,
+                currentPagerPosition:'left',
+                onSliderLoad: function(el) {
+                    el.lightGallery({
+                        selector: '#imageGallery .lslide'
+                    });
             }   
         });  
             $('#q_img_product').attr("src",'storage/images/'+data.product_image);

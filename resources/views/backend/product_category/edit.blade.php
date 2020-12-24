@@ -26,6 +26,18 @@ Admin - Add Product category
                                     </div>
                                 </div>
                                 <div class="form-group ">
+                                    <label class="col-sm-3 control-label col-lg-3" for="parent_id">Mục cha: </label>
+                                    <div class="col-lg-6">
+                                        <select class="form-control m-bot15" name="parent_id">
+                                            <option value="" selected disabled hidden>--Chọn--</option>
+                                            <option value="null">(none)</option>
+                                            @foreach ($listProductCategoriesParent as $productCategoriesParent)                                              
+                                                <option value="{{$productCategoriesParent->pro_category_id}}">{{$productCategoriesParent->pro_category_name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group ">
                                     <label for="slug" class="control-label col-lg-3">Slug <span class="required" style="color:red">*</span></label>
                                     <div class="col-lg-6">
                                         <input class=" form-control" id="slug" name="slug" value="{{ old('pro_category_slug', $productCategory->pro_category_slug) }}" minlength="2" type="text" required="">

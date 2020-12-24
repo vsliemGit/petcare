@@ -20,6 +20,7 @@
         <th>Slug</th>
         <th>Describe</th>
         <th>Status</th>
+        <th>Parent</th>
         <th>Created at</th>
         <th>Updated at</th>
         <th style="width:30px;"></th>
@@ -42,6 +43,12 @@
             <a data-id="0" href="javascript:void(0)"><span class="fa fa-times text-danger text"></span></a>
           <?php  } ?>
         </td>
+        @if($productCatetory->parent_id != null){
+          <td><span class="text-ellipsis">{{ $productCatetory->parent->pro_category_name }}</span></td>
+        }
+        @else
+          <td><span class="text-ellipsis">(none)</span></td>
+        @endif
         <td><span class="text-ellipsis">{{ $productCatetory->pro_category_created_at }}</span></td>
         <td><span class="text-ellipsis">{{ $productCatetory->pro_category_updated_at }}</span></td>
         <td>
@@ -59,7 +66,7 @@
     @endforeach
     @php
       while($i < 5){
-        echo "<tr><td><label class='i-checks m-b-none'><input type='checkbox' name='post[]''><i></i></label></td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td></tr>";
+        echo "<tr><td><label class='i-checks m-b-none'><input type='checkbox' name='post[]''><i></i></label></td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td><td>&nbsp</td></tr>";
         $i++;
       }
     @endphp

@@ -241,3 +241,11 @@ Route::get('setLocale/{locale}', function ($locale) {
 
 //Send mail
 Route::get('/send-mail', 'MailController@sendMail')->name('send_mail');
+
+
+//Sort
+Route::get('/sort-by', 'Frontend\FrontendController@sort')->name('sort');
+Route::get('/sort-by-price', 'Frontend\FrontendController@sortPrice')->name('sort_price');
+
+//ProductCategory
+// Route::get('/producg', 'MailController@sendMail')->name('send_mail');

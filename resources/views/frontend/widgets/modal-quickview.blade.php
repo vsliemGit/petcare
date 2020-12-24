@@ -1,6 +1,20 @@
 <!-- Modal -->
+<style>
+  @media screen and (min-width: 768px){
+    .modal-dialog {
+      width: 800px;
+      margin: 30px auto;
+    }
+  }
+  
+  @media screen and (min-width: 992px;){
+    .modal-lg{
+      width: 1200px;
+    }
+  }
+</style>
 <div class="modal fade" id="quickview" tabindex="-1" role="dialog modal-lg" aria-labelledby="modal_lable" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h3 class="modal-title" id="modal_lable">Modal title</h3>
@@ -29,6 +43,7 @@
                     </div><!--/product-information-->
                 </div>
             </div><!--/product-details-->
+            <hr>
             <label for="q_product_desc">Description</label>
             <div id="q_product_desc" name="q_product_desc">desc for product</div>          
         </div>
