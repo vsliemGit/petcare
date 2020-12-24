@@ -108,39 +108,28 @@ class FrontendController extends Controller
         switch($request->value){
             case "desc" : {
                 $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "desc")->paginate(8);
-                foreach($listProducts as $key => $product){
-                    $rating[$product->product_id] = $this->getRating($product->product_id);
-                } 
                 break;
             }
             case "asc" : {
                 $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "asc")->paginate(8);
-                foreach($listProducts as $key => $product){
-                    $rating[$product->product_id] = $this->getRating($product->product_id);
-                } 
                 break;
             }
             case "a_z" : {
                 $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_name', "asc")->paginate(8);
-                foreach($listProducts as $key => $product){
-                    $rating[$product->product_id] = $this->getRating($product->product_id);
-                } 
                 break;
             }
             case "z_a" : {
                 $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_name', "desc")->paginate(8);
-                foreach($listProducts as $key => $product){
-                    $rating[$product->product_id] = $this->getRating($product->product_id);
-                } 
                 break;
             }
             default:{
                 $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->paginate(8);
-                foreach($allProducts as $key => $product){
-                    $rating[$product->product_id] = $this->getRating($product->product_id);
-                } 
             }      
         }
+
+        foreach($listProducts as $key => $product){
+            $rating[$product->product_id] = $this->getRating($product->product_id);
+        } 
 
         return  view('frontend.widgets.list-products')
             ->with('listProducts', $listProducts)
@@ -320,52 +309,37 @@ class FrontendController extends Controller
         {
             $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->paginate(8);
             $rating = [];
-            foreach($listProducts as  $product){
-                $rating[$product->product_id] = $this->getRating($product->product_id);
-            } 
             $sort_type = $request->sort_type;
             if($sort_type){
                 switch($sort_type){
                     case "desc" : {
                         $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "desc")->paginate(8);
-                        foreach($listProducts as $key => $product){
-                            $rating[$product->product_id] = $this->getRating($product->product_id);
-                        } 
                         break;
                     }
                     case "asc" : {
                         $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "asc")->paginate(8);
-                        foreach($listProducts as $key => $product){
-                            $rating[$product->product_id] = $this->getRating($product->product_id);
-                        } 
                         break;
                     }
                     case "a_z" : {
                         $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_name', "asc")->paginate(8);
-                        foreach($listProducts as $key => $product){
-                            $rating[$product->product_id] = $this->getRating($product->product_id);
-                        } 
                         break;
                     }
                     case "z_a" : {
                         $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_name', "desc")->paginate(8);
-                        foreach($listProducts as $key => $product){
-                            $rating[$product->product_id] = $this->getRating($product->product_id);
-                        } 
                         break;
                     }
                     default:{
                         $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->paginate(8);
-                        foreach($listProducts as $key => $product){
-                            $rating[$product->product_id] = $this->getRating($product->product_id);
-                        } 
-                    }      
+                    }    
                 }
             }
-             
+
+            foreach($listProducts as  $product){
+                $rating[$product->product_id] = $this->getRating($product->product_id);
+            } 
             return view('frontend.widgets.list-products')
-            ->with('listProducts', $listProducts)
-            ->with('rating', $rating);
+                ->with('listProducts', $listProducts)
+                ->with('rating', $rating);
         }
     }
 

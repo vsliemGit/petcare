@@ -224,6 +224,14 @@ Home | PETCARE
             });
         }
         //End paginate
+        //Sort product
+        $(document).ready(function(){
+            $('#sort').on('change', function(){
+                $.get( "{{route('sort')}}" , { value :  $('#sort').val() } , function( data ) {     
+                $("#list-product").empty().html(data);
+                });
+            }); 
+        });
     </script>
 @endsection
 

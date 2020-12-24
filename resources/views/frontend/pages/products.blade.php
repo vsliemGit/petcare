@@ -67,17 +67,6 @@
                             </select>
                         </form>
                     </div>
-                    <div class="col-md-4">
-                        <label for="">{{ __('products.sort_price') }}</label>
-                        <form action="">
-                            @csrf
-                            <select name="sort-price" id="sort-price" class="form-control">
-                                <option value="none">{{__('products.price_default')}}</option>
-                                <option value="desc">{{__('products.price_desc')}}</option>
-                                <option value="asc ">{{__('products.price_asc')}}</option>
-                            </select>
-                        </form>
-                    </div>
                 </div>
                 <div id="list-products">
                     @include('frontend.widgets.list-products')
@@ -212,5 +201,14 @@
             });
         }
         //End paginate
+
+        //Sort product
+        $(document).ready(function(){
+            $('#sort').on('change', function(){
+                $.get( "{{route('sort')}}" , { value :  $('#sort').val() } , function( data ) {     
+                $("#list-product").empty().html(data);
+                });
+            }); 
+        });
     </script>
 @endsection

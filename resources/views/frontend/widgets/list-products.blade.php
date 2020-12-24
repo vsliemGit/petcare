@@ -43,15 +43,6 @@
 </ul>
 </div>
 <script>
-    //Sort product
-    $(document).ready(function(){
-        $('#sort').on('change', function(){
-            $.get( "{{route('sort')}}" , { value :  $('#sort').val() } , function( data ) {     
-               $("#list-product").empty().html(data);
-            });
-        }); 
-    });
-
     //Add product to Cart using ajax
     $('.add-to-cart').click(function(event){
         // event.preventDefault();
