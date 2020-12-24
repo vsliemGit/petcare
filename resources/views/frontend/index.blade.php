@@ -22,7 +22,7 @@ Home | PETCARE
 @include('frontend.widgets.slider')
 
 <section>
-    <div class="container">
+    <div class="container" >
         <div class="flash-message">
             @foreach (['danger', 'warning', 'success', 'info'] as $msg)
               @if(Session::has('alert-' . $msg))
@@ -34,11 +34,11 @@ Home | PETCARE
             @endforeach   
         </div>
         <div class="row">
+            <!--Left-sidebar-->
             <div class="col-sm-3">
-                <!--Left-sidebar-->
                 @include('frontend.widgets.left-sidebar')
             </div>         
-            <div class="col-sm-9 padding-right">
+            <div class="col-sm-9 padding-right" id="main-contain-ajax">
                 <!-- New products  -->
                 @include('frontend.widgets.new-products')
                 <div class="features_items"><!--features_items-->
@@ -151,31 +151,7 @@ Home | PETCARE
 
 @section('custom-scripts')
     <script>
-        //carousel
-        $(document).ready(function(){
-            $(".owl-carousel").owlCarousel({
-                nav: false,
-                items:3,
-                responsiveClass:true,
-                loop: true,
-                autoplay:true,
-                autoplayTimeout: 3000,
-                autoplayHoverPause:true,
-                lazyLoad: true,
-                responsive:{
-                    0:{
-                        items:1,
-                    },
-                    600:{
-                        items: 2,
-                    },
-                    1000:{
-                        items: 3,
-                        loop:false
-                    }
-                }
-            });
-        });
+        
         //Setup CSRF to AJAX
         $.ajaxSetup({
             headers: {
@@ -194,7 +170,6 @@ Home | PETCARE
                 }
             }
         });
-
         $(document).ready(function()
         {
             $(document).on('click', '.pagination a',function(event)
@@ -206,7 +181,6 @@ Home | PETCARE
                 getData(page);
             });
         });
-
         function getData(page){
             var sortType = $("#sort").val();
             $.ajax({
@@ -224,13 +198,30 @@ Home | PETCARE
             });
         }
         //End paginate
+
         //Sort product
         $(document).ready(function(){
             $('#sort').on('change', function(){
                 $.get( "{{route('sort')}}" , { value :  $('#sort').val() } , function( data ) {     
-                $("#list-product").empty().html(data);
+                    $("#list-product").empty().html(data);
                 });
             }); 
+        });
+
+        //Get list product by category
+        $(document).ready(function()
+        {
+            $('.search-products-by-category').on('click', function(){
+                var category_id = $(this).data('category-id');
+                var category_name = $(this).text();
+                $.get( "{{route('show_by_category')}}" , { category_id : category_id } , function( data ) {     
+                    $("#main-contain-ajax").empty().html(data);
+                    $("#name_of_category").text(category_name);
+                    $("#category_id_choosed").val(category_id);
+                }).fail(function(data) {
+                    console.log(data);
+                });
+            }) ;
         });
     </script>
 @endsection

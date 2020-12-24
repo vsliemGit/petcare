@@ -1,6 +1,7 @@
 <div class="left-sidebar">
     <h2>Category</h2>
     <div class="panel-group category-products" id="accordian"><!--category-productsr-->
+        <input type="hidden" id="category_id_choosed" name="category_id_choosed">
         @foreach ($listProductCategoriesParent as $productCategoriesParent)
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -12,12 +13,13 @@
                         </a>
                     </h4>
                 </div>
+                
                 @if($productCategoriesParent->child->count()>0)                  
                     <div id="{{$productCategoriesParent->pro_category_slug}}" class="panel-collapse collapse">
                         <div class="panel-body">
                             <ul>
                                 @foreach ($productCategoriesParent->child as $productCategoriesChild)
-                                    <li style="text-size: 20px;"><a href="#">{{$productCategoriesChild->pro_category_name}} </a></li>                                  
+                                    <li style="text-size: 20px;" class="search-products-by-category" data-category-id="{{$productCategoriesChild->pro_category_id}}"><a href="javascript:void(0)">{{$productCategoriesChild->pro_category_name}} </a></li>                                  
                                 @endforeach
                             </ul>
                         </div>

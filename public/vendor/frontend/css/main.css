@@ -847,7 +847,8 @@ h2.title {
 .product-image-wrapper{
 	border:1px solid #F7F7F5;
 	overflow: hidden;
-	margin-bottom:30px;
+  margin-bottom:20px;
+  height: 450px;
 }
 
 .single-products {
@@ -910,7 +911,6 @@ h2.title {
 .product-overlay .overlay-content {
   bottom: 0;
   position: absolute;
-  bottom: 0;
   text-align: center;
   width: 100%;
 }

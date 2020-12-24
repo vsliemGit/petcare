@@ -102,31 +102,57 @@ class FrontendController extends Controller
             ->with('rating', $rating)
             ->with('listProducts', $listProducts);
     }
+
     public function sort(Request $request){
         
         $rating = [];
         switch($request->value){
             case "desc" : {
-                $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "desc")->paginate(8);
+                if($request->value_category_id != null){
+                    $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)
+                        ->where('pro_category_id', $request->value_category_id)->orderBy('product_price', "desc")->paginate(8);
+                }else{
+                    $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "desc")->paginate(8);
+                } 
                 break;
             }
             case "asc" : {
-                $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "asc")->paginate(8);
+                if($request->value_category_id != null){
+                    $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)
+                        ->where('pro_category_id', $request->value_category_id)->orderBy('product_price', "asc")->paginate(8);
+                }else{
+                    $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "asc")->paginate(8);
+                } 
                 break;
             }
             case "a_z" : {
-                $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_name', "asc")->paginate(8);
+                if($request->value_category_id != null){
+                    $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)
+                        ->where('pro_category_id', $request->value_category_id)->orderBy('product_price', "asc")->paginate(8);
+                }else{
+                    $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "asc")->paginate(8);
+                } 
                 break;
             }
             case "z_a" : {
-                $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_name', "desc")->paginate(8);
+                if($request->value_category_id != null){
+                    $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)
+                        ->where('pro_category_id', $request->value_category_id)->orderBy('product_price', "desc")->paginate(8);
+                }else{
+                    $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->orderBy('product_price', "desc")->paginate(8);
+                } 
                 break;
             }
             default:{
-                $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->paginate(8);
+                if($request->value_category_id != null){
+                    $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)
+                        ->where('pro_category_id', $request->value_category_id)->paginate(8);
+                }else{
+                    $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->paginate(8);
+                }
             }      
         }
-
+       
         foreach($listProducts as $key => $product){
             $rating[$product->product_id] = $this->getRating($product->product_id);
         } 
@@ -134,6 +160,29 @@ class FrontendController extends Controller
         return  view('frontend.widgets.list-products')
             ->with('listProducts', $listProducts)
             ->with('rating', $rating);
+    }
+
+    public function showByCategory(Request $request){
+        $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->where('pro_category_id', $request->category_id)->get();
+        if($listProducts->count()<1){
+            return "<i>Chưa có sản phẩm cho mục này. Chúng tôi sẽ cập nhật trong thời gian sớm nhất. mong quý khách thông cảm!</i>";
+        }
+        $listProducts = Product::where('product_status', 1)->where('product_quantity', '>', 0)->where('pro_category_id', $request->category_id)->paginate(8);
+        $listBrands = Brand::all();
+        $allProducts = Product::all();
+        $topThreeNewProducts = Product::orderBy('product_created_at')->take(10)->get();
+        $listProductCategoriesParent = ProductCategory::where('parent_id', null)
+            ->orderBy('pro_category_created_at', 'desc')->get();
+        $rating = [];
+        foreach($allProducts as $key => $product){
+            $rating[$product->product_id] = $this->getRating($product->product_id);
+        }
+        return view('frontend.pages.product-by-category')
+            ->with('listBrands', $listBrands)
+            ->with('topThreeNewProducts', $topThreeNewProducts)
+            ->with('listProductCategoriesParent', $listProductCategoriesParent)
+            ->with('rating', $rating)
+            ->with('listProducts', $listProducts);
     }
 
     public function resultSearch(){
@@ -178,7 +227,7 @@ class FrontendController extends Controller
             $ouput .= "<li class='li_item_search' style='border-bottom: 1px solid #ececf9;'><i>Hiển thị ".$count_product_founds_show."/".$count_product_founds." sản phẩm được tìm thấy.<i/></li>";
             foreach($product_founds as $product){
                 $ouput .= "<li class='li_item_search' style='border-bottom: 1px solid #ececf9;'>";
-                $ouput .= "<img style='width: 15%; float: left; padding: 5px; border: 1px solid #ececf9; margin-right: 5px;' src='storage/images/". $product->product_image."' alt=''/>";
+                $ouput .= "<img style='width: 15%; height: 60px; float: left; padding: 5px; border: 1px solid #ececf9; margin-right: 5px;' src='storage/images/". $product->product_image."' alt=''/>";
                 $ouput .=  "<b class='product_name' style='max-width: 80%;'>".$product->product_name."</b>";
                 $ouput .=  "<p style='display: -webkit-box;  max-width: 80%; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;'> ".$product->product_desc."</p>";
                 $ouput .= "</li>";
@@ -199,7 +248,7 @@ class FrontendController extends Controller
             $ouput .= "<li class='li_item_search' style='border-bottom: 1px solid #ececf9;'><i>Hiển thị ".$count_service_founds_show."/". $count_service_founds." dịch vụ được tìm thấy.<i/></li>";
             foreach($service_founds as $service){           
                 $ouput .= "<li class='li_item_search' style='border-bottom: 1px solid #ececf9;'>";
-                $ouput .= "<img style='width: 15%; hight: 20%; float: left; padding: 5px; border: 1px solid #ececf9; margin-right: 5px;' src='storage/images/services/". $service->service_detail_image."' alt=''/>";
+                $ouput .= "<img style='width: 15%;  height: 60px; float: left; padding: 5px; border: 1px solid #ececf9; margin-right: 5px;' src='storage/images/services/". $service->service_detail_image."' alt=''/>";
                 $ouput .=  "<b class='product_name' style='max-width: 80%;'>".$service->service_name."</b>";
                 $ouput .=  "<p style='display: -webkit-box;  max-width: 80%; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;'> ".$service->service_desc."</p>";
                 $ouput .= "</li>";

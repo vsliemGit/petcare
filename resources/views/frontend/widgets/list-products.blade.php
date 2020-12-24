@@ -1,12 +1,12 @@
 <div id="list-product">
     @foreach($listProducts as $key => $product)
     <div class="col-sm-6 col-lg-3">
-        <div class="product-image-wrapper cart-product">
+        <div class="product-image-wrapper">
             <div class="single-products">
                 <div class="productinfo text-center">
-                    <img src="{{ asset('storage/images/' . $product->product_image) }}" alt="" />
+                    <img class="card-product" src="{{ asset('storage/images/' . $product->product_image) }}" alt="" />
                     <h2>${{ number_format($product->product_price, 2)}} </h2>
-                    <a href="{{ route('frontend.product_detail', ['id' => $product->product_id ]) }}"><h4 style="color: blue">{{ $product->product_name }}</h4></a>
+                    <a href="{{ route('frontend.product_detail', ['id' => $product->product_id ]) }}"><h5 style="color: blue; ">{{ $product->product_name }}</h5></a>
                     <ul class="list-inline">
                         @for ($i = 1; $i <= 5; $i++)
                             @php  $color = ($i > $rating[$product->product_id])  ? "color: #ccc;" : "color: #ffcc00;"   ; @endphp

@@ -21,7 +21,7 @@ About us | PETCARE
                 <!--Left-sidebar-->
                 @include('frontend.widgets.left-sidebar')
             </div>
-            <div class="col-sm-9">
+            <div class="col-sm-9" id="main-contain-ajax">
                 <div class="features_items">
                     <h2 class="title text-center">{{__('header.title_result_search')}}</h2>
                     @if($product_founds->count()>0)
@@ -106,4 +106,24 @@ About us | PETCARE
         </div>     
     </div>
 </section>
+@endsection
+
+@section('custom-scripts')
+<script>
+    //Get list product by category
+    $(document).ready(function()
+        {
+            $('.search-products-by-category').on('click', function(){
+                var category_id = $(this).data('category-id');
+                var category_name = $(this).text();
+                $.get( "{{route('show_by_category')}}" , { category_id : category_id } , function( data ) {     
+                    $("#main-contain-ajax").empty().html(data);
+                    $("#name_of_category").text(category_name);
+                    $("#category_id_choosed").val(category_id);
+                }).fail(function(data) {
+                    console.log(data);
+                });
+            }) ;
+        });
+</script>
 @endsection

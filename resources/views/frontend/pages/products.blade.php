@@ -48,30 +48,32 @@
                 <!--Left-sidebar-->
                 @include('frontend.widgets.left-sidebar')
             </div>
-            <!-- New products  -->
+            <div class="col-sm-9 padding-right" id="main-contain-ajax">
+                <!-- New products  -->
                 @include('frontend.widgets.new-products')
-            <div class="features_items"><!--features_items-->
-                <!-- List Products  -->
-                <h2 class="title text-center">LIST PRODUCTS</h2>
-                <div class="row" style="margin-bottom: 20px;">
-                    <div class="col-md-4">
-                        <label for="">{{ __('products.fil') }}</label>
-                        <form action="">
-                            @csrf
-                            <select name="sort" id="sort" class="form-control">
-                                <option value="none">{{__('products.none')}}</option>
-                                <option value="desc">{{__('products.price_desc')}}</option>
-                                <option value="asc ">{{__('products.price_asc')}}</option>
-                                <option value="a_z ">{{__('products.name_asc')}}</option>
-                                <option value="z_a ">{{__('products.name_desc')}}</option>
-                            </select>
-                        </form>
+                <div class="features_items"><!--features_items-->
+                    <!-- List Products  -->
+                    <h2 class="title text-center">LIST PRODUCTS</h2>
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col-md-4">
+                            <label for="">{{ __('products.fil') }}</label>
+                            <form action="">
+                                @csrf
+                                <select name="sort" id="sort" class="form-control">
+                                    <option value="none">{{__('products.none')}}</option>
+                                    <option value="desc">{{__('products.price_desc')}}</option>
+                                    <option value="asc ">{{__('products.price_asc')}}</option>
+                                    <option value="a_z ">{{__('products.name_asc')}}</option>
+                                    <option value="z_a ">{{__('products.name_desc')}}</option>
+                                </select>
+                            </form>
+                        </div>
                     </div>
-                </div>
-                <div id="list-products">
-                    @include('frontend.widgets.list-products')
-                </div>
-            </div><!--features_items-->           
+                    <div id="list-products">
+                        @include('frontend.widgets.list-products')
+                    </div>
+            </div><!--features_items-->   
+            </div>        
         </div>     
     </div>
     <!-- Modal quickview  -->
@@ -209,6 +211,22 @@
                 $("#list-product").empty().html(data);
                 });
             }); 
+        });
+
+        //Get list product by category
+        $(document).ready(function()
+        {
+            $('.search-products-by-category').on('click', function(){
+                var category_id = $(this).data('category-id');
+                var category_name = $(this).text();
+                $.get( "{{route('show_by_category')}}" , { category_id : category_id } , function( data ) {     
+                    $("#main-contain-ajax").empty().html(data);
+                    $("#name_of_category").text(category_name);
+                    $("#category_id_choosed").val(category_id);
+                }).fail(function(data) {
+                    console.log(data);
+                });
+            }) ;
         });
     </script>
 @endsection

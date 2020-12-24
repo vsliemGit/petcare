@@ -23,10 +23,30 @@
     </div>                
 </div><!--new_products-->
 <script>
-    
-    //Reset modal
-    $('#imageGallery').on('hidden.bs.modal', function(e) { 
-        $(this).removeData();
-    });
+    //carousel
+    $(document).ready(function(){
+            $(".owl-carousel").owlCarousel({
+                nav: false,
+                items:3,
+                responsiveClass:true,
+                loop: true,
+                autoplay:true,
+                autoplayTimeout: 3000,
+                autoplayHoverPause:true,
+                lazyLoad: true,
+                responsive:{
+                    0:{
+                        items:1,
+                    },
+                    600:{
+                        items: 2,
+                    },
+                    1000:{
+                        items: 3,
+                        loop:false
+                    }
+                }
+            });
+        });
 
 </script>
