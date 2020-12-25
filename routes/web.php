@@ -43,6 +43,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::get('/edit/{id}', 'Backend\ProductController@edit')->name('product.edit'); 
         Route::post('/update/{id}', 'Backend\ProductController@update')->name('product.update');
         Route::delete('/delete', 'Backend\ProductController@destroy')->name('product.destroy');
+        Route::post('/detail/add/{id}', 'Backend\ProductController@detailAdd')->name('product.detail.add');
         Route::get('/detail/{id}', 'Backend\ProductController@detail')->name('product.detail');
         Route::post('/detail/update/{id}', 'Backend\ProductController@updateDetail')->name('product.detail_update');
     });
@@ -78,10 +79,12 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     //BrandController
     Route::prefix('brand')->group(function(){
         Route::get('/', 'Backend\BrandController@index')->name('brand.index');
+        Route::get('/data', 'Backend\BrandController@datatables')->name('brand.data');
+        Route::get('/row-details-data', 'Backend\BrandController@getRowDetails')->name('brand.detal');
         Route::get('/add', 'Backend\BrandController@create')->name('brand.create');
         Route::post('/store', 'Backend\BrandController@store')->name('brand.store');
         Route::get('/edit/{id}', 'Backend\BrandController@edit')->name('brand.edit');
-        Route::post('/update', 'Backend\BrandController@update')->name('brand.update');
+        Route::post('/update/{id}', 'Backend\BrandController@update')->name('brand.update');
         Route::delete('/delete', 'Backend\BrandController@destroy')->name('brand.destroy');
         Route::post('/change-status', 'Backend\BrandController@changeStatus')->name('brand.changeStatus');
         Route::get('/filter-status','Backend\BrandController@filterStatus')->name('brand.filter_status');
@@ -105,9 +108,28 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::post('/import-excel', 'Backend\PromotionController@importExcelCoupon')->name('coupon.import_excel');
     });
 
+    //SaleController
+    Route::prefix('sale')->group(function(){
+        Route::get('/', 'Backend\PromotionController@index')->name('sale.index');
+        Route::get('/data', 'Backend\PromotionController@datatables')->name('sale.data');
+        Route::get('/row-details-data', 'Backend\PromotionController@getRowDetails')->name('sale.detal');
+        Route::get('/add', 'Backend\PromotionController@create')->name('sale.create');
+        Route::post('/store', 'Backend\PromotionController@store')->name('sale.store');
+        Route::get('/edit/{id}', 'Backend\PromotionController@edit')->name('sale.edit');
+        Route::post('/update/{id}', 'Backend\PromotionController@update')->name('sale.update');
+        Route::post('/delete', 'Backend\PromotionController@destroy')->name('sale.destroy');
+        Route::post('/change-status', 'Backend\PromotionController@changeStatus')->name('.changeStatus');
+        Route::get('/filter-status','Backend\PromotionController@filterStatus')->name('.filter_status');
+        Route::get('/pdf', 'Backend\PromotionController@createPDF')->name('sale.pdf');
+        Route::get('/export-excel', 'Backend\PromotionController@exportExcel')->name('sale.export_excel');
+        Route::post('/import-excel', 'Backend\PromotionController@importExcel')->name('sale.import_excel');
+    });
+
+
     //OrderController
      Route::prefix('order')->group(function(){
         Route::get('/', 'Backend\OrderController@index')->name('order.index');
+        Route::get('/data', 'Backend\OrderController@datatables')->name('order.data');
         Route::get('/view-order/{id}', 'Backend\OrderController@viewOrder')->name('order.view_order');
         Route::post('/update', 'Backend\OrderController@update')->name('order.update');
         Route::delete('/delete', 'Backend\OrderController@destroy')->name('order.destroy');

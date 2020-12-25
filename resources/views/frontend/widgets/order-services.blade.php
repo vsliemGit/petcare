@@ -9,7 +9,7 @@
           <i>Dành cho khách hàng truy cập website muốn đặt lịch khám hoặc chăm sóc cho thú cưng Nhanh Chóng và Tiện Lợi</i>         
       </div>
       </div>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    {{-- <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> --}}
     <style>
         #regForm {
           background-color: #ffffff;
@@ -155,7 +155,6 @@
           </form>  
     </div>
 </div>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
 
 $(document).ready(function(){

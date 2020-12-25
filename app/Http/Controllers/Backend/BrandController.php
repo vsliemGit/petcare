@@ -13,6 +13,7 @@ use PDF;
 use Excel;
 use App\Exports\BrandsExport;
 use App\Imports\BrandsImport;
+use Yajra\Datatables\Datatables;
 
 class BrandController extends Controller
 {
@@ -23,11 +24,41 @@ class BrandController extends Controller
      */
     public function index(Request $request)
     {
-        $listBrands = DB::table('brands')->orderBy('brand_created_at', 'desc')->paginate(5);
-        if ($request->ajax()) {
-            return view('backend.brand.table-data')->with('listBrands', $listBrands);
-        }
-        return view('backend.brand.index')->with('listBrands', $listBrands);
+        $listBrands = Brand::orderBy('brand_created_at', 'desc')->get();
+        if (request()->ajax()) {
+            return $this->datatables();
+         }
+    
+         if (view()->exists('backend.brand.index')) {
+            return view('backend.brand.index');
+         }
+    
+         return abort('Error.404');
+    }
+
+    public function datatables(){
+        $listBrands = Brand::orderBy('brand_created_at', 'desc')->get();
+        return Datatables::of($listBrands)
+        ->addIndexColumn()
+        ->addColumn('status', function(Brand $brand) {
+            return ($brand->brand_status == 0 ) ? '<a data-id="0" href="javascript:void(0)"><span class="fa fa-times text-danger text"></span></a>' 
+            : '<a data-id="1" href="javascript:void(0)"><span data-id="1"class="fa fa-check text-success text-active"></span></a>';
+        })
+        ->addColumn('action', function (Brand $brand) {
+            $deletebtn = '<a class="btn btn-secondary btn-sm" onclick="deleteItemAjax('.$brand->brand_id.')"        
+            href="javascript:void(0)"><i class="fa fa-trash-o" style="color: red;"></i></a>';
+            $editbtn = "<a href='".route('brand.edit', ['id' => $brand->brand_id])."' class='active styling-edit edit-item'>
+            <i class='fa fa-pencil-square-o text-success text-active'></i></a>";
+            return $editbtn.$deletebtn;
+        })
+        ->editColumn('brand_created_at', function (Brand $brand) {
+            return $brand->brand_created_at->format('Y-m-d h:m:s');
+        })
+        ->editColumn('brand_updated_at', function (Brand $brand) {
+            return $brand->brand_updated_at->format('Y-m-d h:m:s');
+        })
+        ->rawColumns(['action', 'status'])
+        ->make(true);
     }
 
     /**
@@ -58,13 +89,17 @@ class BrandController extends Controller
         $newBrand->brand_status = $request->brand_status;
 
         $newBrand->save();
-        
-        if($request->ajax()){
-            $listBrands = DB::table('brands')->orderBy('brand_created_at', 'desc')->paginate(5);
-            return view('backend.brand.table-data')->with('listBrands', $listBrands);
-        }
         Session::flash('alert-info', 'Thêm mới "'. $newBrand->brand_name .'" thành công!!!');
-        return redirect()->route('brand.index');     
+        $listBrands = Brand::orderBy('brand_created_at', 'desc')->get();
+        if (request()->ajax()) {
+            return $this->datatables();
+         }
+    
+        if (view()->exists('backend.brand.index')) {
+            return view('backend.brand.index');
+        }
+    
+        return abort('Error.404');  
     }
     /**
      * Show the form for editing the specified resource.
@@ -85,22 +120,27 @@ class BrandController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $validation = $request->validate([]);
-        $brand = Brand::where("brand_id", $request->brand_id)->first();
+        $brand = Brand::where("brand_id", $id)->first();
         $brand->brand_name = $request->brand_name;
         $brand->brand_slug = $request->brand_slug;
         $brand->brand_desc = $request->brand_desc;
         $brand->brand_status = $request->brand_status;
-        $brand->brand_updated_at = Carbon::now();
+
         $brand->save();
-        if($request->ajax()){
-            $listBrand = DB::table('brands')->orderBy('brand_created_at', 'desc')->paginate(5);
-            return view('backend.brand.table-data')->with('listBrand', $listBrand);
+        Session::flash('alert-info', 'Cập nhật "'. $brand->brand_name .'" thành công!!!');
+        $listBrands = Brand::orderBy('brand_created_at', 'desc')->get();
+        if (request()->ajax()) {
+            return $this->datatables();
         }
-        Session::flash('alert-info', 'Cập nhật "'.$brand->brand_name.'" thành công!!!');
-        return redirect()->route('brand.index'); 
+    
+        if (view()->exists('backend.brand.index')) {
+            return view('backend.brand.index');
+        }
+    
+        return abort('Error.404');    
     }
 
     /**

@@ -35,4 +35,18 @@ class Product extends Model
             'order_detail_quantity'
         ]);
     }
+
+    // public function sale(){
+    //     return $this->belongsToMany('App\Sale')->using('App\Product_Sale')
+    //     ->withPivot([
+    //         'sale_quantity'
+    //     ]);
+    // }
+
+    public function sale(){
+        return $this->belongsToMany('App\Sale', 'product_sales', 'product_id', 'sale_id')->using('App\Product_Sale')
+        ->withPivot([
+            'sale_quantity'
+        ]);
+    }
 }

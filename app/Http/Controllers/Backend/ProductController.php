@@ -12,6 +12,7 @@ use App\ProductCategory;
 use App\Brand;
 use App\Image;
 use App\Image_Product;
+use App\Sale;
 
 class ProductController extends Controller
 {
@@ -30,11 +31,12 @@ class ProductController extends Controller
     {
         $listBrands = Brand::all();
         $listProductCategories = ProductCategory::all();
-        return view('backend.product.create', ['listProductCategories' => $listProductCategories, 'listBrands' => $listBrands]);
+        $listSales = Sale::all();
+        return view('backend.product.create', ['listProductCategories' => $listProductCategories, 'listBrands' => $listBrands, 'listSales' => $listSales]);
     }
 
     //Store new Pruduct
-    public function store(Request $request){       
+    public function store(Request $request){     
         $validation = $request->validate([
             'product_image' => 'required|file|image|mimes:jpeg,jpg,png,gif,webp|max:2048',
             // Cú pháp dùng upload nhiều file
@@ -77,6 +79,13 @@ class ProductController extends Controller
                     'img_id' => $id_image
                 ]);
             }
+        }
+
+        if($request->sale_id){
+            DB::table('product_sales')->insert([
+                'product_id' => $newProduct->product_id,
+                'sale_id' => $request->sale_id
+            ]);
         }
         Session::flash('alert-info', 'Thêm mới thành công!!!');
         return redirect()->route('product.index');
@@ -169,8 +178,22 @@ class ProductController extends Controller
     {
         $product = DB::table('products')->where('product_id', $id)->first();
         $service_detail = DB::table('product_details')->where('product_id', $id)->first();
+        if(!$service_detail){
+           return view('backend.product.add-detail')->with('product', $product);
+        }
         return view('backend.product.product-detail', ['product' => $product, 'data' => $service_detail]);
 
+    }
+
+
+
+    public function detailAdd(Request $request, $id){
+        DB::table('product_details')->insert([
+            'product_detail_content' => $request->product_content,
+            'product_id' => $id,
+        ]);      
+        Session::flash('alert-info', 'Thêm chi tiết thành công!!!');
+        return redirect()->route('product.index');
     }
 
     public function updateDetail(Request $request, $id)

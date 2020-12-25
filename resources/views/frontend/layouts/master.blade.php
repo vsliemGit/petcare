@@ -29,11 +29,13 @@
     <link type="text/css" rel="stylesheet" href="vendor/frontend/css/lightslider.css" />
     {{-- <link type="text/css" rel="stylesheet" href="vendor/frontend/css/prettify.css" /> --}}
     <link type="text/css" rel="stylesheet" href="vendor/frontend/css/lightgallery.min.css" />
+    <script src="vendor/frontend/js/jquery.js"></script>
+    <!-- Range price -->
     <!-- Các custom script dành riêng cho từng view -->
 	@yield('custom-css')
     <style>
     </style>
-    <script src="vendor/frontend/js/jquery.js"></script>
+    
 </head><!--/head-->
 <body>
     <!--Header-->
@@ -54,6 +56,8 @@
     {{-- <script src="vendor/frontend/js/prettify.js"></script> --}}
     <script src="vendor/frontend/js/lightgallery-all.min.js"></script>
     <!-- Các custom script dành riêng cho từng view -->
+    
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> --}}
     @yield('custom-scripts')
     <script>
         //LoadCountItemInCart

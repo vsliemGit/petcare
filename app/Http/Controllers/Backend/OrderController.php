@@ -10,6 +10,7 @@ use App\Order;
 use App\Customer;
 use App\Payment;
 use App\Transfer;
+use Yajra\Datatables\Datatables;
 
 
 class OrderController extends Controller
@@ -21,11 +22,46 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $listOrders = Order::paginate(6);
-        if ($request->ajax()) {
-            return view('backend.order.table-data')->with('listOrders', $listOrders);
+        $listOrders = Order::orderBy('order_created_at', 'desc')->get();
+        if (request()->ajax()) {
+            return $this->datatables();
         }
-        return view('backend.order.index')->with('listOrders', $listOrders);
+    
+        if (view()->exists('backend.order.index')) {
+            return view('backend.order.index');
+        }
+    
+        return abort('Error.404');
+    }
+
+    public function datatables(){
+        $listOrders = Order::orderBy('order_created_at', 'desc')->get();
+        return Datatables::of($listOrders)
+        ->addIndexColumn()
+        ->addColumn('status', function(Order $order) {
+            return ($order->order_status == 0 ) ? '<a data-id="0" href="javascript:void(0)"><span class="fa fa-times text-danger text"></span></a>' 
+            : '<a data-id="1" href="javascript:void(0)"><span data-id="1"class="fa fa-check text-success text-active"></span></a>';
+        })
+        ->addColumn('action', function (Order $order) {
+            $viewbtn = '<a href="'.route('order.view_order', ['id' => $order->order_id]).'"
+            class="active styling-edit edit-item" ui-toggle-class="">
+            <i class="fa fa-eye text-success text-active"></i></a>';
+            return $viewbtn;
+        })
+        ->addColumn('customer', function(Order $order) {
+            return $order->customer->name;
+        })
+        ->addColumn('payment_name', function(Order $order) {
+            return $order->payment->payment_name;
+        })
+        ->addColumn('transfer_name', function(Order $order) {
+            return $order->transfer->transfer_name;
+        })
+        ->editColumn('order_created_at', function (Order $order) {
+            return $order->order_created_at->format('Y-m-d h:m:s');
+        })
+        ->rawColumns(['action', 'status'])
+        ->make(true);
     }
 
     public function viewOrder($id){

@@ -6,6 +6,31 @@
 Admin - List Order
 @endsection
 
+@section('custom-css')
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.bootstrap.min.css">
+
+<style>
+  td.details-control {
+    background: url('https://datatables.net/examples/resources/details_open.png') no-repeat center center;
+    cursor: pointer;
+  }
+  tr.shown td.details-control {
+      background: url('https://datatables.net/examples/resources/details_close.png') no-repeat center center;
+  }
+  table.dataTable thead .sorting{
+    background-image:none
+  }
+  table.dataTable thead .sorting_desc{
+    background-image:none
+  }
+  table.dataTable thead .sorting_asc{
+    background-image:none
+  }
+</style>
+@endsection
+
 {{-- Thay thế nội dung vào Placeholder `main-content` của view `backend.layouts.index` --}}
 @section('main-content')
 <section class="wrapper">
@@ -14,83 +39,110 @@ Admin - List Order
             <div class="panel-heading">
                 List Orders
             </div>
-            <div class="row w3-res-tb">
-                <div class="col-sm-4 m-b-xs">
-                  <select id="action-tool" class="input-sm form-control w-sm inline v-middle">
-                    <option value="" selected hidden>Choose tools</option>
-                    <option value="0">Add item</option>
-                    <option value="1">Export Excel</option>
-                    <option value="2">Import Excel</option>
-                    <option value="3">Create PDF</option>
-                    <option value="4">Delete items</option>
-                  </select>
-                  <button id="btn-action-tool" class="btn btn-sm btn-default">Apply</button>              
-                </div>
-                <div class="col-sm-5">
-                  <select id="select-filter-status" class="input-sm form-control w-sm inline v-middle">
-                    <option value="all" selected>All status</option>
-                    <option value="1">Active</option>
-                    <option value="0">Noactive</option>
-                  </select>
-                  <button id="btn-filter-status" class="btn btn-sm btn-default">Apply</button>
-                </div>
-                <div class="col-sm-3">
-                  <div class="input-group">
-                    <input type="text" class="input-sm form-control" placeholder="Search">
-                    <span class="input-group-btn">
-                      <button class="btn btn-sm btn-default" type="button">Go!</button>
-                    </span>
-                  </div>
-                </div>
-            </div>
             <!--table-->
     <div class="table-responsive"  id="tag_container">
-        {{-- flash-message --}}
-        {{-- content-table --}}
-        @include('backend.order.table-data')
-        
-      </div>
+      <table id="example" class="table table-striped b-t b-light datatable">
+        <thead >
+            <tr>
+              <th style="width:20px;">
+              </th>
+              <th>No.</th>
+              <th>ID</th>
+              <th>Customer</th>
+              <th>Date shipping</th>
+              <th>Status</th>
+              <th>Created at</th>
+              <th>Transfer</th>
+              <th>Payment</th>
+              <th style="width:30px;"></th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
 </section>
- <!-- footer -->
- @include('backend.layouts.partials.footer')
- <script>
-  //Pagination AJAX
-  $(window).on('hashchange', function() {
-          if (window.location.hash) {
-              var page = window.location.hash.replace('#', '');
-              if (page == Number.NaN || page <= 0) {
-                  return false;
-              }else{
-                  getData(page);
-              }
-          }
-      })
-      
-      $(document).ready(function()
-      {
-          $(document).on('click', '.pagination a',function(event)
-          {
-              event.preventDefault();
-              $('li').removeClass('active');
-              $(this).parent('li').addClass('active');
-              var page = $(this).attr('href').split('page=')[1];
-              getData(page);
-          });
-      });
-  
-      //Reload table html
-      function getData(page){
-          $.ajax(
-          {
-              url: '?page=' + page,
-              type: "GET",
-          }).done(function(data){
-              $("#tag_container").html(data);
-              location.hash = page;
-          }).fail(function(jqXHR, ajaxOptions, thrownError){
-              swal("Error!", "No response from server...", "error");
-          });
-      }
-      // End Pagination using AJAX
-  </script>
+<!-- footer -->
+@include('backend.layouts.partials.footer')
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.flash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
+<script>
+  function format ( d ) {
+        // `d` is the original data object for the row
+        return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+            '<tr>'+
+                '<td>ID:</td>'+
+                '<td>'+d.order_id+'</td>'+
+            '</tr>'+
+            '<tr>'+
+                '<td>Adress :</td>'+
+                '<td>'+d.order_adress+'</td>'+
+            '</tr>'+
+            '<tr>'+
+                '<td>To Name :</td>'+
+                '<td>'+d.to_name+'</td>'+
+            '</tr>'+
+            '<tr>'+
+                '<td>To Email :</td>'+
+                '<td>'+d.to_email+'</td>'+
+            '</tr>'+
+            '<tr>'+
+                '<td>To Phone :</td>'+
+                '<td>'+d.to_phone+'</td>'+
+            '</tr>'+
+                '<td>Coupon :</td>'+
+                '<td>'+d.coupon_id+'</td>'+
+            '</tr>'
+        '</table>';
+    }
+    $(document).ready(function() {
+      var table = $('.datatable').DataTable({
+            processing: true,
+            serverSide: true,   
+            ajax: "{{ route('order.index') }}",
+            columns: [
+                {
+                    "className":      'details-control',
+                    "orderable":      false,
+                    "searchable":     false,
+                    "data":           null,
+                    "defaultContent": ''
+                },
+                {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                {data: 'order_id', name: 'order_id'},
+                {data: 'customer', name: 'customer'},
+                {data: 'order_date_shipping', name: 'order_date_shipping'},
+                {data: 'status',  name: 'status',  orderable: false,  searchable: false },
+                {data: 'payment_name', name: 'payment_name'},
+                {data: 'transfer_name', name: 'transfer_name'},
+                {data: 'order_created_at', name: 'order_created_at'},
+                {data: 'action', name: 'action',  orderable: false,  searchable: false },
+            ],
+            dom: 'Bfrtip',
+        });
+        // Add event listener for opening and closing details
+        $('#example tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row( tr );
+    
+            if ( row.child.isShown() ) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+            }
+            else {
+                // Open this row
+                row.child( format(row.data()) ).show();
+                tr.addClass('shown');
+            }
+        } );
+    });
+</script>
 @endsection

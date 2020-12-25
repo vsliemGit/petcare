@@ -9,11 +9,10 @@ class Order extends Model
 {
     protected $table = 'orders';
     protected $primaryKey  ='order_id';
-    // protected $guarded = ['order_id'];
-    // protected $fillable  = ['order_adress', 'order_status', 'order_notes', 'order_date_shipping','order_created_at','order_updated_at','transfer_id', 'product_id', 'customer_id'];
+    protected $guarded = ['order_id'];
+    protected $fillable  = ['order_adress', 'order_status', 'order_notes', 'order_date_shipping','order_created_at','order_updated_at','transfer_id', 'product_id', 'customer_id'];
     protected $dateFomat = 'Y-m-d H:i:s';
     protected $dates = ['order_created_at','order_updated_at', 'order_date_shipping'];
-    public $incrementing = false;
 
     const CREATED_AT = 'order_created_at';
     const UPDATED_AT = 'order_updated_at';

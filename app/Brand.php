@@ -11,6 +11,7 @@ class Brand extends Model
     protected $dates = ['brand_created_at','brand_updated_at' ];
     protected $dateFomat = 'Y-m-d H:i:s';
     protected $guarded = ['brand_id'];
+    protected $fillable  = ['brand_name', 'brand_slug', 'brand_desc', 'brand_status', 'brand_created_at', 'brand_updated_at'];
     
     const CREATED_AT = 'brand_created_at';
     const UPDATED_AT = 'brand_updated_at';

@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
 use App\Coupon;
+use App\Sale;
 use Session;
+use Yajra\Datatables\Datatables;
 
 class PromotionController extends Controller
 {
@@ -17,8 +19,53 @@ class PromotionController extends Controller
      */
     public function index()
     {
-        //
+        if (request()->ajax()) {
+            return $this->datatablesSale();
+         }
+    
+         if (view()->exists('backend.promotion.sale.index')) {
+            return view('backend.promotion.sale.index');
+         }
+
+         return abort('Error.404');
     }
+
+    public function datatablesSale()
+   {
+        $listSales = Sale::all();
+        return Datatables::of($listSales)
+        ->addIndexColumn()
+        ->addColumn('condition', function(Sale $sale) {
+            return ($sale->sale_condition == 0 ) ? 'Giảm theo %' : 'Giảm theo tiền';
+        })
+        ->addColumn('status', function(Sale $sale) {
+            return ($sale->sale_status == 0 ) ? '<a data-id="0" href="javascript:void(0)"><span class="fa fa-times text-danger text"></span></a>' 
+            : '<a data-id="1" href="javascript:void(0)"><span data-id="1"class="fa fa-check text-success text-active"></span></a>';
+        })
+        ->addColumn('action', function (Sale $sale) {
+            $deletebtn = '<a class="btn btn-secondary btn-sm" onclick="deleteItemAjax('.$sale->sale_id.')"        
+            href="javascript:void(0)"><i class="fa fa-trash-o" style="color: red;"></i></a>';
+            // $editbtn = "<a href='".route('sale.edit', ['id' => $sale->sale_id])."' class='active styling-edit edit-item'>
+            // <i class='fa fa-pencil-square-o text-success text-active'></i></a>";
+            return $deletebtn;
+        })
+        ->editColumn('coupon_created_at', function ($sale) {
+            return $sale->sale_created_at->format('Y-m-d h:m:s');
+          })
+        ->editColumn('sale_updated_at', function ($sale) {
+            return $sale->sale_updated_at->format('Y-m-d h:m:s');
+          })
+        ->removeColumn('sale_condition')
+        ->rawColumns(['action', 'status', 'checkbox'])
+        ->make(true);
+   }
+
+
+    
+//    public function getRowDetails()
+//     {
+//         return view('backend.promotion.sale.row-details');
+//     }
 
     /**
      * Show the form for creating a new resource.
@@ -27,7 +74,7 @@ class PromotionController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend.promotion.sale.create');
     }
 
     /**
@@ -38,7 +85,25 @@ class PromotionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        DB::table('sales')->insert([
+            'sale_name' => $request->sale_name,
+            'sale_start_date' =>  $request->sale_start_date,
+            'sale_end_date' => $request->sale_end_date,
+            'sale_number' => $request->sale_number,
+            'sale_condition' => $request->sale_condition,
+            'sale_status' => $request->sale_status
+        ]);
+        Session::flash('alert-info', 'Thêm mới thành công!!!');
+        if (request()->ajax()) {
+            return $this->datatablesSale();
+        }
+    
+        if (view()->exists('backend.promotion.sale.index')) {
+            return view('backend.promotion.sale.index');
+        }
+        return abort('Error.404'); 
+
     }
 
     /**
@@ -81,18 +146,67 @@ class PromotionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        $id = $request->id;
+
+        $sale = Sale::find($id);
+        $sale->delete();
+        
+        if (request()->ajax()) {
+            return $this->datatables();
+        }
+    
+        if (view()->exists('backend.promotion.coupon.index')) {
+            return view('backend.promotion.coupon.index');
+        }
+
+        return abort('Error.404');
     }
   
     public function indexCoupon(Request $request){
-        $listCoupons = DB::table('coupons')->orderBy('coupon_created_at', 'desc')->paginate(5);
-        if ($request->ajax()) {
-            return view('backend.promotion.coupon.table-data')->with('listCoupons', $listCoupons);
+        $listCoupons = DB::table('coupons')->orderBy('coupon_created_at', 'desc')->get();
+        if (request()->ajax()) {
+            return $this->datatables();
         }
-        return view('backend.promotion.coupon.index')->with('listCoupons', $listCoupons);
+    
+        if (view()->exists('backend.promotion.coupon.index')) {
+            return view('backend.promotion.coupon.index');
+        }
+
+        return abort('Error.404');
     }
+
+    public function datatables()
+   {
+        $listCoupons = Coupon::all();
+        return Datatables::of($listCoupons)
+        ->addIndexColumn()
+        ->addColumn('condition', function(Coupon $coupon) {
+            return ($coupon->coupon_condition == 0 ) ? 'Giảm theo %' : 'Giảm theo tiền';
+        })
+        ->addColumn('status', function(Coupon $coupon) {
+            return ($coupon->coupon_status == 0 ) ? '<a data-id="0" href="javascript:void(0)"><span class="fa fa-times text-danger text"></span></a>' 
+            : '<a data-id="1" href="javascript:void(0)"><span data-id="1"class="fa fa-check text-success text-active"></span></a>';
+        })
+        ->addColumn('action', function (Coupon $coupon) {
+            $deletebtn = '<a class="btn btn-secondary btn-sm" onclick="deleteItemAjax('.$coupon->coupon_id.')"        
+            href="javascript:void(0)"><i class="fa fa-trash-o" style="color: red;"></i></a>';
+            $editbtn = "<a href='".route('coupon.edit', ['id' => $coupon->coupon_id])."' class='active styling-edit edit-item'>
+            <i class='fa fa-pencil-square-o text-success text-active'></i></a>";
+            return $editbtn.$deletebtn;
+        })
+        ->editColumn('coupon_created_at', function ($coupon) {
+            return $coupon->coupon_created_at->format('Y-m-d h:m:s');
+          })
+        ->editColumn('coupon_updated_at', function ($coupon) {
+            return $coupon->coupon_updated_at->format('Y-m-d h:m:s');
+          })
+        ->removeColumn('coupon_condition')
+        ->rawColumns(['action', 'status', 'checkbox'])
+        ->make(true);
+   }
+
 
     public function createCoupon(Request $request){
         return view('backend.promotion.coupon.create');
@@ -109,9 +223,10 @@ class PromotionController extends Controller
     }
 
     public function storeCoupon(Request $request){
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        
         $randstring = '';
         for ($i = 0; $i < 6; $i++) {
+            $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
             $randstring .= $characters[Rand(0, strlen($characters))];
         }
 
@@ -120,11 +235,20 @@ class PromotionController extends Controller
             'coupon_code' =>  $randstring,
             'coupon_times' => $request->coupon_times,
             'coupon_number' => $request->coupon_number,
-            'coupon_condition' => $request->coupon_condition    
+            'coupon_condition' => $request->coupon_condition,
+            'coupon_status' => $request->coupon_status
         ]);
-        
         Session::flash('alert-info', 'Thêm mới thành công!!!');
-        return redirect()->route('coupon.index');     
+        $listCoupons = DB::table('coupons')->orderBy('coupon_created_at', 'desc')->paginate(5);
+        if (request()->ajax()) {
+            return $this->datatables();
+        }
+    
+        if (view()->exists('backend.promotion.coupon.index')) {
+            return view('backend.promotion.coupon.index');
+        }
+
+        return abort('Error.404');  
 
     }
 
@@ -143,7 +267,15 @@ class PromotionController extends Controller
         $coupon->save();    
         
         Session::flash('alert-info', 'Chỉnh sửa thành công!!!');
-        return redirect()->route('coupon.index');     
+        if (request()->ajax()) {
+            return $this->datatables();
+        }
+    
+        if (view()->exists('backend.promotion.coupon.index')) {
+            return view('backend.promotion.coupon.index');
+        }
+
+        return abort('Error.404');     
     }
 
     public function destroyCoupon(Request $request){
@@ -157,12 +289,15 @@ class PromotionController extends Controller
             $coupon->delete();
         }
         
-        $listCoupons = DB::table('coupons')->orderBy('coupon_created_at', 'desc')->paginate(5);
-        if($request->ajax()){
-            return view('backend.promotion.coupon.table-data')->with('listCoupons', $listCoupons);
+        if (request()->ajax()) {
+            return $this->datatables();
         }
-        return view('backend.promotion.coupon.index')->with('listCoupons', $listCoupons);   
+    
+        if (view()->exists('backend.promotion.coupon.index')) {
+            return view('backend.promotion.coupon.index');
+        }
 
+        return abort('Error.404');    
     }
    
 }

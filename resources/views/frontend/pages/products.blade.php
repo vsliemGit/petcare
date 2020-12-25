@@ -60,12 +60,32 @@
                             <form action="">
                                 @csrf
                                 <select name="sort" id="sort" class="form-control">
-                                    <option value="none">{{__('products.none')}}</option>
+                                    <option value="none">--{{__('products.none')}}--</option>
                                     <option value="desc">{{__('products.price_desc')}}</option>
                                     <option value="asc ">{{__('products.price_asc')}}</option>
                                     <option value="a_z ">{{__('products.name_asc')}}</option>
                                     <option value="z_a ">{{__('products.name_desc')}}</option>
                                 </select>
+                            </form>
+                        </div>
+                        <div class="col-sm-4">
+                            {{-- <label for="">{{ __('products.range_price') }}</label>
+                            <form action=""> --}}
+                                {{-- @csrf --}}
+                                {{-- <select name="rang_price" class="form-control">
+                                    <option value="" selected hidden>--{{__('products.choose')}}--</option>
+                                    <option value="1" data-min-price="10000" data-min-price="100000" >10.000đ - 100.000đ</option>
+                                    <option value="2" data-min-price="100000" data-min-price="2000000" >100.000đ - 500.000đ</option>
+                                    <option value="3" data-min-price="5000000" data-min-price="1000000" >500.000đ - 1000.000đ</option>
+                                    <option value="4" data-min-price="1000000" data-min-price="2000000" >1000.000đ - 2000.000đ</option>
+                                    <option value="4" data-min-price="1000000" data-min-price="2000000" >2000.000đ - 3000.000đ</option>
+                                </select> --}}
+                                {{-- <form class="form-inline" action="" method="GET">
+                                    Min <input class="form-control" type="text" name="min_price">
+                                    Max <input class="form-control" type="text" name="max_price">
+                                    Keyword <input class="form-control" type="text" name="keyword" >
+                                    <input class="btn btn-default" type="submit" value="Filter">
+                                </form> --}}
                             </form>
                         </div>
                     </div>
@@ -105,7 +125,7 @@
                     }
                 }
             });
-        });
+        }); 
 
         //Setup CSRF to AJAX
         $.ajaxSetup({
@@ -211,13 +231,17 @@
                 $("#list-product").empty().html(data);
                 });
             }); 
+            $('#sl2').on('change', function(){
+                console.log($('#sl2').data());
+            });
+            console.log($('#sl2').data());
         });
 
         //Get list product by category
         $(document).ready(function()
         {
             $('.search-products-by-category').on('click', function(){
-                $("#brand_id_choosed").val();
+                $("#brand_id_choosed").val("");
                 var category_id = $(this).data('category-id');
                 var category_name = $(this).text();
                 $.get( "{{route('show_by_category')}}" , { category_id : category_id } , function( data ) {     
@@ -234,7 +258,7 @@
         $(document).ready(function()
         {
             $('.search-products-by-brand').on('click', function(){
-                $("#category_id_choosed").val();
+                $("#category_id_choosed").val("");
                 var brand_id = $(this).data('brand-id');
                 var brand_name = $(this).data('brand-name');
                 $.get( "{{route('show_by_brand')}}" , { brand_id : brand_id } , function( data ) {     
@@ -246,5 +270,80 @@
                 });
             }) ;
         });
+
+        $('#price-range-submit').hide();
+
+$("#min_price,#max_price").on('change', function () {
+
+  $('#price-range-submit').show();
+
+  var min_price_range = parseInt($("#min_price").val());
+
+  var max_price_range = parseInt($("#max_price").val());
+
+  if (min_price_range > max_price_range) {
+    $('#max_price').val(min_price_range);
+  }
+
+  $("#slider-range").slider({
+    values: [min_price_range, max_price_range]
+  });
+
+});
+
+
+$("#min_price,#max_price").on("paste keyup", function () {            
+  $('#price-range-submit').show();
+
+  var min_price_range = parseInt($("#min_price").val());
+
+  var max_price_range = parseInt($("#max_price").val());
+
+  if(min_price_range == max_price_range){
+
+    max_price_range = min_price_range + 100;
+
+    $("#min_price").val(min_price_range);		
+    $("#max_price").val(max_price_range);
+  }
+
+  $("#slider-range").slider({
+    values: [min_price_range, max_price_range]
+  });
+
+});
+
+
+$(function () {
+  $("#slider-range").slider({
+    range: true,
+    orientation: "horizontal",
+    min: 0,
+    max: 10000,
+    values: [0, 10000],
+    step: 100,
+
+    slide: function (event, ui) {
+      if (ui.values[0] == ui.values[1]) {
+        return false;
+      }
+
+      $("#min_price").val(ui.values[0]);
+      $("#max_price").val(ui.values[1]);
+    }
+  });
+
+  $("#min_price").val($("#slider-range").slider("values", 0));
+  $("#max_price").val($("#slider-range").slider("values", 1));
+
+});
+
+$("#slider-range,#price-range-submit").click(function () {
+
+  var min_price = $('#min_price').val();
+  var max_price = $('#max_price').val();
+
+  $("#searchResults").text("Here List of products will be shown which are cost between " + min_price  +" "+ "and" + " "+ max_price + ".");
+});
     </script>
 @endsection

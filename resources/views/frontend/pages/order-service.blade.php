@@ -7,6 +7,9 @@ Order Service | PETCARE
 @endsection
 
 @section('custom-css')
+{{-- jquery ui--}}
+<link type="text/css" rel="stylesheet" href="vendor/jquery-ui/jquery-ui.min.css" />
+<script src="vendor/jquery-ui/jquery-ui.min.js"></script>
 <style>
 
 </style>

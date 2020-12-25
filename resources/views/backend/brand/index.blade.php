@@ -6,122 +6,143 @@
 Admin - List Brand
 @endsection
 
+@section('custom-css')
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.bootstrap.min.css">
+
+<style>
+  td.details-control {
+    background: url('https://datatables.net/examples/resources/details_open.png') no-repeat center center;
+    cursor: pointer;
+  }
+  tr.shown td.details-control {
+      background: url('https://datatables.net/examples/resources/details_close.png') no-repeat center center;
+  }
+  table.dataTable thead .sorting{
+    background-image:none
+  }
+  table.dataTable thead .sorting_desc{
+    background-image:none
+  }
+  table.dataTable thead .sorting_asc{
+    background-image:none
+  }
+</style>
+@endsection
+
 {{-- Thay thế nội dung vào Placeholder `main-content` của view `backend.layouts.index` --}}
 @section('main-content')
 <section class="wrapper">
   <div class="table-agile-info">
     <div class="panel panel-default">
       <div class="panel-heading">
-          List Brand
-      </div>
-      <div class="row w3-res-tb">
-      <div class="col-sm-4 m-b-xs">
-        <select id="action-tool" class="input-sm form-control w-sm inline v-middle">
-          <option value="" selected hidden>Choose tools</option>
-          <option value="0">Add item</option>
-          <option value="1">Export Excel</option>
-          <option value="2">Import Excel</option>
-          <option value="3">Create PDF</option>
-          <option value="4">Delete items</option>
-        </select>
-        <button id="btn-action-tool" class="btn btn-sm btn-default">Apply</button>              
-      </div>
-      <div class="col-sm-5">
-        <select id="select-filter-status" class="input-sm form-control w-sm inline v-middle">
-          <option value="all" selected>All status</option>
-          <option value="1">Active</option>
-          <option value="0">Noactive</option>
-        </select>
-        <button id="btn-filter-status" class="btn btn-sm btn-default">Apply</button>
-      </div>
-      <div class="col-sm-3">
-        <div class="input-group">
-          <input type="text" class="input-sm form-control" placeholder="Search">
-          <span class="input-group-btn">
-            <button class="btn btn-sm btn-default" type="button">Go!</button>
-          </span>
-        </div>
+          List Coupons
       </div>
     </div>
+    {{-- flash-message --}}
+  <div class="flash-message">
+    @foreach (['danger', 'warning', 'success', 'info'] as $msg)
+      @if(Session::has('alert-' . $msg))
+      <p id="flash-message" class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a  href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
+      @endif
+    @endforeach
+  </div>
     <!--table-->
     <div class="table-responsive"  id="tag_container">
-      {{-- flash-message --}}
-      {{-- content-table --}}
-      @include('backend.brand.table-data')
-      {{-- footer --}}
+      <table id="example" class="table table-striped b-t b-light datatable">
+        <thead >
+          <th style="width:20px;">
+          </th>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Slug</th>
+          <th>Describe</th>
+          <th>Status</th>
+          <th style="width:60px;"></th>
+        </thead>
+        <tbody>
+        </tbody>
+      </table> 
     </div>
-    {{-- modal --}}
-    {{-- @include('backend.brand.modal')
-    @include('backend.brand.modal_import_excel') --}}
   </div>
 </section>
  <!-- footer -->
 @include('backend.layouts.partials.footer')
-
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.flash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
 <script>
-    //Pagination AJAX
-    $(window).on('hashchange', function() {
-        if (window.location.hash) {
-            var page = window.location.hash.replace('#', '');
-            if (page == Number.NaN || page <= 0) {
-                return false;
-            }else{
-                getData(page);
-            }
-        }
-    })
-    
-    $(document).ready(function()
-    {
-        $(document).on('click', '.pagination a',function(event)
-        {
-            event.preventDefault();
-            $('li').removeClass('active');
-            $(this).parent('li').addClass('active');
-            var page = $(this).attr('href').split('page=')[1];
-            getData(page);
-        });
+    //Set timeout close flash-message
+    $("#flash-message").delay(2000).slideUp(1000, function() {
+        $(this).alert('close');
     });
 
-    //Reload table html
-    function getData(page){
-        $.ajax(
-        {
-            url: '?page=' + page,
-            type: "GET",
-        }).done(function(data){
-            $("#tag_container").html(data);
-            location.hash = page;
-        }).fail(function(jqXHR, ajaxOptions, thrownError){
-            swal("Error!", "No response from server...", "error");
-        });
+    function format ( d ) {
+        // `d` is the original data object for the row
+        return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+
+            '<tr>'+
+                '<td>Name:</td>'+
+                '<td>'+d.brand_name+'</td>'+
+            '</tr>'+
+            '<tr>'+
+                '<td>Create at:</td>'+
+                '<td>'+d.brand_created_at+'</td>'+
+            '</tr>'+
+            '<tr>'+
+                '<td>Update at:</td>'+
+                '<td>'+d.brand_updated_at+'</td>'+
+            '</tr>'+
+            '<tr>'+
+                '<td>Desc :</td>'+
+                '<td>'+d.brand_desc+'</td>'+
+            '</tr>'
+        '</table>';
     }
-    // End Pagination using AJAX
-
-    //Action tool
-    $("#btn-action-tool").click(function(){
-      var n = $("#action-tool").val();
-      switch(n) {
-         case "0": 
-          resetModal();
-          openModal("ADD NEW BRAND", "Add");
-          $("#action").val("Add");
-          break;
-        case "3":
-          createPDF();
-          break;
-        case "1":
-          exportExcel();
-          break;
-        case "2":
-          openModalImportExcel();
-          break;
-        case "4":
-          deleteMultiItem();
-          break;
-        default:
-        // code to be executed if n is different from case 1 and 2
-      }   
+    $(document).ready(function() {
+      var table = $('.datatable').DataTable({
+            processing: true,
+            serverSide: true,   
+            ajax: "{{ route('brand.index') }}",
+            columns: [
+              {
+                    "className":      'details-control',
+                    "orderable":      false,
+                    "searchable":     false,
+                    "data":           null,
+                    "defaultContent": ''
+                },
+                {data: 'DT_RowIndex', name: 'DT_RowIndex'},
+                {data: 'brand_id', name: 'brand_id'},
+                {data: 'brand_name', name: 'brand_name'},
+                {data: 'brand_slug', name: 'brand_slug'}, 
+                {data: 'status',  name: 'status',  orderable: false,  searchable: false },
+                {data: 'action', name: 'action',  orderable: false,  searchable: false },
+            ],
+            dom: 'Bfrtip',
+        });
+        // Add event listener for opening and closing details
+        $('#example tbody').on('click', 'td.details-control', function () {
+            var tr = $(this).closest('tr');
+            var row = table.row( tr );
+    
+            if ( row.child.isShown() ) {
+                // This row is already open - close it
+                row.child.hide();
+                tr.removeClass('shown');
+            }
+            else {
+                // Open this row
+                row.child( format(row.data()) ).show();
+                tr.addClass('shown');
+            }
+        } );
     });
 
     //Setup CSRF to AJAX

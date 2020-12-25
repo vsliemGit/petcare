@@ -9,6 +9,16 @@
                         <i class="fa fa-dashboard"></i>
                         <span>Dashboard</span>
                     </a>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa   fa-suitcase"></i>
+                        <span>Banner</span>
+                    </a>
+                    <ul class="sub">
+                        <li></i><a href="{{Route('banner.index')}}">List Banners</a></li>
+                        <li></i><a href="{{Route('banner.create')}}">Add Banner</a></li>
+                    </ul>
                 </li> 
                 <li class="sub-menu">
                     <a href="javascript:;">
@@ -67,6 +77,8 @@
                     <ul class="sub">
                         <li></i><a href="{{Route('coupon.index')}}">Coupons</a></li>
                         <li></i><a href="{{Route('coupon.create')}}">Add coupon</a></li>
+                        <li></i><a href="{{Route('sale.index')}}">Sales</a></li>
+                        <li></i><a href="{{Route('sale.create')}}">Add sale</a></li>
                     </ul>
                 </li>
                 <li class="sub-menu">
@@ -94,16 +106,6 @@
                     </a>
                     <ul class="sub">
 						<li></i><a href="{{Route('customer.index')}}">List Customers</a></li>
-                    </ul>
-                </li>
-                <li class="sub-menu">
-                    <a href="javascript:;">
-                        <i class="fa   fa-suitcase"></i>
-                        <span>Banner</span>
-                    </a>
-                    <ul class="sub">
-                        <li></i><a href="{{Route('banner.index')}}">List Banners</a></li>
-                        <li></i><a href="{{Route('banner.create')}}">Add Banner</a></li>
                     </ul>
                 </li>
             </ul>            
