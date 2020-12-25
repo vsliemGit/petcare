@@ -140,6 +140,16 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::post('/import-excel', 'Backend\OrderController@importExcel')->name('order.import_excel');
     });
 
+    //OrderServiceController
+    Route::prefix('order')->group(function(){
+        Route::get('/service', 'Backend\OrderController@indexService')->name('order.service.index');
+        Route::get('/data-service', 'Backend\OrderController@datatablesService')->name('order.service.data');
+        Route::get('/view-order/service/{id}', 'Backend\OrderController@viewOrderService')->name('order.service.view_order');
+        Route::post('/change-status-service', 'Backend\OrderController@changeStatusService')->name('order.change_status_service');
+        // Route::delete('/delete/service', 'Backend\OrderController@destroyService')->name('order.service.destroy');
+        // Route::post('/change-status/service', 'Backend\OrderController@changeStatusService')->name('order.service.changeStatus');
+    });
+
      //UserController
      Route::prefix('user')->group(function(){
         Route::get('/', 'Backend\UserController@index')->name('user.index');
@@ -208,6 +218,7 @@ Route::post('/add-to-cart', 'Frontend\CartController@addToCart')->name('add-to-c
 Route::get('/delete-to-cart', 'Frontend\CartController@deleteToCart')->name('delele-to-cart');
 Route::get('/store-to-cart', 'Frontend\CartController@storeCart')->name('store-to-cart');
 Route::post('/update-to-cart', 'Frontend\CartController@updateToCart')->name('update-to-cart');
+Route::post('/import-excel', 'Backend\OrderController@importExcel')->name('order.import_excel');
 
 //Wishlist
 Route::get('/wishlist', 'Frontend\WishlistController@wishlist')->name('wishlist');
@@ -223,6 +234,8 @@ Route::get('/login-checkout', 'Frontend\FrontendController@loginCheckout')->name
 Route::get('/checkout', 'Frontend\FrontendController@checkout')->name('checkout')->middleware('customer');
 Route::post('/order', 'Frontend\FrontendController@order')->name('order')->middleware('customer');
 Route::get('/order-finish', 'Frontend\FrontendController@orderFinish')->name('orderFinish');
+Route::get('/cancel-order', 'Backend\OrderController@cancelOrder')->name('cancel_order');
+Route::get('/cancel-order-service', 'Backend\OrderController@cancelOrderService')->name('cancel_order_service');
 
 //Servies
 Route::get('/services', 'Frontend\ServiceController@index')->name('servies.index');

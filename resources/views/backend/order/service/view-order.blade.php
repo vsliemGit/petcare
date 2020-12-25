@@ -16,42 +16,41 @@ Admin - Order detail
     <div class="">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Chi tiết đơn hàng
+                Chi tiết lịch hẹn
             </div>
             <!--table-->
             <div class="table table-bordered"  id="tag_container">
                 {{-- content-table --}}
                 <table class=" table-bordered">
                     <tr>
-                        <td><b>Phương thức vận chuyển : </b></td>
-                        <td><i>{{$order->transfer->transfer_name}}</i></td>
+                        <td><b>Ngày hẹn: </b></td>
+                        <td><i>{{$order_service->order_service_date_begin}}</i></td>
                         <td colspan="2"><div><b>THÔNG TIN KHÁCH HÀNG</b></div></td>
                     </tr>
                     <tr>
-                        <td><b>Phương thức Thanh toán : </b></td>
-                        <td><i>{{$order->payment->payment_name}}</i></td>
+                        <td><b>Giờ hẹn : </b></td>
+                        <td><i>{{$order_service->order_service_time}}</i></td>
                         <td><label for="">Tên khách hàng:</label></td>
-                        <td> {{$order->customer->name}}</td>
+                        <td> {{$order_service->customer->name}}</td>
                     </tr>
                     <tr>
-                        <td><b>Thời gian lập đơn hàng : </b></td>
-                        <td><i>{{$order->order_created_at}}</i></td>
-                        <td><label for="">Số điện thoại:</label></td>
-                        <td>(+84) {{$order->customer->phone}}</td>
+                        <td><b>Thời gian lập lịch hẹn : </b></td>
+                        <td><i>{{$order_service->order_created_at}}</i></td>
+                        <td><label for="">Ngày chỉnh sửa:</label></td>
+                        <td>(+84) {{$order_service->order_updated_at}}</td>
                     </tr>
                     <tr>
-                        <td><b>Trạng thái đơn hàng : </b></td>
+                        <td><b>Trạng thái lịch hẹn : </b></td>
                         <td>                         
-                            <select id="select-order-status" data-id="{{$order->order_id}}" class="input-sm form-control w-sm inline v-middle" {{ old('order_status', $order->order_status) == -1 ? "disabled" : "" }}>
-                              <option value="0" {{ old('order_status', $order->order_status) == 0 ? "selected" : "" }}><i>Đang chờ duyệt</i></option>
-                              <option value="1" {{ old('order_status', $order->order_status) == 1 ? "selected" : "" }}><i>Đã duyệt</i></option>
-                              <option value="2" {{ old('order_status', $order->order_status) == 2 ? "selected" : "" }}><i>Đang vận chuyển</i></option>
-                              <option value="3" {{ old('order_status', $order->order_status) == 3 ? "selected" : "" }}><i>Đã giao hàng</i></option>
-                              <option value="-1" {{ old('order_status', $order->order_status) == -1 ? "selected" : "" }}><i>Đã hủy</i></option>
+                            <select id="select-order-order-status" data-id="{{$order_service->order_service_id}}" class="input-sm form-control w-sm inline v-middle" {{ old('order_service_status', $order_service->order_service_status) == -1 ? "disabled" : "" }}>
+                              <option value="0" {{ old('order_service_status', $order_service->order_service_status) == 0 ? "selected" : "" }}><i>Đang chờ duyệt</i></option>
+                              <option value="1" {{ old('order_service_status', $order_service->order_service_status) == 1 ? "selected" : "" }}><i>Đã duyệt</i></option>
+                              <option value="2" {{ old('order_service_status', $order_service->order_service_status) == 2 ? "selected" : "" }}><i>Đã hoàn thành</i></option>
+                              <option value="-1" {{ old('order_service_status', $order_service->order_service_status) == -1 ? "selected" : "" }}><i>Đã hủy</i></option>
                             </select>
                         </td>
-                        <td><label for="">Email:</label> </td>
-                        <td>{{$order->customer->email}}</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
                     </tr>
                 </table>
             </div>
@@ -60,7 +59,7 @@ Admin - Order detail
     <div class="table-agile-info">
         <div class="panel panel-default">
             <div class="panel-heading">
-               Danh sách sản phẩm
+               Danh sách dịch vụ
             </div>
             <div class="row w3-res-tb">
                 <div class="col-sm-4 m-b-xs">
@@ -94,7 +93,7 @@ Admin - Order detail
             <!--table-->
             <div class="table-responsive"  id="tag_container">
                 {{-- content-table --}}
-                @include('backend.order.table-detail-order')    
+                @include('backend.order.service.table-detail-order')    
             </div>
         </div>
     </div>
@@ -114,11 +113,11 @@ Admin - Order detail
     });
 
     //Changing status of Order
-    $('#select-order-status').change(function(){
+    $('#select-order-order-status').change(function(){
       var value  = $(this).val();
       var id = $(this).data('id');
       $.ajax({
-        url : "{{route('order.changeStatus')}}",
+        url : "{{route('order.change_status_service')}}",
         method : 'POST',
         data : {
           id : id,

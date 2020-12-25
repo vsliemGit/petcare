@@ -28,7 +28,7 @@ class ProductsTableSeeder extends Seeder
                 'brand_id' => 1
             ],
             [
-                'product_name' => "Smartheart - Pate vị gà",//2
+                'product_name' => "Smartheart Pate",//2
                 'product_slug' => "smartheart_pate_vi_ga",
                 'product_image' => "2206_PateSmartheartvgchochln130gr.png",
                 'product_basis_price' => 19000,
@@ -40,8 +40,8 @@ class ProductsTableSeeder extends Seeder
                 'brand_id' => 2
             ],
             [
-                'product_name' => "PRO PAC Ultimates Large Breed",//3
-                'product_slug' => "pro_pac_ultimates_large_breed",
+                'product_name' => "PRO PAC Ultimates",//3
+                'product_slug' => "pro_pac_ultimates",
                 'product_image' => "250_4327_propac.jpg",
                 'product_basis_price' => 170000,
                 'product_price' => 155000,
@@ -76,8 +76,8 @@ class ProductsTableSeeder extends Seeder
                 'brand_id' => 3
             ],
             [
-                'product_name' => "Creamy DOCTOR OMEGA-STICK",//6
-                'product_slug' => "creamy_doctor_omega_stick",
+                'product_name' => "Creamy DOCTOR",//6
+                'product_slug' => "creamy_doctor",
                 'product_image' => "250_3519_1702200001_m1.jpg",    
                 'product_basis_price' => 88000,
                 'product_price' => 90000,
@@ -88,8 +88,8 @@ class ProductsTableSeeder extends Seeder
                 'brand_id' => 4
             ],
             [
-                'product_name' => "Thức ăn ướt Me-o Delite",//7
-                'product_slug' => "thuc_an_uot_me-o_delite",
+                'product_name' => "Me-o Delite",//7
+                'product_slug' => "me-o_delite",
                 'product_image' => "250_4379_delite_tuna_chicken.jpg",    
                 'product_basis_price' => 30000,
                 'product_price' => 34000,
@@ -112,7 +112,7 @@ class ProductsTableSeeder extends Seeder
                 'brand_id' => 5
             ],
             [
-                'product_name' => "Nhà hình quả dâu ABC",//9
+                'product_name' => "Nhà quả dâu ABC",//9
                 'product_slug' => "nha_hinh_qua_dau_abc",
                 'product_image' => "250_1121_nha_hinh_qua_dau_abc_xanh_38x45x38cm.jpg",    
                 'product_basis_price' => 299000,

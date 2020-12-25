@@ -68,6 +68,9 @@
                     <ul class="sub">
 						<li></i><a href="{{Route('order.index')}}">List Orders</a></li>
                     </ul>
+                    <ul class="sub">
+						<li></i><a href="{{Route('order.service.index')}}">List Order Service</a></li>
+                    </ul>
                 </li>
                 <li class="sub-menu">
                     <a href="javascript:;">

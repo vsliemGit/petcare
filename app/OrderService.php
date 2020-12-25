@@ -22,4 +22,8 @@ class OrderService extends Model
             'order_detail_quantity'
         ]);
     }
+
+    public function customer(){
+        return $this->belongsTo('App\Customer', 'customer_id', 'id');
+    }
 }

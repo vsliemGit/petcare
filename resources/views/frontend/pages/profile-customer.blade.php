@@ -127,7 +127,7 @@ Profile | PETCARE
                             <th scope="col">Thanh toán</th>
                             <th scope="col">Vận chuyển</th>
                             <th scope="col">Trạng thái</th>
-                            <th style="width:30px;"></th>
+                            <th style="width:60px;"></th>
                           </tr>
                         </thead>
                         <tbody>
@@ -140,19 +140,38 @@ Profile | PETCARE
                                 <td>{{$order->payment->payment_name}}</td>
                                 <td>{{$order->transfer->transfer_name}}</td>
                                 <td>
-                                    <i>
-                                        <?php if($order->order_status == 0){ ?>
-                                        <i>Đang chờ duyệt</i>
-                                              <?php  }else{ ?>  
-                                        <i>Đã duyệt</i>
-                                         <?php  } ?>
-                                    </i>
+                                    @php
+                                        $stringStatus = "Đang chờ duyệt";
+                                        switch ($order->order_status) {
+                                            case -1:
+                                                $stringStatus = "Đã hủy";
+                                                break;
+                                            case 0:
+                                                $stringStatus = "Đang chờ duyệt";
+                                                break;
+                                            case 1:
+                                                $stringStatus = "Đã duyệt";
+                                                break;
+                                            case 2:
+                                                $stringStatus = "Đang vận chuyển";
+                                                break;
+                                            default:
+                                                $stringStatus = "Đã giao hàng";
+                                            }
+                                    @endphp
+                                    <li class="status_order_{{$order->order_id}}">{{$stringStatus}}</li>
                                 </td>
                                 <td>
-                                    <a href="javascript:void(0)" data-id="{{$order->order_id}}"
-                                        class="active styling-edit view-item" ui-toggle-class="">
-                                        <i class="fa fa-eye text-success text-active"></i>
-                                    </a>
+                                        <a href="javascript:void(0)" data-id="{{$order->order_id}}"
+                                            class="active styling-edit view-item" ui-toggle-class="">
+                                            <i class="fa fa-eye text-success text-active"></i>
+                                        </a>
+                                    @if (!$order->order_status>0)
+                                        <a href="javascript:void(0)" data-id="{{$order->order_id}}"
+                                            class="cancel_order active styling-edit cancel_order_{{$order->order_id}}" ui-toggle-class="">
+                                            <i class="fa fa-minus-square" style="color: red;"></i>
+                                        </a>
+                                    @endif
                                 </td>
                               </tr>  
                               @endforeach
@@ -174,7 +193,7 @@ Profile | PETCARE
                             <th scope="col">Ngày hẹn</th>
                             <th scope="col">Giờ hẹn</th>
                             <th scope="col">Trạng thái</th>
-                            <th style="width:30px;"></th>
+                            <th style="width:50px;"></th>
                           </tr>
                         </thead>
                         <tbody>
@@ -185,19 +204,35 @@ Profile | PETCARE
                                 <td>{{$service->order_service_date_begin}}</td>
                                 <td>{{$service->order_service_time}}</td>
                                 <td>
-                                    <i>
-                                        <?php if($service->order_service_status == 0){ ?>
-                                        <i>Đang chờ duyệt</i>
-                                              <?php  }else{ ?>  
-                                        <i>Đã duyệt</i>
-                                         <?php  } ?>
-                                    </i>
-                                </td>
+                                    @php
+                                        $stringStatus = "Đang chờ duyệt";
+                                        switch ($service->order_service_status) {
+                                            case -1:
+                                                $stringStatus = "Đã hủy";
+                                                break;
+                                            case 0:
+                                                $stringStatus = "Đang chờ duyệt";
+                                                break;
+                                            case 1:
+                                                $stringStatus = "Đã duyệt";
+                                                break;
+                                            case 3:
+                                                $stringStatus = "Đã hoàn thành";
+                                                break;
+                                            }
+                                    @endphp
+                                    <li class="status_order_service_{{$service->order_service_id}}">{{$stringStatus}}</li>
                                 <td>
                                     <a href="javascript:void(0)" data-id="{{$service->order_service_id}}"
                                         class="active styling-edit view-item" ui-toggle-class="">
                                         <i class="fa fa-eye text-success text-active"></i>
                                     </a>
+                                    @if (!$service->order_service_status>0)
+                                        <a href="javascript:void(0)" data-id="{{$service->order_service_id}}"
+                                            class="cancel_order_service active styling-edit cancel_order_service_{{$service->order_service_id}}" ui-toggle-class="">
+                                            <i class="fa fa-minus-square" style="color: red;"></i>
+                                        </a>
+                                    @endif
                                 </td>
                               </tr>  
                               @endforeach
@@ -264,11 +299,70 @@ Profile | PETCARE
                 }
             }).done(function(data){   
                 $('#detail_order_service').html(data);
-               console.log(data);
             }).error(function(e){
                 console.log(e);
             });
 
+    });
+
+    // cancel order
+    $('.cancel_order').click(function(e){ 
+        var order_id = $(this).data('id');
+        swal({
+            title: "Are you sure?",
+            text: "If you cancel, you cannot purchase any more!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+            var url = "{{route('cancel_order')}}";
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: {order_id: order_id}
+            }).done(function(data){
+                swal('Successfully!', 'Your are cancel order successfully!', 'success');
+                $(".status_order_"+order_id).text("Đã hủy");
+                $(".cancel_order_"+order_id).remove();;
+            }).error(function(data){
+                console.log(data);
+                swal("Error!", "No response from server...", "error");
+            });
+            } else {
+            swal("Cancel!", "Your file isn't deleted...", "info");
+            }
+        });
+    });
+
+    // cancel order
+    $('.cancel_order_service').click(function(e){ 
+        var order_service_id = $(this).data('id');
+        swal({
+            title: "Are you sure?",
+            text: "If you cancel, you cannot purchase any more!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        }).then((willDelete) => {
+            if (willDelete) {
+            var url = "{{route('cancel_order_service')}}";
+            $.ajax({
+                url: url,
+                type: 'GET',
+                data: {order_service_id: order_service_id}
+            }).done(function(data){
+                swal('Successfully!', 'Your are cancel order service successfully!', 'success');
+                $(".status_order_service_"+order_service_id).text("Đã hủy");
+                $(".cancel_order_service_"+order_service_id).remove();;
+            }).error(function(data){
+                console.log(data);
+                swal("Error!", "No response from server...", "error");
+            });
+            } else {
+            swal("Cancel!", "Your file isn't deleted...", "info");
+            }
+        });
     });
 });
 </script>
