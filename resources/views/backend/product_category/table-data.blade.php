@@ -1,5 +1,3 @@
-{{-- table-data --}}
-{{-- flash-message --}}
 <div class="flash-message">
   @foreach (['danger', 'warning', 'success', 'info'] as $msg)
     @if(Session::has('alert-' . $msg))
@@ -43,9 +41,9 @@
             <a data-id="0" href="javascript:void(0)"><span class="fa fa-times text-danger text"></span></a>
           <?php  } ?>
         </td>
-        @if($productCatetory->parent_id != null){
+        @if($productCatetory->parent_id != null)
           <td><span class="text-ellipsis">{{ $productCatetory->parent->pro_category_name }}</span></td>
-        }
+        
         @else
           <td><span class="text-ellipsis">(none)</span></td>
         @endif

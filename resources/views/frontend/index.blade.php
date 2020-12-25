@@ -61,7 +61,7 @@ Home | PETCARE
                                 </select>
                             </form>
                         </div>
-                        <div class="col-md-4">
+                        {{-- <div class="col-md-4">
                             <label for="">{{ __('products.sort_price') }}</label>
                             <form action="">
                                 @csrf
@@ -71,7 +71,7 @@ Home | PETCARE
                                     <option value="asc ">{{__('products.price_asc')}}</option>
                                 </select>
                             </form>
-                        </div>
+                        </div> --}}
                     </div>
                     <div  id="list-products">
                         @include('frontend.widgets.list-products')

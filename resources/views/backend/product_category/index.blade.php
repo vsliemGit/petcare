@@ -43,10 +43,7 @@ Admin - List Product categories
     </div>
     <!--table-->
     <div class="table-responsive"  id="tag_container">
-      {{-- flash-message --}}
-      {{-- content-table --}}
-      @include('backend.product_category.table-data')
-      {{-- footer --}}
+          @include('backend.product_category.table-data')
     </div>
     {{-- modal --}}
     @include('backend.product_category.modal')
@@ -67,13 +64,13 @@ Admin - List Product categories
   });
 
   // codes works on all bootstrap modal windows in application
-  $('#modal').on('hidden.bs.modal', function(e)
-  { 
-      $(this).removeData();
-  });
+    $('#modal').on('hidden.bs.modal', function(e)
+    { 
+        $(this).removeData();
+    });
 
-  //Pagination AJAX
-  $(window).on('hashchange', function() {
+    //Pagination AJAX
+    $(window).on('hashchange', function() {
         if (window.location.hash) {
             var page = window.location.hash.replace('#', '');
             if (page == Number.NaN || page <= 0) {
@@ -216,6 +213,7 @@ Admin - List Product categories
             });
           }
         }
+      }
     }
     
     //Action tool
@@ -306,90 +304,35 @@ Admin - List Product categories
         });
       }
     }
-
-    // //Edit item using AJAX
-    // $("body").on('click', '.edit-item', function(){
-    //     event.preventDefault();
-    //     //Get value in feild
-    //     let currentPageNumner =  $('.pagination').find('.active').children().text();
-    //     // let id = $(this).parent().parent().find('.td-id').text();
-    //     let name = $(this).parent().parent().find('.td-name').text();
-    //     let slug = $(this).parent().parent().find('.td-slug').text();
-    //     let desc = $(this).parent().parent().find('.td-desc span').text();
-    //     let status = $(this).parent().parent().find('.td-status a').data('id');
-    //     //Open modal
-    //     openModal('EDIT PRODUCT CATEGORY', 'Save changes');
-    //     _modal.modal('show');
-    //     //Set value for modal
-    //     $('input[name="pro_category_name"]').val(name);
-    //     $('input[name="pro_category_slug"]').val(slug);
-    //     $('textarea[name="pro_category_desc"').val(desc);
-    //     $('select[name="pro_category_status"]').val(status);
-    //     //Edit item whem click btn-action
-    //     $('#btn-action').on('click', function(){
-    //       event.preventDefault();          
-    //       if($("#action").val() !== "Add"){
-    //         name = $('#pro_category_name').val();
-    //         slug = $('#pro_category_slug').val();
-    //         desc = $('#pro_category_desc').val();
-    //         status = $('#pro_category_status').val();
-    //         $.ajax({
-    //             url: "{{ route('product_category.update') }}",
-    //             type: 'POST',
-    //             data:{
-    //               pro_category_id : id,
-    //               pro_category_name : name,
-    //               pro_category_slug : slug,
-    //               pro_category_desc : desc,
-    //               pro_category_status : status
-    //             },
-    //             success: function(data){
-    //               console.log(data);
-    //               _modal.modal('hide');
-    //               swal('Successfully!', 'Edit ""'+name+'" is successfuly...', 'success');
-    //               $("#tag_container").empty().html(data);
-    //               getData(currentPageNumner);
-    //             },
-    //             error: function(data){
-    //               console.log(data);
-    //               _modal.modal('hide');
-    //               swal("Error!", "Have an error when you try to edit...", "error");
-    //             }
-    //           }     
-    //         );
-    //       }
-    //     });
-    // });
-
-        //Edit item using AJAX
-        $("body").on('click', '.edit-item', function(){
-        event.preventDefault();
-        //Get value in feild
-        let currentPageNumner =  $('.pagination').find('.active').children().text();
-        let id = $(this).parent().parent().find('.td-id').text();
-        let name = $(this).parent().parent().find('.td-name').text();
-        let slug = $(this).parent().parent().find('.td-slug').text();
-        let desc = $(this).parent().parent().find('.td-desc span').text();
-        let status = $(this).parent().parent().find('.td-status a').data('id');
-        //Open modal
-        openModal('EDIT PRODUCT CATEGORY', 'Save changes');
-        _modal.modal('show');
-        //Set value for modal
-        $('input[name="pro_category_name"]').val(name);
-        $('input[name="pro_category_slug"]').val(slug);
-        $('textarea[name="pro_category_desc"').val(desc);
-        $('select[name="pro_category_status"]').val(status);
-        //Edit item whem click btn-action
-        $('#btn-action').on('click', function(){
-          event.preventDefault();          
-          if($("#action").val() !== "Add"){
-            name = $('#pro_category_name').val();
-            slug = $('#pro_category_slug').val();
-            desc = $('#pro_category_desc').val();
-            status = $('#pro_category_status').val();
-            editItemUsingAjax({id, name, slug, desc, status });
-          }
-        });
+    //Edit item using AJAX
+    $("body").on('click', '.edit-item', function(){
+      event.preventDefault();
+      //Get value in feild
+      let currentPageNumner =  $('.pagination').find('.active').children().text();
+      let id = $(this).parent().parent().find('.td-id').text();
+      let name = $(this).parent().parent().find('.td-name').text();
+      let slug = $(this).parent().parent().find('.td-slug').text();
+      let desc = $(this).parent().parent().find('.td-desc span').text();
+      let status = $(this).parent().parent().find('.td-status a').data('id');
+      //Open modal
+      openModal('EDIT PRODUCT CATEGORY', 'Save changes');
+      _modal.modal('show');
+      //Set value for modal
+      $('input[name="pro_category_name"]').val(name);
+      $('input[name="pro_category_slug"]').val(slug);
+      $('textarea[name="pro_category_desc"').val(desc);
+      $('select[name="pro_category_status"]').val(status);
+      //Edit item whem click btn-action
+      $('#btn-action').on('click', function(){
+        event.preventDefault();          
+        if($("#action").val() !== "Add"){
+          name = $('#pro_category_name').val();
+          slug = $('#pro_category_slug').val();
+          desc = $('#pro_category_desc').val();
+          status = $('#pro_category_status').val();
+          editItemUsingAjax({id, name, slug, desc, status });
+        }
+      });
     });
 
     function editItemUsingAjax(data){
