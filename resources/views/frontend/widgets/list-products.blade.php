@@ -3,8 +3,27 @@
     <div class="col-sm-6 col-lg-3">
         <div class="product-image-wrapper">
             <div class="single-products">
-                <div class="productinfo text-center">                  
+                <div class="productinfo text-center">                 
                     <img class="card-product" src="{{ asset('storage/images/' . $product->product_image) }}" alt="" />
+                    @if($product->sale->count()>0)
+                            @php
+                                $price_product = $product->product_price;
+                                $condition = $product->sale->first()->sale_condition;
+                                $number_sale = $product->sale->first()->sale_number;
+                                $price_after_sale = 0;
+                                if($condition == 0){
+                                    $price_sale = ($price_product*$number_sale)/100;
+                                    $total_after_sale = $price_product - $price_sale;	
+                                }else{
+                                    $price_sale = $subTotal - $number_sale;
+                                    $total_after_sale = ($price_sale > 0) ? $price_sale : 0;	
+                                }
+                            @endphp 
+                            <del><h4>{{ number_format($product->product_price, 2)}} vnđ</h4></del>
+                            <h2 style="color: red;">{{ number_format($total_after_sale, 0)}} vnđ</h2>
+                    @else
+                        <h2>${{ number_format($product->product_price, 2)}} </h2> 
+                    @endif
                     <a href="{{ route('frontend.product_detail', ['id' => $product->product_id ]) }}"><h5 style="color: blue; ">{{ $product->product_name }}</h5></a>
                     <ul class="list-inline">
                         @for ($i = 1; $i <= 5; $i++)
