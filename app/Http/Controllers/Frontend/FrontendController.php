@@ -96,12 +96,15 @@ class FrontendController extends Controller
         $topThreeNewProducts = Product::orderBy('product_created_at')->take(10)->get();
         $listProductCategoriesParent = ProductCategory::where('parent_id', null)
             ->orderBy('pro_category_created_at', 'desc')->get();
+        $listId = Product_Sale::select('product_id')->get();
+        $listSaleOff = Product::whereIn('product_id', $listId)->get();
         $rating = [];
         foreach($allProducts as $key => $product){
             $rating[$product->product_id] = $this->getRating($product->product_id);
         }
         return view('frontend.pages.products')
             ->with('listBrands', $listBrands)
+            ->with('listSaleOff', $listSaleOff)
             ->with('topThreeNewProducts', $topThreeNewProducts)
             ->with('listProductCategoriesParent', $listProductCategoriesParent)
             ->with('rating', $rating)
@@ -207,7 +210,9 @@ class FrontendController extends Controller
         $listBrands = Brand::all();
         $listProductCategoriesParent = ProductCategory::where('parent_id', null)
             ->orderBy('pro_category_created_at', 'desc')->get();
-        return view('frontend.pages.result-search', ['listBrands' => $listBrands, 'listProductCategoriesParent' => $listProductCategoriesParent]);
+        $listId = Product_Sale::select('product_id')->get();
+        $listSaleOff = Product::whereIn('product_id', $listId)->get();
+        return view('frontend.pages.result-search', ['listBrands' => $listBrands, 'listProductCategoriesParent' => $listProductCategoriesParent, 'listSaleOff' => $listSaleOff]);
     }
 
     public function search(Request $request){

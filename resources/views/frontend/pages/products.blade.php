@@ -49,8 +49,11 @@
                 @include('frontend.widgets.left-sidebar')
             </div>
             <div class="col-sm-9 padding-right" id="main-contain-ajax">
-                <!-- New products  -->
-                @include('frontend.widgets.new-products')
+                {{-- <!-- New products  -->
+                @include('frontend.widgets.new-products') --}}
+                 <!-- Sale off  -->
+                 @include('frontend.widgets.list-sale-product')
+                 
                 <div class="features_items"><!--features_items-->
                     <!-- List Products  -->
                     <h2 class="title text-center">LIST PRODUCTS</h2>
