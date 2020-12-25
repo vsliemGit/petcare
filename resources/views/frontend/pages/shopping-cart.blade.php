@@ -123,7 +123,7 @@
                         @endphp
                     @endif
                     <ul>
-                        <li>Cart Sub Total <span id="subtotal"> {{ Cart::subtotal() .' '. 'VNĐ' }}</span></li>
+                        <li>Cart Sub Total <span id="subtotal1"> {{ Cart::subtotal() .' '. 'VNĐ' }}</span></li>
                         <li>Eco Tax <span>0 VNĐ</span></li>
                         <li>Shipping Cost <span>Free</span></li>
                         @if(Session::get('coupon'))
@@ -150,7 +150,7 @@
                                     </li>
                                 @endif
                             @endforeach  
-                        <li>Total <span id="subtotal">{{number_format( $total_after_coupon ,0,',','.') .' '. 'VNĐ' }}</span></li>
+                            <li>Total <span id="subtotal">{{number_format( $total_after_coupon ,0,',','.') .' '. 'VNĐ' }}</span></li>
                         @else
                             <li>Total <span id="subtotal">{{ Cart::subtotal() .' '. 'VNĐ' }}</span></li>
                         @endif
@@ -220,6 +220,7 @@
             }).done(function(data){
                 if(data.code==200){
                     realoadCountCart(data.itemInCart);
+                    $('#subtotal1').text("$"+data.subtotal+" VNĐ");
                     $('#subtotal').text("$"+data.subtotal+" VNĐ");
                     pSubtotal.text("$"+data.pSubtotal+" VNĐ");
                 }

@@ -18,8 +18,24 @@ class CartController extends Controller
     }
 
     public function addToCart(Request $request){
+
         (!isset($request->quantity)) ? $quantity = 1 : $quantity = $request->quantity;
         $product = Product::find($request->product_id);
+        $product_price = $product->product_price;
+
+        if($product->sale->count()>0){
+            $price_product = $product->product_price;
+            $condition = $product->sale->first()->sale_condition;
+            $number_sale = $product->sale->first()->sale_number;
+
+            if($condition == 0){
+                $price_sale = ($price_product*$number_sale)/100;
+                $product_price = $price_product - $price_sale;	
+            }else{
+                $price_sale = $subTotal - $number_sale;
+                $product_price = ($price_sale > 0) ? $price_sale : 0;	
+            }
+        }
         if($product->product_quantity < $quantity){
             return response()->json([
                 'code' => 500,
@@ -39,7 +55,7 @@ class CartController extends Controller
         $data['id'] = $product->product_id;
         $data['name'] = $product->product_name;
         $data['qty'] = $quantity;
-        $data['price'] = $product->product_price;
+        $data['price'] =  $product_price;
         $data['weight'] = $product->product_quantity;
         $data['options']['image'] = $product->product_image;
         Cart::instance('cart')->add($data);     
@@ -82,7 +98,7 @@ class CartController extends Controller
     }
 
     public function updateToCart(Request $request){
-        $product = DB::table('products')->where('product_id', Cart::instance('cart')->get('38c4524dbc69e2de78680f70cebae85f')->id)->first();
+        $product = DB::table('products')->where('product_id', Cart::instance('cart')->get($request->rowId)->id)->first();
         if($product->product_quantity < $request->quantity){
             return response()->json([
                 'code' => 500,

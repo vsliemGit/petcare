@@ -19,7 +19,7 @@ class ProductsTableSeeder extends Seeder
                 'product_name' => "JERHIGH Chicken", //1
                 'product_slug' => "jerhigh_chicken",
                 'product_image' => "nuoc-sot-cho-cho-vi-thit-ga-va-rau-cu-jerhigh-chicken-and-vegetable-in-gravy-400x400.jpg",
-                'product_basis_price' => 30000,
+                'product_basis_price' => 18000,
                 'product_price' => 22000,
                 'product_quantity' => $faker->numberBetween(1, 100),
                 'product_status' =>  1,

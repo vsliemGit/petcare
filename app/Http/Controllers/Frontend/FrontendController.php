@@ -9,6 +9,7 @@ use DB;
 use Session;
 use Cart;
 use Auth;
+use Mail;
 use App\Rating;
 use App\Comment;
 use App\Customer;
@@ -610,18 +611,33 @@ class FrontendController extends Controller
                     'order_detail_quantity' => $product->qty
                 ]);
                 $product_basic_price = DB::table('products')->where('product_id', $product->id)->select('product_basis_price')->first()->product_basis_price;
-                $fee_profit += ($product->price - $product_basic_price );
-                $quantity_product += $product->qty;
-
-                Cart::instance('cart')->remove($product->rowId);         
+                
+                $price_after_sale = $product->price;
+                $productInStore = Product::find($product->id);
+                
+                if($productInStore->sale->count()>0){
+                    $price_product = $productInStore->product_price;
+                    $condition = $productInStore->sale->first()->sale_condition; 
+                    $number_sale = $productInStore->sale->first()->sale_number;
+                    if($condition == 0){
+                        $price_sale = ($price_product*$number_sale)/100;
+                        $total_after_sale = $price_product - $price_sale;	
+                    }else{
+                        $price_sale = $subTotal - $number_sale;
+                        $total_after_sale = ($price_sale > 0) ? $price_sale : 0;	
+                    }
+                   
+                }   
+                $fee_profit += ($price_after_sale - $product_basic_price );
+                $quantity_product += $product->qty;    
             }
+
             DB::table('statistics')->updateOrInsert(
                 ['order_date' => $date],
                 [   'sales' =>  $coupon_fee,
                     'profit'=> $fee_profit,
                     'quantity' => $statistic->quantity += $quantity_product
                 ]);
-
             Statistic::where('order_date', $date)->increment('total_order');
             
         }catch(ValidationException $e) {
@@ -630,14 +646,21 @@ class FrontendController extends Controller
                 'message' => $e,
                 'redirectUrl' => route('frontend.home')
             ));
-        }      
+        }    
         $params = [
             'cart_content' => $cart_content,
             'order' => $order,
             'customer' => $customer,
             'message' => "Thêm đơn hàng thành công!"
         ];
+        $to_email = Auth::guard('customer')->user()->email;
+        Mail::send("mail.mail-order-product" , $params, function($message) use ($to_email){
+                    $message->from('cafroostb10298@gmail.com', 'Shop thú cưng Petcare');
+                    $message->to($to_email);
+                    $message->subject("Mail xác nhận đơn hàng thành công!");
+        });
         Session::put('params', $params);
+        Cart::instance('cart')->destroy();
         return redirect()->route('orderFinish');
     }
 
@@ -666,9 +689,28 @@ class FrontendController extends Controller
         }catch(Exception $e) {
             Session::flash('alert-warning', $e);
             return redirect()->route("frontend.show-order-service");
-        } 
+        }
+        $customer_id = $request->customer_id;
+        $date_begin = $request->date;
+        // from(env('MAIL_FROM_ADDRESS', 'cafroostb10298@gmail.com'), env('MAIL_FROM_NAME', 'Sunshine'))
+        //     ->replyTo($email)
+        //     ->subject("Có khách $email vừa liên hệ")
+        //     ->view('emails.contact-email')
+        //     ->with('data', $this->data);
+        $data = [
+                    "customer_id" => $customer_id,
+                    "date_begin" => $date_begin
+                ];
+                
+        // $to_email = "cafroostb10298@gmail.com";
+        $to_email = Auth::guard('customer')->user()->email;
+        Mail::send("mail.mail-order-service" , $data, function($message) use ($to_email){
+                    $message->from('cafroostb10298@gmail.com', 'Shop thú cưng Petcare');
+                    $message->to($to_email);
+                    $message->subject("Mail xác nhận đơn đặt lịch  hẹn");
+        });
         Session::flash('alert-info', 'Order service successfully!');
-        return view('frontend.pages.order-service-finish');
+        return view('frontend.pages.order-service-finish', ['customer_id' => $customer_id, 'date_begin' => $date_begin]);
     }
 
     

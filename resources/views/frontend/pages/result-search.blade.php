@@ -44,7 +44,7 @@ About us | PETCARE
                                                             $total_after_sale = $price_product - $price_sale;	
                                                         }else{
                                                             $price_sale = $subTotal - $number_sale;
-                                                            $total_after_coupon = ($price_sale > 0) ? $price_sale : 0;	
+                                                            $total_after_sale = ($price_sale > 0) ? $price_sale : 0;	
                                                         }
                                                     @endphp 
                                                     <del><h4>{{ number_format($product->product_price, 2)}} vnđ</h4></del>

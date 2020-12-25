@@ -67,6 +67,7 @@ Order finish | PETCARE
     <tr>
         <td colspan="4"  style="border-bottom: 1px solid black;border-right: 1px solid black;border-left: 1px solid black;text-align: right; padding: 5px;">
             <ul>
+                Trổng số SP: {{$params['cart_content']->count()}} <br>
                 @foreach ($params['cart_content']  as $product)
                      <li>{{$product->name}}: {{$product->qty}} x {{$product->price}} VNĐ</li>
                 @endforeach

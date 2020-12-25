@@ -228,6 +228,7 @@
                                             </tr>
                                         @endif
                                     @endforeach
+                                    
                                     <tr>
                                         <td>Total</td>
                                         <td><span id="subtotal">{{number_format( $total_after_coupon ,0,',','.') .' '. 'VNĐ' }}</span></td>
