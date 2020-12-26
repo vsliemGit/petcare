@@ -427,12 +427,14 @@ class FrontendController extends Controller
         $listProductCategoriesParent = ProductCategory::where('parent_id', null)
             ->orderBy('pro_category_created_at', 'desc')->get();
         $listProductsRelatedToThisItem = Product::find($id)->category->products;
-        $rating = Rating::where('product_id', $id)->avg('rating_star');       
+        $rating = Rating::where('product_id', $id)->avg('rating_star');
+        $comments_count = DB::table('comments')->where('product_id', $id)->count();        
         return view('frontend.pages.product-detail')
             ->with('listBrands', $listBrands)
             ->with('listProductCategoriesParent', $listProductCategoriesParent)
             ->with('product', $product)
             ->with('rating', round($rating))
+            ->with('comments_count', $comments_count)
             ->with('listProductsRelatedToThisItem', $listProductsRelatedToThisItem);
     }
 
@@ -465,11 +467,25 @@ class FrontendController extends Controller
                 'message' => 'You must rating'
             ]); 
         }
-        
+
+        $timeNow = Carbon::now('Asia/Ho_Chi_Minh'); 
+        $timeComment = DB::table('comments')->where('cmt_ip', $request->ip())->orderBy('cmt_created_at','desc')->first();
+        if($timeComment){
+            $timeOut= (strtotime($timeNow) - strtotime($timeComment->cmt_created_at))/(60);
+            if($timeOut < 5){
+                return response()->json([
+                    'type' => 'error',
+                    'message' => 'Comments only after 5 minutes!'
+                ]);
+            }
+        }
+
+
         if($request->ajax() && $request->comment != null){
 
             $dataComment['product_id'] = $request->product_id;
             $dataComment['cmt_content'] = $request->comment;
+            $dataComment['cmt_ip'] = $request->ip();
 
             $dataRating['product_id'] = $request->product_id;         
             $dataRating['rating_star'] = $request->rating;
@@ -478,6 +494,7 @@ class FrontendController extends Controller
                 $dataComment['customer_id'] = Auth::guard('customer')->user()->id;
                 $dataComment['name_customer'] = $request->name;
                 $dataComment['email_customer'] = $request->email;
+                $dataComment['cmt_ip'] = $request->ip();
 
                 $dataRating['customer_id'] = Auth::guard('customer')->user()->id;
                 $dataRating['name_customer'] = $request->name;
@@ -614,7 +631,8 @@ class FrontendController extends Controller
                     'order_id' => $order_id,
                     'order_detail_quantity' => $product->qty
                 ]);
-                $product_basic_price = DB::table('products')->where('product_id', $product->id)->select('product_basis_price')->first()->product_basis_price;
+                $product_basic_price = DB::table('products')->where('product_id', $product->id)
+                    ->select('product_basis_price')->first()->product_basis_price;
                 
                 $price_after_sale = $product->price;
                 $productInStore = Product::find($product->id);
@@ -696,11 +714,6 @@ class FrontendController extends Controller
         }
         $customer_id = $request->customer_id;
         $date_begin = $request->date;
-        // from(env('MAIL_FROM_ADDRESS', 'cafroostb10298@gmail.com'), env('MAIL_FROM_NAME', 'Sunshine'))
-        //     ->replyTo($email)
-        //     ->subject("Có khách $email vừa liên hệ")
-        //     ->view('emails.contact-email')
-        //     ->with('data', $this->data);
         $data = [
                     "customer_id" => $customer_id,
                     "date_begin" => $date_begin
@@ -716,31 +729,5 @@ class FrontendController extends Controller
         Session::flash('alert-info', 'Order service successfully!');
         return view('frontend.pages.order-service-finish', ['customer_id' => $customer_id, 'date_begin' => $date_begin]);
     }
-
-    public function sendMailContactForm(Request $request){
-        return 'aaaa';
-        try {
-            // Tạo mới gop ý:
-            $gopy = new GopY();
-            $gopy->gy_noidung = $request->phanHoi['message'];
-            $gopy->gy_email = $request->phanHoi['email'];
-            $gopy->save();
-          
-        } catch (ValidationException $e) {
-            return response()->json(array(
-                'code'  => 500,
-                'message' => $e,
-                'redirectUrl' => route('frontend.contact')
-            ));
-        } catch (Exception $e) {
-            throw $e;
-        }
-        return response()->json(array(
-            'code'  => 200,
-            'message' => 'Bạn đã gửi phản hồi thành công! Hãy tiếp tục mua sắm nhá!!!',
-            'redirectUrl' => route('frontend.home')
-        ));
-    }
-
-    
+   
 }

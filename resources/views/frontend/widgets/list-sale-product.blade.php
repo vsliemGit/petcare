@@ -1,3 +1,4 @@
+@if ($listSaleOff->count()>0)
 <div class="features_items new_products"><!--new_products-->
     <h2 class="title text-center">SALE OFF</h2>
     <div class="owl-carousel owl-theme">
@@ -59,6 +60,7 @@
         @endforeach
     </div>                
 </div><!--new_products-->
+@endif
 <script>
     //carousel
     $(document).ready(function(){

@@ -128,12 +128,13 @@ class ProductController extends Controller
             $fileSaved = $file->storeAs('storage/images', $product->product_image);
         }
         $product->save();
+        
         if($request->sale_id){
             DB::table('product_sales')->insert([
                 'product_id' => $product->product_id,
                 'sale_id' => $request->sale_id
             ]);
-        }       
+        }     
         // Lưu hình ảnh liên quan
         if($request->hasFile('product_images')) {
             $files = $request->product_images;

@@ -80,8 +80,27 @@
                                 @endfor                                          
                             </ul>
                             <form action="{{ route('add-to-cart') }}" method="post" id="add-cart-form">
-                                <span>
-                                    <span>${{ number_format($product->product_price) }}</span>
+                                <span>  
+                                    @if($product->sale->count()>0)
+                                        @php
+                                            $price_product = $product->product_price;
+                                            $condition = $product->sale->first()->sale_condition;
+                                            $number_sale = $product->sale->first()->sale_number;
+                                            $price_after_sale = 0;
+                                            if($condition == 0){
+                                                $price_sale = ($price_product*$number_sale)/100;
+                                                $total_after_sale = $price_product - $price_sale;	
+                                            }else{
+                                                $price_sale = $price_product - $number_sale;
+                                                $total_after_sale = ($price_sale > 0) ? $price_sale : 0;	
+                                            }
+                                        @endphp 
+                                        <del>{{ number_format($product->product_price) }} vnđ</del>
+                                        <h3 style="color: red;">{{ number_format($total_after_sale, 0)}} vnđ</h3>
+                                    @else
+                                        <span>{{ number_format($product->product_price) }} vnđ</span>
+                                    @endif
+                                        {{-- <span>{{ number_format($product->product_price) }} vnđ</span> --}}
                                         <label>Quantity:</label>
                                         <input type="hidden" id="product_id" name="product_id" value="{{$product->product_id}}">
                                         <input type="number" name="quantity" value="1" />
@@ -105,7 +124,7 @@
                         <ul class="nav nav-tabs">
                             <li><a href="#details" data-toggle="tab">Details</a></li>
                             <li><a href="#brand" data-toggle="tab">Brand</a></li>
-                            <li class="active"><a href="#reviews" data-toggle="tab">Reviews (5)</a></li>
+                            <li class="active"><a href="#reviews" data-toggle="tab">Reviews ({{$comments_count}})</a></li>
                         </ul>
                     </div>
                     <div class="tab-content">
