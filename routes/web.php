@@ -68,6 +68,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::post('/store', 'Backend\ProductCategoryController@store')->name('product_category.store');
         Route::get('/edit/{id}', 'Backend\ProductCategoryController@edit')->name('product_category.edit');
         Route::post('/update', 'Backend\ProductCategoryController@update')->name('product_category.update');
+        Route::post('/update/{id}', 'Backend\ProductCategoryController@update1')->name('product_category.update1');
         Route::delete('/delete', 'Backend\ProductCategoryController@destroy')->name('product_category.destroy');
         Route::post('/change-status', 'Backend\ProductCategoryController@changeStatus')->name('product_category.changeStatus');
         Route::get('/filter-status','Backend\ProductCategoryController@filterStatus')->name('product_category.filter_status');

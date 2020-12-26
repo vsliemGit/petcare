@@ -16,9 +16,8 @@ Admin - Add Product category
                     </header>
                     <div class="panel-body">
                         <div class="form">
-                        <form class="cmxform form-horizontal " id="commentForm" action="{{ Route('product_category.update', ['id' => $productCategory->pro_category_id])}}" method="post" novalidate="novalidate">
+                        <form class="cmxform form-horizontal " id="commentForm" action="{{ Route('product_category.update1', ['id' => $productCategory->pro_category_id])}}" method="post" novalidate="novalidate">
                                 @csrf
-                                <input type="hidden" name="_method" value="PUT" />
                                 <div class="form-group ">
                                     <label for="name" class="control-label col-lg-3">Tên loại <span class="required" style="color:red">*</span></label>
                                     <div class="col-lg-6">
@@ -30,7 +29,7 @@ Admin - Add Product category
                                     <div class="col-lg-6">
                                         <select class="form-control m-bot15" name="parent_id">
                                             <option value="" selected disabled hidden>--Chọn--</option>
-                                            <option value="null">(none)</option>
+                                            <option value="">(none)</option>
                                             @foreach ($listProductCategoriesParent as $productCategoriesParent)                                              
                                                 <option value="{{$productCategoriesParent->pro_category_id}}">{{$productCategoriesParent->pro_category_name}}</option>
                                             @endforeach

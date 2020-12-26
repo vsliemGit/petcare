@@ -53,7 +53,7 @@ class PaypalController extends Controller
 
             //Create list Items and save orderdetail
             foreach($cart_content as $product){
-                $price = ceil(($product->price/23));
+                $price = ceil(($product->price/23000));
                 $item = new Item();
                 $item->setName($product->name) /** item name **/
                     ->setCurrency(self::CURRENCY)

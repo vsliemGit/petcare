@@ -101,8 +101,28 @@ class ProductCategoryController extends Controller
         $productCategory->pro_category_slug = $request->pro_category_slug;
         $productCategory->pro_category_desc = $request->pro_category_desc;
         $productCategory->pro_category_status = $request->pro_category_status;
-        if($request->parent){
+        $productCategory->pro_category_updated_at = Carbon::now();
+        $productCategory->save();
+        if($request->ajax()){
+            $listProductCategories = ProductCategory::orderBy('pro_category_created_at', 'desc')->paginate(5);
+            return view('backend.product_category.table-data')->with('listProductCategories', $listProductCategories);
+        }
+        Session::flash('alert-info', 'Cập nhật "'.$productCategory->pro_category_name.'" thành công!!!');
+        return redirect()->route('product_category.index'); 
+    }
+
+    public function update1(Request $request, $id)
+    {
+        $validation = $request->validate([]);
+        $productCategory = ProductCategory::where("pro_category_id", $id)->first();
+        $productCategory->pro_category_name = $request->name;
+        $productCategory->pro_category_slug = $request->slug;
+        $productCategory->pro_category_desc = $request->desc;
+        $productCategory->pro_category_status = $request->status;
+        if($request->parent_id){
             $productCategory->parent_id = $request->parent_id;
+        }else{
+            $productCategory->parent_id = null;
         }
         $productCategory->pro_category_updated_at = Carbon::now();
         $productCategory->save();
@@ -110,7 +130,7 @@ class ProductCategoryController extends Controller
             $listProductCategories = DB::table('product_categories')->orderBy('pro_category_created_at', 'desc')->paginate(5);
             return view('backend.product_category.table-data')->with('listProductCategories', $listProductCategories);
         }
-        Session::flash('alert-info', 'Cập nhật "'.$productCategory->pro_category_name.'" thành công!!!');
+        Session::flash('alert-info', 'Cập nhật thành công!!!');
         return redirect()->route('product_category.index'); 
     }
 

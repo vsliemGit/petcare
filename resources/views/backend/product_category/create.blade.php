@@ -82,6 +82,8 @@ Admin - Add Product category
         </div>
     </div>
 </section>
+ <!-- footer -->
+ @include('backend.layouts.partials.footer')
 
 <script>
     $(document).ready(function(){

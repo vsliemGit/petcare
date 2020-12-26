@@ -52,7 +52,6 @@ Admin - List Product categories
 </section>
  <!-- footer -->
 @include('backend.layouts.partials.footer')
-
 <script type="text/javascript">
   var _modal = $('#modal');
   //Binding field name to slug
@@ -213,8 +212,8 @@ Admin - List Product categories
             });
           }
         }
-      }
     }
+    
     
     //Action tool
     $("#btn-action-tool").click(function(){
@@ -347,9 +346,8 @@ Admin - List Product categories
             pro_category_status : data.status
           },
           success: function(data){
-            console.log(data);
             _modal.modal('hide');
-            swal('Successfully!', 'Edit ""'+name+'" is successfuly...', 'success');
+            swal('Successfully!', 'Edit item is successfuly...', 'success');
             $("#tag_container").empty().html(data);
             getData(currentPageNumner);
           },
