@@ -63,7 +63,7 @@
                 <li class="sub-menu">
                     <a href="javascript:;">
                         <i class="fa fa-shopping-cart"></i>
-                        <span>Orers</span>
+                        <span>Orders</span>
                     </a>
                     <ul class="sub">
 						<li></i><a href="{{Route('order.index')}}">List Orders</a></li>
@@ -102,7 +102,7 @@
 						<li></i><a href="{{Route('customer.index')}}">List Customers</a></li>
                     </ul>
                 </li>
-                <li class="sub-menu">
+                {{-- <li class="sub-menu">
                     <a href="javascript:;">
                         <i class="fa  fa-truck"></i>
                         <span>Transfers</span>
@@ -110,7 +110,7 @@
                     <ul class="sub">
 						<li></i><a href="{{Route('customer.index')}}">List Customers</a></li>
                     </ul>
-                </li>
+                </li> --}}
             </ul>            
         </div>
         <!-- sidebar menu end-->

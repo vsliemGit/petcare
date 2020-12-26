@@ -129,28 +129,6 @@ Admin - Dashboard
     </div>
     <div class="agil-info-calendar"> {{-- Statistic 2 --}}
         <div class="col-md-6 agile-calendar"> {{-- Loai san pham--}}
-            {{-- <div class="calendar-widget">
-                <div class="panel-heading ui-sortable-handle">
-                    <span class="panel-icon">
-                      <i class="fa fa-bar-chart-o"></i>
-                    </span>
-                    <span class="panel-title">Loại sản phẩm</span>
-                </div>
-                <!-- grids -->
-                    <div class="agile-calendar-grid">
-                        <div class="page">
-                            
-                            <div class="w3l-calendar-left">
-                                <div class="calendar-heading">
-                                    
-                                </div>
-                                <div id="donut-example" class="morris-donut-inverse"></div>
-                            </div>
-                            
-                            <div class="clearfix"> </div>
-                        </div>
-                    </div>
-            </div> --}}
             <header class="panel-heading">
                 Dịch vụ được quan tâm
             </header>
@@ -210,7 +188,6 @@ Admin - Dashboard
         </div>
         <div class="clearfix"></div>
     </div>
-    {{-- Statistic 3 --}}
     {{-- <div class="agil-info-calendar"> 
         <div class="col-md-7 w3agile-notifications">
             <header class="panel-heading">
@@ -315,18 +292,18 @@ Admin - Dashboard
     chart30sOrder();
     //Donut Chart
     var colorDanger = "#FF1744";
-    Morris.Donut({
-        element: 'donut-example',
-        resize: true,
-        colors: ['#E0F7FA','#B2EBF2','#80DEEA','#4DD0E1','#26C6DA','#00BCD4','#00ACC1','#0097A7','#00838F','#006064'],
-        data: [
-            {label:"Dato Ej.1", value:123, color:colorDanger},
-            {label:"Dato Ej.2", value:369},
-            {label:"Dato Ej.3", value:246},
-            {label:"Dato Ej.4", value:159},
-            {label:"Dato Ej.5", value:357}
-        ]
-    });
+    // Morris.Donut({
+    //     element: 'donut-example',
+    //     resize: true,
+    //     colors: ['#E0F7FA','#B2EBF2','#80DEEA','#4DD0E1','#26C6DA','#00BCD4','#00ACC1','#0097A7','#00838F','#006064'],
+    //     data: [
+    //         {label:"Dato Ej.1", value:123, color:colorDanger},
+    //         {label:"Dato Ej.2", value:369},
+    //         {label:"Dato Ej.3", value:246},
+    //         {label:"Dato Ej.4", value:159},
+    //         {label:"Dato Ej.5", value:357}
+    //     ]
+    // });
 
     $(document).ready(function(){
         //Custom datepicker
@@ -338,8 +315,8 @@ Admin - Dashboard
             monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10','Tháng 11', 'Tháng 12'],
             monthNamesShort : ['Thg1', 'Thg2', 'Thg3', 'Thg4', 'Thg5', 'Thg6', 'Thg7', 'Thg8', 'Thg9', 'Thg10','Thg11', 'Thg12'],
             duration: 'slow',
-            changeMonth: true,
-            changeYear: true
+            // changeMonth: true,
+            // changeYear: true
         });
 
         $( "#datepicker2" ).datepicker({
@@ -350,44 +327,44 @@ Admin - Dashboard
             monthNames : ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10','Tháng 11', 'Tháng 12'],
             monthNamesShort : ['Thg1', 'Thg2', 'Thg3', 'Thg4', 'Thg5', 'Thg6', 'Thg7', 'Thg8', 'Thg9', 'Thg10','Thg11', 'Thg12'],
             duration: 'slow',
-            changeMonth: true,
-            changeYear: true
+            // changeMonth: true,
+            // changeYear: true
         });
 
-        var data = [
-            { y: '2014', a: 50, b: 90},
-            { y: '2015', a: 65,  b: 75},
-            { y: '2016', a: 50,  b: 50},
-            { y: '2017', a: 75,  b: 60},
-            { y: '2018', a: 80,  b: 65},
-            { y: '2019', a: 90,  b: 70},
-            { y: '2020', a: 100, b: 75},
-            { y: '2021', a: 115, b: 75},
-            { y: '2022', a: 120, b: 85},
-            { y: '2023', a: 145, b: 85},
-            { y: '2024', a: 160, b: 95}
-        ];
-        var chartBar = getBarChart("stacked").setData(data);     
+        // var data = [
+        //     { y: '2014', a: 50, b: 90},
+        //     { y: '2015', a: 65,  b: 75},
+        //     { y: '2016', a: 50,  b: 50},
+        //     { y: '2017', a: 75,  b: 60},
+        //     { y: '2018', a: 80,  b: 65},
+        //     { y: '2019', a: 90,  b: 70},
+        //     { y: '2020', a: 100, b: 75},
+        //     { y: '2021', a: 115, b: 75},
+        //     { y: '2022', a: 120, b: 85},
+        //     { y: '2023', a: 145, b: 85},
+        //     { y: '2024', a: 160, b: 95}
+        // ];
+        // var chartBar = getBarChart("stacked").setData(data);     
     });
 
-    //Get BarChart
-    function getBarChart(element){
-        config = {
-            xkey: 'y',
-            ykeys: ['a', 'b'],
-            labels: ['Total Income', 'Total Outcome'],
-            fillOpacity: 0.6,
-            hideHover: 'auto',
-            behaveLikeLine: true,
-            resize: true,
-            pointFillColors:['#ffffff'],
-            pointStrokeColors: ['black'],
-            lineColors:['gray','red']
-        };
-        config.element = element;
-        config.stacked = true;
-        return Morris.Bar(config);
-    }
+    // //Get BarChart
+    // function getBarChart(element){
+    //     config = {
+    //         xkey: 'y',
+    //         ykeys: ['a', 'b'],
+    //         labels: ['Total Income', 'Total Outcome'],
+    //         fillOpacity: 0.6,
+    //         hideHover: 'auto',
+    //         behaveLikeLine: true,
+    //         resize: true,
+    //         pointFillColors:['#ffffff'],
+    //         pointStrokeColors: ['black'],
+    //         lineColors:['gray','red']
+    //     };
+    //     config.element = element;
+    //     config.stacked = true;
+    //     return Morris.Bar(config);
+    // }
     //Get BarChart
     function getBarChart2(element){
         config = {

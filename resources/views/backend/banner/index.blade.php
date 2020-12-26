@@ -10,7 +10,7 @@ Admin - Banner
 @section('main-content')
 <section class="wrapper">
     <div class="gallery">
-		<h2 class="w3ls_head">Gallery</h2>
+		<h2 class="w3ls_head">List Banners</h2>
 		<form action="{{route('banner.create')}}">
 			<input type="submit" class="btn btn-primary" value="Add Banner" />
 		</form>
