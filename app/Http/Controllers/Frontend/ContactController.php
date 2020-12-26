@@ -22,4 +22,33 @@ class ContactController extends Controller
         }
         return response()->json($map_markes);
     }
+
+    public function sendMailContactForm(Request $request){
+        try {
+            // Tạo mới gop ý:
+
+            DB::table('gopys')->insert([
+                'gy_email' => $request->email,
+                'gy_noidung' => $request->message,
+                'gy_name' => $request->name,
+                'gy_subject' => $request->subject
+            ]
+            );
+          
+        } catch (ValidationException $e) {
+            return response()->json(array(
+                'code'  => 500,
+                'message' => $e,
+                'redirectUrl' => route('frontend.contact')
+            ));
+        } catch (Exception $e) {
+            throw $e;
+        }
+        return response()->json(array(
+            'code'  => 200,
+            'message' => 'Bạn đã gửi phản hồi thành công! Hãy tiếp tục mua sắm nhá!!!',
+            'redirectUrl' => route('frontend.home')
+        ));
+    }
+
 }

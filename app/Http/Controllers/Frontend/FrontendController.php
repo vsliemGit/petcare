@@ -418,7 +418,11 @@ class FrontendController extends Controller
 
     public function productDetail($id){
         $product = Product::find($id);
-        $product->increment('product_views');
+        if(!$product->detail){
+            Session::flash('alert-danger', 'Hiện chưa có thông tin về sản phẩm này!!!');
+            return redirect()->route('frontend.home');
+        }
+        $product->increment('product_views'); 
         $listBrands = Brand::all();
         $listProductCategoriesParent = ProductCategory::where('parent_id', null)
             ->orderBy('pro_category_created_at', 'desc')->get();
@@ -623,7 +627,7 @@ class FrontendController extends Controller
                         $price_sale = ($price_product*$number_sale)/100;
                         $total_after_sale = $price_product - $price_sale;	
                     }else{
-                        $price_sale = $subTotal - $number_sale;
+                        $price_sale = $price_product - $number_sale;
                         $total_after_sale = ($price_sale > 0) ? $price_sale : 0;	
                     }
                    
@@ -711,6 +715,31 @@ class FrontendController extends Controller
         });
         Session::flash('alert-info', 'Order service successfully!');
         return view('frontend.pages.order-service-finish', ['customer_id' => $customer_id, 'date_begin' => $date_begin]);
+    }
+
+    public function sendMailContactForm(Request $request){
+        return 'aaaa';
+        try {
+            // Tạo mới gop ý:
+            $gopy = new GopY();
+            $gopy->gy_noidung = $request->phanHoi['message'];
+            $gopy->gy_email = $request->phanHoi['email'];
+            $gopy->save();
+          
+        } catch (ValidationException $e) {
+            return response()->json(array(
+                'code'  => 500,
+                'message' => $e,
+                'redirectUrl' => route('frontend.contact')
+            ));
+        } catch (Exception $e) {
+            throw $e;
+        }
+        return response()->json(array(
+            'code'  => 200,
+            'message' => 'Bạn đã gửi phản hồi thành công! Hãy tiếp tục mua sắm nhá!!!',
+            'redirectUrl' => route('frontend.home')
+        ));
     }
 
     

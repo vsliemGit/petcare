@@ -43,15 +43,15 @@ About us | PETCARE
                                                             $price_sale = ($price_product*$number_sale)/100;
                                                             $total_after_sale = $price_product - $price_sale;	
                                                         }else{
-                                                            $price_sale = $subTotal - $number_sale;
-                                                            $total_after_sale = ($price_sale > 0) ? $price_sale : 0;	
+                                                            $price_sale = $price_product - $number_sale;
+                                                            $price_after_sale = ($price_sale > 0) ? $price_sale : 0;	
                                                         }
                                                     @endphp 
-                                                    <del><h4>{{ number_format($product->product_price, 2)}} vnđ</h4></del>
-                                                    <h2 style="color: red;">{{ number_format($total_after_sale, 0)}} vnđ</h2>
-                                                    @else
+                                                        <del><h4>{{ number_format($product->product_price, 2)}} vnđ</h4></del>
+                                                        <h2 style="color: red;">{{ number_format($total_after_sale, 0)}} vnđ</h2>
+                                                @else
                                                         <h2>${{ number_format($product->product_price, 2)}} </h2> 
-                                                    @endif
+                                                @endif
                                                 <a href="{{ route('frontend.product_detail', ['id' => $product->product_id ]) }}"><h4 style="color: blue">{{ $product->product_name }}</h4></a>
                                                 <ul class="list-inline">
                                                     @for ($i = 1; $i <= 5; $i++)

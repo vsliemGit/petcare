@@ -70,18 +70,19 @@
                 <div class="col-sm-5 clearfix">
                     <div class="bill-to">
                         <p>Bill To</p>
-                        <div class="form-one">                         
+                        <div class="form-one">                        
                             <form id="form_bill_info" action="{{route('order')}}"method="post">
                                 @csrf
-                                <input type="hidden" name="customer_id" value="{{Auth::guard('customer')->user()->id}}" >
+                                <input type="hidden" id="customer_id" name="customer_id" value="{{Auth::guard('customer')->user()->id}}" >
                                 <span for="to_name">To Name: </span>
-                                <input type="text" name="to_name" placeholder="Name *" value="{{Auth::guard('customer')->user()->name}}" required>
+                                <input type="text" id="to_name" name="to_name" placeholder="Name *" value="{{Auth::guard('customer')->user()->name}}" required>
                                 <span for="to_email">To Email: </span>
-                                <input type="text" name="to_email" placeholder="Email*" value="{{Auth::guard('customer')->user()->email}}" required>
+                                <input type="text" id="to_email" name="to_email" placeholder="Email*" value="{{Auth::guard('customer')->user()->email}}" required>
                                 <span for="to_phone">To Phone: </span>                            
-                                <input type="text" name="to_phone" placeholder="Phone number *" value="{{Auth::guard('customer')->user()->phone}}" required>
+                                <input type="text" id="to_phone" name="to_phone" placeholder="Phone number *" value="{{Auth::guard('customer')->user()->phone}}" required>
                                 <span for="to_address">To Address: </span>
-                                <input type="text" name="to_address" placeholder="Address 1 *" value="{{Auth::guard('customer')->user()->address}}" required>
+                                <input type="text" id="to_address" name="to_address" placeholder="Address 1 *" value="{{Auth::guard('customer')->user()->address}}" required>
+                                {{-- <small id="to_addressHelp" class="form-text text-muted">Nhập đầy đủ Email. Giới hạn trong 100 ký tự.</small> --}}
                         </div>
                         <div class="form-two">
                                 {{-- <select name="transfer">
@@ -265,11 +266,94 @@
 @endsection
 
 @section('custom-scripts')
+<!-- Thư viện Jquery validation -->
+<script src="{{ asset('vendor/jquery-validation/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('vendor/jquery-validation/localization/messages_vi.min.js') }}"></script>
 <script>
     //Script load page
     $(document).ready(function(){
         $("#checkout_paypal").hide();
     })
+
+    //Validate
+    $(document).ready(function () {
+        $("#form_bill_info").validate({
+            rules: {
+                to_name: {
+                    required: true,
+                    minlength: 5,
+                    maxlength: 50
+                },
+                to_email: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 100,
+                    email: true
+                },
+                to_phone: {
+                    required: true,
+                    minlength: 10,
+                    maxlength: 11
+                },
+                to_address: {
+                    required: true,
+                    minlength: 20,
+                    maxlength: 100,
+                }
+            },
+            messages: {
+                to_name: {
+                    required: "Vui lòng nhập đầy đủ Name",
+                    minlength: "Name phải có ít nhất 5 kí tự",
+                    maxlength: "Name không được vượt quá 50 kí tự"
+                },
+                to_email: {
+                    required: "Vui lòng nhập đầy đủ Email",
+                    minlength: "Email phải có ít nhất 10 kí tự",
+                    maxlength: "Email không được vượt quá 100 kí tự",
+                    email: "Địa chỉ email phải có format name@domain.com"
+                },
+                to_phone: {
+                    required: "Vui lòng nhập đầy đủ Phone",
+                    minlength: "Phone phải có ít nhất 10 số",
+                    maxlength: "Phone không được vượt quá 11 số"
+                },
+                to_address: {
+                    required: "Vui lòng nhập đầy đủ Adress",
+                    minlength: "Address phải có ít nhất 20 ký tự",
+                    maxlength: "Address không được vượt quá 100 ký tự"
+                } 
+            },
+            // errorElement: "em",
+            errorPlacement: function (error, element) {
+                // Thêm class `invalid-feedback` cho field đang có lỗi
+                error.addClass("invalid-feedback");
+                if (element.prop("type") === "checkbox") {
+                    error.insertAfter(element.parent("label"));
+                } else {
+                    error.insertBefore(element);
+                }
+                // Thêm icon "Kiểm tra không Hợp lệ"
+                if (!element.next("span")[0]) {
+                    $("<span class='glyphicon glyphicon-remove form-control-feedback'></span>")
+                        .insertBefore(element);
+                }
+            },
+            // success: function (label, element) {
+            //     // Thêm icon "Kiểm tra Hợp lệ"
+            //     if (!$(element).next("span")[0]) {
+            //         $("<span class='glyphicon glyphicon-ok form-control-feedback'></span>")
+            //             .insertBefore($(element));
+            //     }
+            // },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass("is-invalid").removeClass("is-valid");
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).addClass("is-valid").removeClass("is-invalid");
+            }
+        });
+    });
     //Setup CSRF to AJAX
     $.ajaxSetup({
             headers: {

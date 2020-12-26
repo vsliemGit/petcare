@@ -75,10 +75,10 @@ Admin - Add New Product
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-12 form-group">
-                                    <label for="product_desc" class="control-label col-md-1">Mô tả</label>
-                                    <div class="col-md-10">
-                                        <textarea class="form-control" style="resize: none" rows="8" id="product_desc" name="product_desc" required="">{{$product->product_desc}}</textarea>
+                                <div class="form-group col-md-12">
+                                    <label for="product_desc" class="col-lg-3" style="margin-left: 40px;">Mô tả</label>
+                                    <div class="col-md-12">
+                                        <textarea class="form-control" style="resize: none; resize: none; margin-left: 40px; width: 96%" rows="8" id="product_desc" name="product_desc" required="">{{$product->product_desc}}</textarea>
                                     </div>
                                 </div>    
     
@@ -114,6 +114,23 @@ Admin - Add New Product
                                         </div>
                                     </div>
                                 </div>
+                                @if($listSales->count()>0)
+                                <div class="form-group ">
+                                    <label class="col-sm-3 control-label col-lg-3" for="sale_id">Sale: </label>
+                                    <div class="col-lg-6">
+                                        <select class="form-control m-bot15" name="sale_id">
+                                            <option value="" selected disabled hidden>--Chọn--</option>
+                                            @foreach ($listSales as $sale)
+                                                @if ($product->sale->first())
+                                                    <option value="{{$sale->sale_id}}" {{ old('sale_id', $product->sale->first()->sale_id) == $sale->sale_id ? "selected" : "" }}>{{$sale->sale_name}}</option>
+                                                @else 
+                                                     <option value="{{$sale->sale_id}}">{{$sale->sale_name}}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                @endif
                                 <div class="form-group ">
                                     <label for="product_images" class="control-label col-lg-3">Hình ảnh liên quan</label>
                                     <div class="col-lg-6">

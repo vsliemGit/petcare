@@ -32,7 +32,7 @@ class CartController extends Controller
                 $price_sale = ($price_product*$number_sale)/100;
                 $product_price = $price_product - $price_sale;	
             }else{
-                $price_sale = $subTotal - $number_sale;
+                $price_sale = $price_product - $number_sale;
                 $product_price = ($price_sale > 0) ? $price_sale : 0;	
             }
         }

@@ -51,8 +51,8 @@ Admin - Dashboard
                 </div>
                 <div class="col-md-8 market-update-left">
                     <h4>Sales</h4>
-                    <h4>{{number_format($sales_this_month)}}</h4>
-                    <p>Doanh thu trong tháng</p>
+                    <h4>{{number_format($loi_nhuan_trong_thang)}}</h4>
+                    <p>Lợi nhuận tháng này</p>
                 </div>
               <div class="clearfix"> </div>
             </div>
@@ -128,8 +128,8 @@ Admin - Dashboard
         </div>
     </div>
     <div class="agil-info-calendar"> {{-- Statistic 2 --}}
-        <div class="col-md-5 agile-calendar"> {{-- Loai san pham--}}
-            <div class="calendar-widget">
+        <div class="col-md-6 agile-calendar"> {{-- Loai san pham--}}
+            {{-- <div class="calendar-widget">
                 <div class="panel-heading ui-sortable-handle">
                     <span class="panel-icon">
                       <i class="fa fa-bar-chart-o"></i>
@@ -150,9 +150,33 @@ Admin - Dashboard
                             <div class="clearfix"> </div>
                         </div>
                     </div>
-            </div>
+            </div> --}}
+            <header class="panel-heading">
+                Dịch vụ được quan tâm
+            </header>
+			{{-- <div class="col-md-12 stats-info stats-last widget-shadow"> --}}
+                <div class="stats-last-agile">
+                    <table class="table table-sm table-dark">
+                        <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Tên DV</th>
+                            <th scope="col">Lượt xem</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          @foreach ($dich_vu_xem_nhieu as $dv)
+                            <tr>
+                                <th scope="row">{{$dv->service_id}}</th>
+                                <td><a href="{{ route('frontend.product_detail', ['id' => $dv->service_id ]) }}">{{$dv->service_name}}</a></td>
+                                <td>{{$dv->service_views}}</td>
+                            </tr>
+                          @endforeach
+                        </tbody>
+                      </table>
+                </div>
         </div> 
-        <div class="col-md-7 w3agile-notifications">  {{-- Statistic 3 --}}
+        <div class="col-md-6 w3agile-notifications">  {{-- Statistic 3 --}}
             <header class="panel-heading">
                 Sản phẩm xem nhiều
             </header>
@@ -186,12 +210,12 @@ Admin - Dashboard
         </div>
         <div class="clearfix"></div>
     </div>
-    <div class="agil-info-calendar"> {{-- Statistic 3 --}}
+    {{-- Statistic 3 --}}
+    {{-- <div class="agil-info-calendar"> 
         <div class="col-md-7 w3agile-notifications">
             <header class="panel-heading">
                 Notification 
             </header>
-			{{-- <div class="col-md-12 stats-info stats-last widget-shadow"> --}}
                 <div class="stats-last-agile">
                     <table class="table stats-table ">
                         <thead>
@@ -242,7 +266,6 @@ Admin - Dashboard
                         </tbody>
                     </table>
                 </div>
-            {{-- </div> --}}
 			<div class="clearfix"> </div>
 		</div> 
         <div class="col-md-5 agile-calendar"+>
@@ -269,7 +292,7 @@ Admin - Dashboard
                     </div>
             </div>
         </div> 
-    </div>
+    </div> --}}
        
 
 </section>

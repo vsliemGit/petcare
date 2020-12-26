@@ -20,18 +20,14 @@ Home | PETCARE
 @section('main-content')
 <!--Slider-->
 @include('frontend.widgets.slider')
-
 <section>
-    <div class="container" >
+    <div class="container" > 
         <div class="flash-message">
             @foreach (['danger', 'warning', 'success', 'info'] as $msg)
               @if(Session::has('alert-' . $msg))
-              <p id="flash-message" class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a  href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
-              @php
-              Session::forget('alert-' . $msg) 
-            @endphp
-              @endif    
-            @endforeach   
+                <p id="flash-message" class="alert alert-{{ $msg }}">{{ Session::get('alert-' . $msg) }} <a  href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a></p>
+              @endif 
+            @endforeach
         </div>
         <div class="row">
             <!--Left-sidebar-->

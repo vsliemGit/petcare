@@ -177,8 +177,7 @@ class PromotionController extends Controller
         return abort('Error.404');
     }
 
-    public function datatables()
-   {
+    public function datatables(){
         $listCoupons = Coupon::all();
         return Datatables::of($listCoupons)
         ->addIndexColumn()

@@ -207,6 +207,7 @@ Route::get('/show-order-service', 'Frontend\FrontendController@showOrderService'
 //Contact
 Route::get('/contact', 'Frontend\FrontendController@contact')->name('frontend.contact');
 Route::get('/contact/get-stores', 'Frontend\ContactController@getStore')->name('frontend.contact.get_stores');
+Route::post('/contact/send', 'Frontend\ContactController@sendMailContactForm')->name('frontend.contact.send');
 
 //Commment
 Route::post('/load-comment', 'Frontend\FrontendController@loadComment')->name('load_comment');

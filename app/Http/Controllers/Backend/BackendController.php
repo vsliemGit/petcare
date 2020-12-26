@@ -27,10 +27,11 @@ class BackendController extends Controller
         $dich_vu_xem_nhieu = Service::orderBy('service_views', 'desc')->limit(6)->get();
         $tong_sl_sp = DB::table('products')->sum('product_quantity');
         $sl_sp = [];
+        $loi_nhuan_trong_thang = Statistic::whereBetween('order_date', [$dau_thang_nay,  $now])->sum('profit');
 
         return view('backend.index', 
             ['count_orders'=> $count_orders, 'count_customers' => $count_customers,
-             'sales_this_month' => $sales_this_month, 'count_visitors' => $count_visitors,
+             'loi_nhuan_trong_thang' => $loi_nhuan_trong_thang, 'count_visitors' => $count_visitors,
              'san_pham_xem_nhieu'=> $san_pham_xem_nhieu, 'dich_vu_xem_nhieu' => $dich_vu_xem_nhieu]);
     }
 
@@ -44,17 +45,16 @@ class BackendController extends Controller
         return view('backend.pages.register');
     }
 
-    //Dashboard
-    public function dashboard(Request $request){
-        $count_orders = DB::table('orders')->get()->count();
-        $count_customers = DB::table('customers')->get()->count();
-        $now =  Carbon::now('Asia/Ho_Chi_Minh')->toDateString(); 
-        $dau_thang_nay = Carbon::now('Asia/Ho_Chi_Minh')->startOfMonth()->toDateString();
-        $sales_this_month = Statistic::whereBetween('order_date', [$dau_thang_nay,  $now])->sum('sales');
-        $san_pham_xem_nhieu = DB::table('products')->oderBy('product_views', 'DESC')->get(6);
-        return $san_pham_xem_nhieu;
-        return view('backend.index', ['count_order'=> $count_orders, 'count_customers' => $count_customers, 'sales_this_month' => $sales_this_month]);
-    }
+    // //Dashboard
+    // public function dashboard(Request $request){
+    //     $count_orders = DB::table('orders')->get()->count();
+    //     $count_customers = DB::table('customers')->get()->count();
+    //     $now =  Carbon::now('Asia/Ho_Chi_Minh')->toDateString(); 
+    //     $dau_thang_nay = Carbon::now('Asia/Ho_Chi_Minh')->startOfMonth()->toDateString();
+    //     $sales_this_month = Statistic::whereBetween('order_date', [$dau_thang_nay,  $now])->sum('sales');
+    //     $san_pham_xem_nhieu = DB::table('products')->oderBy('product_views', 'DESC')->get(6);
+    //     return view('backend.index', ['count_order'=> $count_orders, 'count_customers' => $count_customers, 'sales_this_month' => $sales_this_month]);
+    // }
 
     //Filter by date
     public function filterByDate(Request $request){

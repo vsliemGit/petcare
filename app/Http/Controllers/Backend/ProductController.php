@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use DB;
 use Session;
 use Storage;
+
 use App\Product;
 use App\ProductCategory;
 use App\Brand;
@@ -51,7 +52,8 @@ class ProductController extends Controller
         $newProduct->product_price = $request->product_price;
         $newProduct->product_status = $request->product_status;
         $newProduct->pro_category_id = $request->pro_category_id;
-        $newProduct->brand_id = $request->brand_id;      
+        $newProduct->brand_id = $request->brand_id;
+        
         if($request->hasFile('product_image'))
         {
             $file = $request->product_image;
@@ -62,7 +64,8 @@ class ProductController extends Controller
             // Chép file vào thư mục "images"
             $fileSaved = $file->storeAs('public/images', $file->getClientOriginalName());
         }
-        $newProduct->save();       
+        $newProduct->save();
+        
         // Lưu hình ảnh liên quan
 
         if($request->hasFile('product_images')) {
@@ -95,8 +98,10 @@ class ProductController extends Controller
     public function edit($id){
         $product = Product::find($id);
         $listBrands = Brand::all();
+        $listSales = Sale::all();
         $listProductCategories = ProductCategory::all();
-        return view('backend.product.edit', ['product' => $product, 'listProductCategories' => $listProductCategories, 'listBrands' => $listBrands]);
+        return view('backend.product.edit', ['product' => $product, 'listProductCategories' => $listProductCategories,
+         'listBrands' => $listBrands, 'listSales' => $listSales]);
     }
 
     //Update product
@@ -122,7 +127,13 @@ class ProductController extends Controller
             // Chép file vào thư mục "images"
             $fileSaved = $file->storeAs('storage/images', $product->product_image);
         }
-        $product->save();       
+        $product->save();
+        if($request->sale_id){
+            DB::table('product_sales')->insert([
+                'product_id' => $product->product_id,
+                'sale_id' => $request->sale_id
+            ]);
+        }       
         // Lưu hình ảnh liên quan
         if($request->hasFile('product_images')) {
             $files = $request->product_images;
